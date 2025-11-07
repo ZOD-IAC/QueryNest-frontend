@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-  ],
+, "src/icons/Querynest.jsx"  ],
   "exclude": ["node_modules"]
 }
