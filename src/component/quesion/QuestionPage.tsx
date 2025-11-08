@@ -25,7 +25,7 @@ const QuestionsPage: React.FC = () => {
             <Button
               fullWidth
               variant='primary'
-              onClick={() => setShowAskForm(!showAskForm)}
+              href='/profile?tab=ask'
             >
               <Plus className='w-5 h-5' />
               Ask Question

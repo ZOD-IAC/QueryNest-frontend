@@ -6,6 +6,7 @@ import Querynest from '@/icons/Querynest';
 import { User2 } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout, setAuthFromStorage } from '@/features/authslice';
+import UserAvatar from './UserAvatar';
 
 function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -47,12 +48,6 @@ function Navbar() {
               >
                 Question
               </Link>
-              {/* <Link
-                href={'/community'}
-                className='text-slate-600 hover:text-slate-800 font-medium'
-              >
-                Community
-              </Link> */}
               <Link
                 href={'/ranking'}
                 className='text-slate-600 hover:text-slate-800 font-medium'
@@ -71,12 +66,21 @@ function Navbar() {
               <div className='flex items-center space-x-2.5 text-black'>
                 <div className='flex  items-center justify-center space-x-1.5'>
                   <p>hi, {user.name}</p>
-                  <Link
-                    href={'/profile'}
-                    className='flex text-white items-center bg-[#3E3F29] hover:bg-[#1d1e12] border-2 border-[#BCA88D] py-2 px-2 rounded-full hover:shadow-md'
-                  >
-                    <User2 size={20} />
-                  </Link>
+                  {user.avatar ? (
+                    <Link
+                      href={'/profile'}
+                      className='flex text-white items-center rounded-full hover:shadow-md'
+                    >
+                      <UserAvatar svg={user.avatar} />
+                    </Link>
+                  ) : (
+                    <Link
+                      href={'/profile'}
+                      className='flex text-white items-center bg-[#3E3F29] hover:bg-[#1d1e12] border-2 border-[#BCA88D] py-2 px-2 rounded-full hover:shadow-md'
+                    >
+                      <User2 size={20} />
+                    </Link>
+                  )}
                 </div>
 
                 <button

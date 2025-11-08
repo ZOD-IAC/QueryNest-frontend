@@ -59,7 +59,7 @@ const LoginPage = ({}) => {
     }
 
     try {
-      const res = await fetch('http://10.220.0.157:5000/user/api/login', {
+      const res = await fetch('http://172.20.235.157:5000/user/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

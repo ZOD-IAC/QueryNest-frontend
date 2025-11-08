@@ -1,17 +1,19 @@
 // Types
-interface Question {
-  id: number;
-  title: string;
-  content: string;
-  author: string;
-  authorAvatar: string;
-  tags: string[];
-  votes: number;
-  answers: number;
-  views: number;
-  createdAt: string;
-  isAnswered: boolean;
-}
+// interface Question {
+//   id: number;
+//   title: string;
+//   content: string;
+//   author: string;
+//   authorAvatar: string;
+//   tags: string[];
+//   votes: number;
+//   answers: number;
+//   views: number;
+//   createdAt: string;
+//   isAnswered: boolean;
+// }
+
+import { Question } from '../contants/type';
 
 // Question Card Component
 const QuestionCard: React.FC<{ question: Question }> = ({ question }) => {

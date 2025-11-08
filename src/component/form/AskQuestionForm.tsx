@@ -4,10 +4,12 @@ import Button from '../Button/Button';
 import { useState } from 'react';
 
 // Ask Question Form Component
-const AskQuestionForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
+const AskQuestionForm: React.FC = () => {
+  const [isCode, setIsCode] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
     content: '',
+    code: '',
     tags: [] as string[],
   });
   const [tagInput, setTagInput] = useState('');
@@ -27,20 +29,10 @@ const AskQuestionForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   };
 
   return (
-    <div className='bg-white rounded-lg border border-slate-200 p-6'>
-      <div className='flex items-center justify-between mb-6'>
-        <h2 className='text-2xl font-bold text-slate-800'>Ask a Question</h2>
-        <button
-          onClick={onClose}
-          className='text-slate-400 hover:text-slate-600'
-        >
-          <X className='w-6 h-6' />
-        </button>
-      </div>
-
-      <div className='space-y-4'>
+    <div className={`bg-white rounded-lg border border-slate-200 p-6`}>
+      <div className='space-y-4 text-black'>
         <div>
-          <label className='block text-sm font-medium text-slate-700 mb-2'>
+          <label className='block text-sm font-medium text-slate-900 mb-2'>
             Title
           </label>
           <input
@@ -50,15 +42,16 @@ const AskQuestionForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
               setFormData({ ...formData, title: e.target.value })
             }
             placeholder='e.g., How to center a div in CSS?'
-            className='w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
+            className='placeholder:text-slate-400 w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500'
           />
           <p className='text-xs text-slate-500 mt-1'>
-            Be specific and imagine you're asking a question to another person
+            Be specific and imagine you&apos;re asking a question to another
+            person
           </p>
         </div>
 
         <div>
-          <label className='block text-sm font-medium text-slate-700 mb-2'>
+          <label className='block text-sm font-medium text-slate-900 mb-2'>
             Description
           </label>
           <textarea
@@ -68,15 +61,42 @@ const AskQuestionForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             }
             placeholder='Include all the information someone would need to answer your question...'
             rows={8}
-            className='w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none'
+            className='placeholder:text-slate-400 w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 resize-none'
           />
           <p className='text-xs text-slate-500 mt-1'>
-            Provide context, what you've tried, and what you expect
+            Provide context, what you&apos;ve tried, and what you expect
           </p>
         </div>
 
+        <div className='flex space-x-2 items-center'>
+          <label className='flex items-center gap-1'>code</label>
+          <input
+            type='checkbox'
+            defaultChecked={isCode}
+            onChange={() => setIsCode((s) => !s)}
+          />
+        </div>
+        {isCode && (
+          <div>
+            <label className='block text-sm font-medium text-slate-900 mb-2'>
+              Code
+            </label>
+            <textarea
+              value={formData.code}
+              onChange={(e) =>
+                setFormData({ ...formData, code: e.target.value })
+              }
+              placeholder='share your code or any other extra information here..'
+              rows={8}
+              className='placeholder:text-slate-400 w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 resize-none'
+            />
+            <p className='text-xs text-slate-500 mt-1'>
+              Provide Extra context or code, what you&apos;ve tried.
+            </p>
+          </div>
+        )}
         <div>
-          <label className='block text-sm font-medium text-slate-700 mb-2'>
+          <label className='block text-sm font-medium text-slate-900 mb-2'>
             Tags
           </label>
           <div className='flex gap-2 mb-2'>
@@ -88,7 +108,7 @@ const AskQuestionForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                 e.key === 'Enter' && (e.preventDefault(), addTag())
               }
               placeholder='Add a tag (press Enter)'
-              className='flex-1 px-4 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
+              className='placeholder:text-slate-400 flex-1 px-4 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500'
             />
             <Button onClick={addTag} variant='outline'>
               Add
@@ -118,9 +138,6 @@ const AskQuestionForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         <div className='flex gap-3 pt-4'>
           <Button variant='primary' fullWidth>
             Post Question
-          </Button>
-          <Button variant='outline' onClick={onClose}>
-            Cancel
           </Button>
         </div>
       </div>

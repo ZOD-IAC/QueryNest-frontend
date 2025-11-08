@@ -101,7 +101,7 @@ const UserQuestionsSidebar: React.FC<{ isLoggedIn: boolean }> = ({
           </div>
         ))}
       </div>
-      <Button variant='ghost' size='sm' fullWidth>
+      <Button variant='ghost' size='sm' fullWidth href='profile?tab=questions'>
         View All
       </Button>
     </div>

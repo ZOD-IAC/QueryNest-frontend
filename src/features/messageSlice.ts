@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   message: '',
-  messageType: 'info', // "success", "error", "warning"
+  messageType: '', // "success", "error", "warning"
 };
 
 const messageSlice = createSlice({

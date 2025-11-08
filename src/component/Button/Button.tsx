@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
+import { Color } from '../contants/Color';
 
 // Universal Button Component (reused from previous)
 interface ButtonProps {
