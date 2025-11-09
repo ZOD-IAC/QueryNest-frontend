@@ -2,7 +2,7 @@
 // FILE: components/profile/BadgesTab.tsx
 'use client';
 import { Award, Calendar } from 'lucide-react';
-import { Badge } from '../../contants/type';
+import { Badge } from '../../../utils/contants/type';
 import React, { useState } from 'react';
 // ============================================
 interface BadgesTabProps {

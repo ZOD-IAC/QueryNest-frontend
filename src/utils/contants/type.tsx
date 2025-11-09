@@ -4,7 +4,6 @@
 export interface UserProfile {
   id: number;
   name: string;
-  username: string;
   email: string;
   bio: string;
   location: string;
@@ -12,31 +11,19 @@ export interface UserProfile {
   joinedDate: string;
   avatar: string;
   reputation: number;
-  badges: {
-    gold: number;
-    silver: number;
-    bronze: number;
-  };
   stats: {
     questions: number;
     answers: number;
     accepted: number;
-    reached: number;
-  };
-  social: {
-    github?: string;
-    twitter?: string;
-    linkedin?: string;
   };
 }
-
 
 export interface Question {
   id: number;
   title: string;
-  content: string;
+  body: string;
   tags: string[];
-  votes: number;
+  upvotes: number;
   answers: number;
   views: number;
   createdAt: string;

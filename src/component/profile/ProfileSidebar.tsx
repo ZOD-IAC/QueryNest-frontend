@@ -3,7 +3,7 @@
 
 import { Award, Star, Tag, Trophy } from 'lucide-react';
 import React from 'react';
-import { UserProfile } from '../contants/type';
+import { UserProfile } from '../../utils/contants/type';
 
 // ============================================
 interface ProfileSidebarProps {
@@ -20,12 +20,12 @@ export const ProfileSidebar: React.FC<ProfileSidebarProps> = ({ user }) => {
           Stats Overview
         </h3>
         <div className='space-y-3'>
-          <div className='flex justify-between items-center'>
+          {/* <div className='flex justify-between items-center'>
             <span className='text-slate-600 text-sm'>Reached</span>
             <span className='font-bold text-slate-900'>
               {user.stats.reached}
             </span>
-          </div>
+          </div> */}
           <div className='flex justify-between items-center'>
             <span className='text-slate-600 text-sm'>Questions</span>
             <span className='font-bold text-slate-900'>
@@ -48,7 +48,7 @@ export const ProfileSidebar: React.FC<ProfileSidebarProps> = ({ user }) => {
       </div>
 
       {/* Badges Summary */}
-      <div className='bg-linear-to-br from-amber-50 to-orange-50 rounded-lg border border-amber-200 p-6'>
+      {/* <div className='bg-linear-to-br from-amber-50 to-orange-50 rounded-lg border border-amber-200 p-6'>
         <h3 className='font-semibold text-slate-900 mb-4'>Badges Earned</h3>
         <div className='space-y-3'>
           <div className='flex items-center justify-between'>
@@ -85,7 +85,7 @@ export const ProfileSidebar: React.FC<ProfileSidebarProps> = ({ user }) => {
             </span>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Top Tags */}
       <div className='bg-white rounded-lg border border-slate-200 p-6'>

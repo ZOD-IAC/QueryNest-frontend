@@ -1,20 +1,15 @@
-// ============================================
-// FILE: components/profile/ProfileHeader.tsx
 import React from 'react';
 import {
   Calendar,
   Edit,
-  Github,
-  Linkedin,
   LinkIcon,
   MapPin,
   Share2,
   Star,
-  Twitter,
 } from 'lucide-react';
-import { UserProfile } from '../contants/type';
+import { UserProfile } from '../../utils/contants/type';
 
-// ============================================
+
 interface ProfileHeaderProps {
   user: UserProfile;
   isOwnProfile: boolean;
@@ -46,12 +41,6 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
           {/* User Info */}
           <div className='flex-1'>
             <div className='flex items-start justify-between mb-4'>
-              <div>
-                <h1 className='text-3xl font-bold text-slate-900 mb-1'>
-                  {user.name}
-                </h1>
-                <p className='text-lg text-slate-600'>@{user.username}</p>
-              </div>
               <div className='flex gap-2'>
                 {isOwnProfile ? (
                   <button className='px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2'>
@@ -102,7 +91,7 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
             </div>
 
             {/* Social Links */}
-            {(user.social.github ||
+            {/* {(user.social.github ||
               user.social.twitter ||
               user.social.linkedin) && (
               <div className='flex gap-3'>
@@ -131,7 +120,7 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
                   </a>
                 )}
               </div>
-            )}
+            )} */}
           </div>
         </div>
 
@@ -143,12 +132,6 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
               {user.reputation}
             </div>
             <p className='text-sm text-slate-600'>Reputation</p>
-          </div>
-          <div className='text-center'>
-            <div className='text-2xl font-bold text-slate-900 mb-1'>
-              {user.stats.reached}
-            </div>
-            <p className='text-sm text-slate-600'>People Reached</p>
           </div>
           <div className='text-center'>
             <div className='text-2xl font-bold text-slate-900 mb-1'>

@@ -2,7 +2,7 @@
 // FILE: components/profile/AnswersTab.tsx
 
 import { CheckCircle, Clock, ThumbsUp } from 'lucide-react';
-import { Answer } from '../../contants/type';
+import { Answer } from '../../../utils/contants/type';
 import React, { useState } from 'react';
 // ============================================
 interface AnswersTabProps {

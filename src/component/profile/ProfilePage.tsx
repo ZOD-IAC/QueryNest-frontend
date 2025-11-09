@@ -6,17 +6,17 @@ import {
   Answer,
   Badge,
   TabType,
-} from '../contants/type';
+} from '../../utils/contants/type';
 import { ProfileHeader } from './ProfileHeader';
 import { TabNavigation } from './TabNavigation';
 import { ProfileSidebar } from './ProfileSidebar';
 import { ProfileTab } from './profile tabs/ProfileTab';
-import { QuestionsTab } from './QuestionCard';
+import { QuestionsTab } from './profile tabs/QuestionTab';
 import { AnswersTab } from './profile tabs/AnswerTab';
 import { ActivityTab } from './profile tabs/ActivityTab';
 import { SavedTab } from './profile tabs/SavedTab';
 import { BadgesTab } from './profile tabs/BadgeTab';
-import { useParams, usePathname, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import AskQuestionForm from '../form/AskQuestionForm';
 
 // ============================================
@@ -27,14 +27,14 @@ const ProfilePage: React.FC = () => {
   const tab = param?.get('tab');
 
   // State with URL parameter sync (lazy initializer to avoid calling setState in effect)
-  const [activeTab, setActiveTab] = useState('profile');
+  const [activeTab, setActiveTab] = useState<TabType>('profile');
 
   // Listen for back/forward navigation and update tab (setState inside event callback is fine)
   useEffect(() => {
     const onPopState = () => {
       try {
         if (tab) {
-          setActiveTab(tab);
+          setActiveTab(tab as TabType);
         } else {
           setActiveTab('profile');
         }
@@ -60,7 +60,6 @@ const ProfilePage: React.FC = () => {
   const user: UserProfile = {
     id: 1,
     name: 'Sarah Johnson',
-    username: 'sarahdev',
     email: 'sarah@example.com',
     bio: 'Full-stack developer passionate about React, TypeScript, and building scalable applications. Love helping others learn to code and sharing knowledge with the community.',
     location: 'San Francisco, CA',
@@ -68,13 +67,7 @@ const ProfilePage: React.FC = () => {
     joinedDate: 'January 2020',
     avatar: '',
     reputation: 125840,
-    badges: { gold: 45, silver: 120, bronze: 230 },
-    stats: { questions: 234, answers: 1567, accepted: 892, reached: 2500000 },
-    social: {
-      github: 'https://github.com/sarahdev',
-      twitter: 'https://twitter.com/sarahdev',
-      linkedin: 'https://linkedin.com/in/sarahdev',
-    },
+    stats: { questions: 234, answers: 1567, accepted: 892 },
   };
 
   const questions: Question[] = [

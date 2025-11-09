@@ -73,9 +73,19 @@ const LoginPage = ({}) => {
       }
 
       dispatch(loginSuccess({ user: data.user, token: data.token }));
+      dispatch(
+        showMessage({
+          message: data.message,
+          messageType: 'success',
+        })
+      );
       localStorage.setItem(
         'auth',
-        JSON.stringify({ user: data.user, token: data.token })
+        JSON.stringify({
+          user: data.user,
+          token: data.token,
+          isAuth: true,
+        })
       );
 
       console.log(data, '<-data');
