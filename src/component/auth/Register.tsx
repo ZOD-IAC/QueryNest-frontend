@@ -80,7 +80,7 @@ const RegisterPage = () => {
     }
 
     try {
-      const res = await fetch('http://10.220.0.157:5000/user/api/register', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/user/api/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

@@ -111,6 +111,9 @@ const AskQuestionForm: React.FC = () => {
 
   return (
     <div className={`bg-white rounded-lg border border-slate-200 p-6`}>
+      <div className='px-2 py-4 border-b border-slate-200'>
+        <h2 className='text-2xl font-bold text-slate-900'>Ask Question</h2>
+      </div>
       <div className='space-y-4 text-black'>
         <div>
           <label className='block text-sm font-medium text-slate-900 mb-2'>

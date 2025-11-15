@@ -11,6 +11,7 @@ export interface UserProfile {
   joinedDate: string;
   avatar: string;
   reputation: number;
+  createdAt: Date;
   stats: {
     questions: number;
     answers: number;

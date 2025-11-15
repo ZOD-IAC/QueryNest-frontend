@@ -69,8 +69,8 @@ const QuestionCard: React.FC<{ question: Question }> = ({ question }) => {
   );
 };
 
-export const QuestionsTab: React.FC<QuestionsTabProps> = () => {
-  const [questions, setQuestions] = useState([]);
+export const QuestionsTab: React.FC<QuestionsTabProps> = ({question}) => {
+  const [questions, setQuestions] = useState(question || []);
   const dispatch = useDispatch();
   const [filter, setFilter] = useState<'all' | 'answered' | 'unanswered'>(
     'all'
@@ -82,41 +82,41 @@ export const QuestionsTab: React.FC<QuestionsTabProps> = () => {
     return true;
   });
 
-  useEffect(() => {
-    const fetchQuestion = async () => {
-      try {
-        const auth = localStorage.getItem('auth');
-        const { user, token } = JSON.parse(auth);
+  // useEffect(() => {
+  //   const fetchQuestion = async () => {
+  //     try {
+  //       const auth = localStorage.getItem('auth');
+  //       const { user, token } = JSON.parse(auth);
 
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/question/user-questions/${user.id}`,
-          {
-            method: 'GET',
-            headers: {
-              authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        const data = await res.json();
+  //       const res = await fetch(
+  //         `${process.env.NEXT_PUBLIC_BASE_URL}/question/user-questions/${user.id}`,
+  //         {
+  //           method: 'GET',
+  //           headers: {
+  //             authorization: `Bearer ${token}`,
+  //           },
+  //         }
+  //       );
+  //       const data = await res.json();
 
-        if (!data.ok) {
-          throw new Error(data?.message);
-        }
-        setQuestions(data.question);
-        console.log(data, '<-- data fetched');
-      } catch (error) {
-        console.warn(error, 'something went wrong while fetching question');
-        dispatch(
-          showMessage({
-            message: error,
-            messageType: 'error',
-          })
-        );
-      }
-    };
+  //       if (!data.ok) {
+  //         throw new Error(data?.message);
+  //       }
+  //       setQuestions(data.question);
+  //       console.log(data, '<-- data fetched');
+  //     } catch (error) {
+  //       console.warn(error, 'something went wrong while fetching question');
+  //       dispatch(
+  //         showMessage({
+  //           message: error,
+  //           messageType: 'error',
+  //         })
+  //       );
+  //     }
+  //   };
 
-    fetchQuestion();
-  }, []);
+  //   fetchQuestion();
+  // }, []);
 
   return (
     <div className='space-y-4'>

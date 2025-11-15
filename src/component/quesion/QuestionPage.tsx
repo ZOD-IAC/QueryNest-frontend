@@ -13,6 +13,7 @@ import AskQuestionForm from '../form/AskQuestionForm';
 const QuestionsPage: React.FC = () => {
   const [showAskForm, setShowAskForm] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(true); // Change to false to see login prompt
+  const { user } = JSON.parse(localStorage.getItem('auth') as string);
 
   return (
     <div className='min-h-screen bg-slate-50'>
@@ -25,7 +26,7 @@ const QuestionsPage: React.FC = () => {
             <Button
               fullWidth
               variant='primary'
-              href='/profile?tab=ask'
+              href={`/profile/${user.id}?tab=ask`}
             >
               <Plus className='w-5 h-5' />
               Ask Question

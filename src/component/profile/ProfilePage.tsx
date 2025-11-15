@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   UserProfile,
   Question,
@@ -18,16 +18,46 @@ import { SavedTab } from './profile tabs/SavedTab';
 import { BadgesTab } from './profile tabs/BadgeTab';
 import { useSearchParams } from 'next/navigation';
 import AskQuestionForm from '../form/AskQuestionForm';
+import { useDispatch, useSelector } from 'react-redux';
+import { showMessage } from '@/features/messageSlice';
 
 // ============================================
 // FILE: pages/ProfilePage.tsx
 // ============================================
-const ProfilePage: React.FC = () => {
+const ProfilePage: React.FC = ({ userId }) => {
   const param = useSearchParams();
+  const dispatch = useDispatch();
   const tab = param?.get('tab');
+  const { isAuthenticated } = useSelector((state) => state.auth);
+  const [user, setUser] = useState();
 
   // State with URL parameter sync (lazy initializer to avoid calling setState in effect)
   const [activeTab, setActiveTab] = useState<TabType>('profile');
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/user/api/get-user/${userId}`,
+        {
+          method: 'GET',
+        }
+      );
+      const data = await res.json();
+
+      if (!data.ok) {
+        dispatch(
+          showMessage({
+            message: data.message,
+            messageType: 'error',
+          })
+        );
+      }
+      console.log(data, '<-- data');
+      setUser(data.user);
+    };
+
+    fetchUser();
+  }, []);
 
   // Listen for back/forward navigation and update tab (setState inside event callback is fine)
   useEffect(() => {
@@ -54,20 +84,6 @@ const ProfilePage: React.FC = () => {
     const url = new URL(window.location.href);
     url.searchParams.set('tab', tab);
     window.history.pushState({}, '', url.toString());
-  };
-
-  // Mock data
-  const user: UserProfile = {
-    id: 1,
-    name: 'Sarah Johnson',
-    email: 'sarah@example.com',
-    bio: 'Full-stack developer passionate about React, TypeScript, and building scalable applications. Love helping others learn to code and sharing knowledge with the community.',
-    location: 'San Francisco, CA',
-    website: 'https://sarahdev.com',
-    joinedDate: 'January 2020',
-    avatar: '',
-    reputation: 125840,
-    stats: { questions: 234, answers: 1567, accepted: 892 },
   };
 
   const questions: Question[] = [
@@ -195,6 +211,8 @@ const ProfilePage: React.FC = () => {
 
   const isOwnProfile = true; // Change to false to see non-owner view
 
+  if (!user) return;
+
   return (
     <div className='min-h-screen bg-slate-50'>
       <ProfileHeader user={user} isOwnProfile={isOwnProfile} />
@@ -212,7 +230,7 @@ const ProfilePage: React.FC = () => {
             {activeTab === 'badges' && <BadgesTab badges={badges} />}
             {activeTab === 'activity' && <ActivityTab />}
             {activeTab === 'saved' && <SavedTab />}
-            {activeTab === 'ask' && <AskQuestionForm />}
+            {isAuthenticated && activeTab === 'ask' && <AskQuestionForm />}
           </main>
 
           {/* Sidebar */}
