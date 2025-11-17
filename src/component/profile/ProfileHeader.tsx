@@ -2,11 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Calendar, Edit, LinkIcon, MapPin, Share2, Star } from 'lucide-react';
 import { UserProfile } from '../../utils/contants/type';
 import { useDispatch } from 'react-redux';
-import { showMessage } from '@/features/messageSlice';
 import UserAvatar from '../common/UserAvatar';
 
 interface ProfileHeaderProps {
-  userId: string;
+  user: UserProfile;
   isOwnProfile: boolean;
 }
 
@@ -28,33 +27,6 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   user,
   isOwnProfile,
 }) => {
-  // const [user, setUser] = useState<UserProfile>();
-
-  const dispatch = useDispatch();
-  // useEffect(() => {
-  //   const fetchUser = async () => {
-  //     const res = await fetch(
-  //       `${process.env.NEXT_PUBLIC_BASE_URL}/user/api/get-user/${userId}`,
-  //       {
-  //         method: 'GET',
-  //       }
-  //     );
-
-  //     const data = await res.json();
-  //     if (!data.ok) {
-  //       dispatch(
-  //         showMessage({
-  //           message: data.message,
-  //           messageType: 'error',
-  //         })
-  //       );
-  //     }
-  //     console.log(data, '<-- data');
-  //     setUser(data.user);
-  //   };
-
-  //   fetchUser();
-  // }, []);
   return (
     <div className='bg-white border-b border-slate-200'>
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8'>

@@ -1,12 +1,6 @@
 'use client';
-import React, { useState, useEffect, useMemo } from 'react';
-import {
-  UserProfile,
-  Question,
-  Answer,
-  Badge,
-  TabType,
-} from '../../utils/contants/type';
+import React, { useState, useEffect } from 'react';
+import { Answer, Badge, TabType } from '../../utils/contants/type';
 import { ProfileHeader } from './ProfileHeader';
 import { TabNavigation } from './TabNavigation';
 import { ProfileSidebar } from './ProfileSidebar';
@@ -52,7 +46,6 @@ const ProfilePage: React.FC = ({ userId }) => {
           })
         );
       }
-      console.log(data, '<-- data');
       setUser(data.user);
     };
 
@@ -85,45 +78,6 @@ const ProfilePage: React.FC = ({ userId }) => {
     url.searchParams.set('tab', tab);
     window.history.pushState({}, '', url.toString());
   };
-
-  const questions: Question[] = [
-    {
-      id: 1,
-      title: 'How to implement authentication in React with TypeScript?',
-      content:
-        "I'm building a React application with TypeScript and need to implement user authentication. What's the best approach to handle JWT tokens and protect routes?",
-      tags: ['React', 'TypeScript', 'Authentication'],
-      votes: 42,
-      answers: 5,
-      views: 1203,
-      createdAt: '2 hours ago',
-      isAnswered: true,
-    },
-    {
-      id: 2,
-      title: 'Best practices for React state management in 2024',
-      content:
-        'With so many options available (Context API, Redux, Zustand, Jotai), what are the current best practices for managing state in large React applications?',
-      tags: ['React', 'State Management', 'Best Practices'],
-      votes: 28,
-      answers: 0,
-      views: 456,
-      createdAt: '1 day ago',
-      isAnswered: false,
-    },
-    {
-      id: 3,
-      title: 'TypeScript generic constraints with interfaces',
-      content:
-        "I'm trying to create a generic function that works with objects implementing a specific interface. How do I properly constrain the generic type?",
-      tags: ['TypeScript', 'Generics', 'Interfaces'],
-      votes: 15,
-      answers: 3,
-      views: 234,
-      createdAt: '3 days ago',
-      isAnswered: true,
-    },
-  ];
 
   const answers: Answer[] = [
     {
@@ -224,7 +178,7 @@ const ProfilePage: React.FC = ({ userId }) => {
           <main className='lg:col-span-8'>
             {activeTab === 'profile' && <ProfileTab user={user} />}
             {activeTab === 'questions' && (
-              <QuestionsTab questions={questions} />
+              <QuestionsTab question={user?.questions} />
             )}
             {activeTab === 'answers' && <AnswersTab answers={answers} />}
             {activeTab === 'badges' && <BadgesTab badges={badges} />}
