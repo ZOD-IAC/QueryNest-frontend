@@ -98,14 +98,11 @@ const RegisterPage = () => {
         JSON.stringify({ user: data.user, token: data.token })
       );
 
-      console.log(data, '<-data');
-
       navigation.push('/');
     } catch (error) {
       console.error(error, 'something went wrong');
       setErrors('something went wrong!');
     }
-    console.log('Register:', formData);
   };
 
   return (

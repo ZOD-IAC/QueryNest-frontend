@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { showMessage } from '@/features/messageSlice';
 import { loginSuccess } from '@/features/authslice';
 import { useRouter } from 'next/navigation';
+import { BASE_URL } from '../../utils/Setting.js';
 
 interface formData {
   password: string;
@@ -59,7 +60,7 @@ const LoginPage = ({}) => {
     }
 
     try {
-      const res = await fetch('http://172.20.235.157:5000/user/api/login', {
+      const res = await fetch(`${BASE_URL}/user/api/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -67,7 +68,6 @@ const LoginPage = ({}) => {
       const data = await res.json();
 
       if (!data.ok) {
-        console.log(data);
         alert('something went wrong');
         return;
       }
@@ -78,16 +78,14 @@ const LoginPage = ({}) => {
         JSON.stringify({ user: data.user, token: data.token })
       );
 
-      console.log(data, '<-data');
-
       navigation.push('/');
     } catch (error) {
       console.error(error, 'something went wrong');
     }
-    console.log('login:', formData);
   };
 
   return (
+<<<<<<< Updated upstream
     <div className='min-h-screen bg-linear-to-br from-blue-50 to-slate-100 flex items-start justify-center p-4 pt-10'>
       <div className='w-full max-w-md'>
         <div className='text-center mb-8'>
@@ -100,6 +98,28 @@ const LoginPage = ({}) => {
 
         <div className='bg-white rounded-xl shadow-lg p-8'>
           <h2 className='text-2xl font-bold text-slate-800 mb-6'>Sign In</h2>
+=======
+    <div className='min-h-screen bg-linear-to-br from-blue-50 to-slate-100 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-8 sm:py-12'>
+      <div className='w-full max-w-sm sm:max-w-md lg:max-w-md'>
+        {/* Header */}
+        <div className='text-center mb-6 sm:mb-8'>
+          <div className='flex items-center justify-center gap-2 mb-3 sm:mb-4'>
+            <Querynest height={'36px'} width={'36px'} color={'#BCA88D'} />
+            <h1 className='text-2xl sm:text-3xl lg:text-3xl font-bold text-slate-800'>
+              QueryNest
+            </h1>
+          </div>
+          <p className='text-sm sm:text-base text-slate-600'>
+            Welcome back to our community
+          </p>
+        </div>
+
+        {/* Form Card */}
+        <div className='bg-white rounded-lg sm:rounded-xl shadow-md sm:shadow-lg p-6 sm:p-8'>
+          <h2 className='text-xl sm:text-2xl font-bold text-slate-800 mb-4 sm:mb-6'>
+            Sign In
+          </h2>
+>>>>>>> Stashed changes
 
           <div className='space-y-4'>
             <div>
