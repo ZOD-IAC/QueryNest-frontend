@@ -18,6 +18,12 @@ import { SavedTab } from './profile tabs/SavedTab';
 import { BadgesTab } from './profile tabs/BadgeTab';
 import { useParams, usePathname, useSearchParams } from 'next/navigation';
 import AskQuestionForm from '../form/AskQuestionForm';
+<<<<<<< Updated upstream
+=======
+import { useDispatch, useSelector } from 'react-redux';
+import { showMessage } from '@/features/messageSlice';
+import { BASE_URL } from '@/utils/Setting';
+>>>>>>> Stashed changes
 
 // ============================================
 // FILE: pages/ProfilePage.tsx
@@ -27,7 +33,35 @@ const ProfilePage: React.FC = () => {
   const tab = param?.get('tab');
 
   // State with URL parameter sync (lazy initializer to avoid calling setState in effect)
+<<<<<<< Updated upstream
   const [activeTab, setActiveTab] = useState('profile');
+=======
+  const [activeTab, setActiveTab] = useState<TabType>('profile');
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const res = await fetch(
+        `${BASE_URL}/user/api/get-user/${userId}`,
+        {
+          method: 'GET',
+        }
+      );
+      const data = await res.json();
+
+      if (!data.ok) {
+        dispatch(
+          showMessage({
+            message: data.message,
+            messageType: 'error',
+          })
+        );
+      }
+      setUser(data.user);
+    };
+
+    fetchUser();
+  }, []);
+>>>>>>> Stashed changes
 
   // Listen for back/forward navigation and update tab (setState inside event callback is fine)
   useEffect(() => {
