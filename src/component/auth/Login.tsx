@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { showMessage } from '@/features/messageSlice';
 import { loginSuccess } from '@/features/authslice';
 import { useRouter } from 'next/navigation';
+import { BASE_URL } from '../../utils/Setting.js';
 
 interface formData {
   password: string;
@@ -59,7 +60,7 @@ const LoginPage = ({}) => {
     }
 
     try {
-      const res = await fetch('http://172.20.235.157:5000/user/api/login', {
+      const res = await fetch(`${BASE_URL}/user/api/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -67,7 +68,6 @@ const LoginPage = ({}) => {
       const data = await res.json();
 
       if (!data.ok) {
-        console.log(data);
         alert('something went wrong');
         return;
       }
@@ -88,13 +88,10 @@ const LoginPage = ({}) => {
         })
       );
 
-      console.log(data, '<-data');
-
       navigation.push('/');
     } catch (error) {
       console.error(error, 'something went wrong');
     }
-    console.log('login:', formData);
   };
 
   return (

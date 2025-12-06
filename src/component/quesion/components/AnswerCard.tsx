@@ -57,7 +57,7 @@ export const AnswerCard: React.FC<AnswerCardProps> = ({
         <div className='flex-1 min-w-0'>
           <div className='prose max-w-none mb-4'>
             <p className='text-slate-700 leading-relaxed whitespace-pre-wrap'>
-              {answer.content}
+              {answer.body}
             </p>
           </div>
 
@@ -79,7 +79,7 @@ export const AnswerCard: React.FC<AnswerCardProps> = ({
             </div>
 
             {/* Author Card */}
-            <div className='bg-slate-50 rounded-lg p-3 border border-slate-200 w-full md:w-auto'>
+            {/* <div className='bg-slate-50 rounded-lg p-3 border border-slate-200 w-full md:w-auto'>
               <div className='text-xs text-slate-600 mb-2'>
                 answered {answer.createdAt}
               </div>
@@ -108,7 +108,7 @@ export const AnswerCard: React.FC<AnswerCardProps> = ({
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
 
           {/* Comments */}

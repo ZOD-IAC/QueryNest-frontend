@@ -1,9 +1,8 @@
 import React from 'react';
 import ProfilePage from '@/component/profile/ProfilePage';
 
-const Page = ({ params }) => {
-  const { slug } = params;
-  console.log(slug, '<-- slug');
+const Page = async ({ params }) => {
+  const { slug } = await params;
   return (
     <div>
       <ProfilePage userId={slug} />

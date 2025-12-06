@@ -7,12 +7,15 @@ import { showMessage } from '@/features/messageSlice';
 import { QuestionContent } from './components/QuestionContent';
 import { AnswerCard } from './components/AnswerCard';
 import { RelatedQuestions } from './components/RelatedQuestion';
+import { BASE_URL } from '@/utils/Setting';
+import QuestionEditor, { MyEditor } from '../form/Markdownform';
+import CustomEditor from '../form/Markdownform';
 
 // ============================================
 // FILE: types/question.types.ts
 // ============================================
 interface QuestionData {
-  id: number;
+  _id: number;
   title: string;
   content: string;
   code?: string;
@@ -34,7 +37,7 @@ interface QuestionData {
 }
 
 interface AnswerData {
-  id: number;
+  _id: number;
   content: string;
   code?: string;
   codeLanguage?: string;
@@ -59,13 +62,14 @@ interface pageProp {
 // ============================================
 const QuestionDetailPage: React.FC<pageProp> = ({ questionId }) => {
   const [question, setQuestion] = useState<QuestionData>();
-  const [answers, setAnswers] = useState<AnswerData[]>(mockAnswers);
+  const [answers, setAnswers] = useState<AnswerData[]>([]);
+  const [content, setContent] = useState('');
   const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchQuestion = async () => {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/question/api/get-question/${questionId}`,
+        `${BASE_URL}/question/api/get-question/${questionId}`,
         {
           method: 'GET',
         }
@@ -83,6 +87,7 @@ const QuestionDetailPage: React.FC<pageProp> = ({ questionId }) => {
         return;
       }
       setQuestion(data.question);
+      setAnswers(data?.question?.answers);
     };
 
     fetchQuestion();
@@ -120,10 +125,13 @@ const QuestionDetailPage: React.FC<pageProp> = ({ questionId }) => {
     );
   };
 
+  const handleChange = (value) => {
+    console.log(content, '<--- editor data');
+  };
+
   const isQuestionAuthor = true;
   if (!question) return;
-  console.log(question, '<--- question id');
-
+  console.log(answers, '<--- answersssssss');
   return (
     <div className='min-h-screen bg-slate-50'>
       {/* questoin header */}
@@ -169,7 +177,7 @@ const QuestionDetailPage: React.FC<pageProp> = ({ questionId }) => {
               <div className='space-y-4 sm:space-y-6'>
                 {answers.map((answer) => (
                   <AnswerCard
-                    key={answer.id}
+                    key={answer._id}
                     answer={answer}
                     onVote={(type) => handleAnswerVote(answer.id, type)}
                     onAccept={() => handleAcceptAnswer(answer.id)}

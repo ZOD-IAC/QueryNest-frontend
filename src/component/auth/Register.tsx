@@ -108,13 +108,10 @@ const RegisterPage = () => {
         })
       );
 
-      console.log(data, '<-data');
-
       navigation.push('/');
     } catch (error) {
       console.error(error, 'something went wrong');
     }
-    console.log('Register:', formData);
   };
 
   return (

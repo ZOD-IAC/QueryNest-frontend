@@ -18,8 +18,6 @@ const AnswerForm: React.FC<prop> = ({ questionId }) => {
     questionId,
   });
 
-  console.log(questionId , '<--- this is id')
-
   const handleError = (message: string) => {
     if (!message) return;
     dispatch(

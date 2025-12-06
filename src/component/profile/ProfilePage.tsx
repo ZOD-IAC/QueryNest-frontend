@@ -14,6 +14,7 @@ import { useSearchParams } from 'next/navigation';
 import AskQuestionForm from '../form/AskQuestionForm';
 import { useDispatch, useSelector } from 'react-redux';
 import { showMessage } from '@/features/messageSlice';
+import { BASE_URL } from '@/utils/Setting';
 
 // ============================================
 // FILE: pages/ProfilePage.tsx
@@ -31,7 +32,7 @@ const ProfilePage: React.FC = ({ userId }) => {
   useEffect(() => {
     const fetchUser = async () => {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/user/api/get-user/${userId}`,
+        `${BASE_URL}/user/api/get-user/${userId}`,
         {
           method: 'GET',
         }
