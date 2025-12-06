@@ -1,10 +1,9 @@
-
 // ============================================
 // FILE: components/profile/ProfileTab.tsx
 // ============================================
-import React from "react";
-import { UserProfile } from "../../contants/type";
-import { Award } from "lucide-react";
+import React from 'react';
+import { UserProfile } from '../../../utils/contants/type';
+import { Award } from 'lucide-react';
 
 interface ProfileTabProps {
   user: UserProfile;
@@ -16,11 +15,13 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({ user }) => {
       {/* About */}
       <div className='bg-white rounded-lg border border-slate-200 p-6'>
         <h2 className='text-xl font-bold text-slate-900 mb-4'>About</h2>
-        <p className='text-slate-600 leading-relaxed'>{user.bio}</p>
+        <p className='text-slate-600 leading-relaxed'>
+          {user.bio || 'Some Bio need to be here'}
+        </p>
       </div>
 
       {/* Badges Summary */}
-      <div className='bg-white rounded-lg border border-slate-200 p-6'>
+      {/* <div className='bg-white rounded-lg border border-slate-200 p-6'>
         <h2 className='text-xl font-bold text-slate-900 mb-4'>Badges</h2>
         <div className='flex gap-6'>
           <div className='flex items-center gap-3'>
@@ -57,7 +58,7 @@ export const ProfileTab: React.FC<ProfileTabProps> = ({ user }) => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Top Tags */}
       <div className='bg-white rounded-lg border border-slate-200 p-6'>

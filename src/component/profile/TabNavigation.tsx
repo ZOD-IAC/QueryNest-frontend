@@ -10,11 +10,11 @@ import {
   TrendingUp,
   User,
 } from 'lucide-react';
-import { TabType } from '../contants/type';
+import { TabType } from '../../utils/contants/type';
 
 // ============================================
 interface TabNavigationProps {
-  activeTab: TabType;
+  activeTab?: TabType;
   onTabChange: (tab: TabType) => void;
 }
 

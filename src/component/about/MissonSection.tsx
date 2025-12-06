@@ -6,8 +6,9 @@ import { useSelector } from 'react-redux';
 // ============================================
 // FILE: components/about/MissionSection.tsx
 // ============================================
-const MissionSection: React.FC = () => {
+const MissionSection: React.FC = ({ userId }) => {
   const { isAuthenticated } = useSelector((state) => state.auth);
+
   return (
     <section className='py-20 bg-white'>
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
@@ -29,7 +30,11 @@ const MissionSection: React.FC = () => {
               solving the world&apos;s technological challenges.
             </p>
             {isAuthenticated ? (
-              <Button variant='secondary' size='md'>
+              <Button
+                variant='secondary'
+                size='md'
+                href={`/profile/${userId}?tab=ask`}
+              >
                 Ask a question
               </Button>
             ) : (

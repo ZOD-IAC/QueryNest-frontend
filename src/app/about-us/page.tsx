@@ -1,4 +1,4 @@
-import AboutPage from '@/component/about/AboutPPage';
+import AboutPage from '@/component/about/AboutPage';
 import React from 'react';
 
 function index() {

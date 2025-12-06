@@ -1,22 +1,16 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import {
-  UserProfile,
-  Question,
-  Answer,
-  Badge,
-  TabType,
-} from '../contants/type';
+import { Answer, Badge, TabType } from '../../utils/contants/type';
 import { ProfileHeader } from './ProfileHeader';
 import { TabNavigation } from './TabNavigation';
 import { ProfileSidebar } from './ProfileSidebar';
 import { ProfileTab } from './profile tabs/ProfileTab';
-import { QuestionsTab } from './QuestionCard';
+import { QuestionsTab } from './profile tabs/QuestionTab';
 import { AnswersTab } from './profile tabs/AnswerTab';
 import { ActivityTab } from './profile tabs/ActivityTab';
 import { SavedTab } from './profile tabs/SavedTab';
 import { BadgesTab } from './profile tabs/BadgeTab';
-import { useParams, usePathname, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import AskQuestionForm from '../form/AskQuestionForm';
 import { useDispatch, useSelector } from 'react-redux';
 import { showMessage } from '@/features/messageSlice';
@@ -25,9 +19,12 @@ import { BASE_URL } from '@/utils/Setting';
 // ============================================
 // FILE: pages/ProfilePage.tsx
 // ============================================
-const ProfilePage: React.FC = () => {
+const ProfilePage: React.FC = ({ userId }) => {
   const param = useSearchParams();
+  const dispatch = useDispatch();
   const tab = param?.get('tab');
+  const { isAuthenticated } = useSelector((state) => state.auth);
+  const [user, setUser] = useState();
 
   // State with URL parameter sync (lazy initializer to avoid calling setState in effect)
   const [activeTab, setActiveTab] = useState<TabType>('profile');
@@ -61,7 +58,7 @@ const ProfilePage: React.FC = () => {
     const onPopState = () => {
       try {
         if (tab) {
-          setActiveTab(tab);
+          setActiveTab(tab as TabType);
         } else {
           setActiveTab('profile');
         }
@@ -82,66 +79,6 @@ const ProfilePage: React.FC = () => {
     url.searchParams.set('tab', tab);
     window.history.pushState({}, '', url.toString());
   };
-
-  // Mock data
-  const user: UserProfile = {
-    id: 1,
-    name: 'Sarah Johnson',
-    username: 'sarahdev',
-    email: 'sarah@example.com',
-    bio: 'Full-stack developer passionate about React, TypeScript, and building scalable applications. Love helping others learn to code and sharing knowledge with the community.',
-    location: 'San Francisco, CA',
-    website: 'https://sarahdev.com',
-    joinedDate: 'January 2020',
-    avatar: '',
-    reputation: 125840,
-    badges: { gold: 45, silver: 120, bronze: 230 },
-    stats: { questions: 234, answers: 1567, accepted: 892, reached: 2500000 },
-    social: {
-      github: 'https://github.com/sarahdev',
-      twitter: 'https://twitter.com/sarahdev',
-      linkedin: 'https://linkedin.com/in/sarahdev',
-    },
-  };
-
-  const questions: Question[] = [
-    {
-      id: 1,
-      title: 'How to implement authentication in React with TypeScript?',
-      content:
-        "I'm building a React application with TypeScript and need to implement user authentication. What's the best approach to handle JWT tokens and protect routes?",
-      tags: ['React', 'TypeScript', 'Authentication'],
-      votes: 42,
-      answers: 5,
-      views: 1203,
-      createdAt: '2 hours ago',
-      isAnswered: true,
-    },
-    {
-      id: 2,
-      title: 'Best practices for React state management in 2024',
-      content:
-        'With so many options available (Context API, Redux, Zustand, Jotai), what are the current best practices for managing state in large React applications?',
-      tags: ['React', 'State Management', 'Best Practices'],
-      votes: 28,
-      answers: 0,
-      views: 456,
-      createdAt: '1 day ago',
-      isAnswered: false,
-    },
-    {
-      id: 3,
-      title: 'TypeScript generic constraints with interfaces',
-      content:
-        "I'm trying to create a generic function that works with objects implementing a specific interface. How do I properly constrain the generic type?",
-      tags: ['TypeScript', 'Generics', 'Interfaces'],
-      votes: 15,
-      answers: 3,
-      views: 234,
-      createdAt: '3 days ago',
-      isAnswered: true,
-    },
-  ];
 
   const answers: Answer[] = [
     {
@@ -229,6 +166,8 @@ const ProfilePage: React.FC = () => {
 
   const isOwnProfile = true; // Change to false to see non-owner view
 
+  if (!user) return;
+
   return (
     <div className='min-h-screen bg-slate-50'>
       <ProfileHeader user={user} isOwnProfile={isOwnProfile} />
@@ -240,13 +179,13 @@ const ProfilePage: React.FC = () => {
           <main className='lg:col-span-8'>
             {activeTab === 'profile' && <ProfileTab user={user} />}
             {activeTab === 'questions' && (
-              <QuestionsTab questions={questions} />
+              <QuestionsTab question={user?.questions} />
             )}
             {activeTab === 'answers' && <AnswersTab answers={answers} />}
             {activeTab === 'badges' && <BadgesTab badges={badges} />}
             {activeTab === 'activity' && <ActivityTab />}
             {activeTab === 'saved' && <SavedTab />}
-            {activeTab === 'ask' && <AskQuestionForm />}
+            {isAuthenticated && activeTab === 'ask' && <AskQuestionForm />}
           </main>
 
           {/* Sidebar */}

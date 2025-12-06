@@ -13,7 +13,7 @@
 //   isAnswered: boolean;
 // }
 
-import { Question } from '../contants/type';
+import { Question } from '../../utils/contants/type';
 
 // Question Card Component
 const QuestionCard: React.FC<{ question: Question }> = ({ question }) => {

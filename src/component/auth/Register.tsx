@@ -27,7 +27,6 @@ const RegisterPage = () => {
     password: '',
     confirmPassword: '',
   });
-  const [errors, setErrors] = useState('');
 
   const handleError = (message: string) => {
     dispatch(
@@ -70,7 +69,7 @@ const RegisterPage = () => {
       handleError('Password does not match');
       return false;
     }
-    
+
     return true;
   };
 
@@ -80,7 +79,7 @@ const RegisterPage = () => {
     }
 
     try {
-      const res = await fetch('http://10.220.0.157:5000/user/api/register', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/user/api/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -93,107 +92,125 @@ const RegisterPage = () => {
       }
 
       dispatch(loginSuccess({ user: data.user, token: data.token }));
+      dispatch(
+        showMessage({
+          message: data.message,
+          messageType: 'success',
+        })
+      );
+
       localStorage.setItem(
         'auth',
-        JSON.stringify({ user: data.user, token: data.token })
+        JSON.stringify({
+          user: data.user,
+          token: data.token,
+          isAuth: true,
+        })
       );
 
       navigation.push('/');
     } catch (error) {
       console.error(error, 'something went wrong');
-      setErrors('something went wrong!');
     }
   };
 
   return (
-    <div className='min-h-dvh bg-linear-to-br from-blue-50 to-slate-100 flex items-start justify-center p-4 pt-10 text-black'>
-      <div className='w-full max-w-md'>
-        <div className='text-center mb-8'>
-          <div className='flex items-center justify-center gap-2 mb-4'>
-            <Querynest height={'40px'} width={'40px'} color={'#BCA88D'} />
-            <h1 className='text-3xl font-bold text-slate-800'>QueryNest</h1>
+    <div className='min-h-dvh bg-linear-to-br from-blue-50 to-slate-100 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-8 sm:py-12 text-black'>
+      <div className='w-full max-w-sm sm:max-w-md lg:max-w-md'>
+        {/* Header */}
+        <div className='text-center mb-6 sm:mb-8'>
+          <div className='flex items-center justify-center gap-2 mb-3 sm:mb-4'>
+            <Querynest height={'36px'} width={'36px'} color={'#BCA88D'} />
+            <h1 className='text-2xl sm:text-3xl lg:text-3xl font-bold text-slate-800'>QueryNest</h1>
           </div>
-          <p className='text-slate-600'>Join our developer community</p>
+          <p className='text-sm sm:text-base text-slate-600'>Join our developer community</p>
         </div>
 
-        <div className='bg-white rounded-xl shadow-lg p-8'>
-          <h2 className='text-2xl font-bold text-slate-800 mb-6'>
+        {/* Form Card */}
+        <div className='bg-white rounded-lg sm:rounded-xl shadow-md sm:shadow-lg p-6 sm:p-8'>
+          <h2 className='text-xl sm:text-2xl font-bold text-slate-800 mb-4 sm:mb-6'>
             Create Account
           </h2>
 
-          <div className='space-y-4'>
+          <div className='space-y-3 sm:space-y-4'>
+            {/* Full Name Field */}
             <div>
-              <label className='block text-sm font-medium text-slate-700 mb-2'>
+              <label className='block text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2'>
                 Full Name
               </label>
               <div className='relative'>
-                <User className='absolute left-3 top-3 w-5 h-5 text-[#3E3F29]' />
+                <User className='absolute left-3 top-2.5 sm:top-3 w-4 h-4 sm:w-5 sm:h-5 text-[#3E3F29]' />
                 <input
                   type='text'
                   value={formData.name}
                   onChange={(e) =>
                     setFormData({ ...formData, name: e.target.value })
                   }
-                  className='placeholder:text-zinc-400 w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+                  className='placeholder:text-zinc-400 w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-2.5 text-sm sm:text-base border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all'
                   placeholder='John Doe'
                 />
               </div>
             </div>
 
+            {/* Email Field */}
             <div>
-              <label className='block text-sm font-medium text-slate-700 mb-2'>
+              <label className='block text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2'>
                 Email
               </label>
               <div className='relative'>
-                <Mail className='absolute left-3 top-3 w-5 h-5 text-[#3E3F29]' />
+                <Mail className='absolute left-3 top-2.5 sm:top-3 w-4 h-4 sm:w-5 sm:h-5 text-[#3E3F29]' />
                 <input
                   type='email'
                   value={formData.email}
                   onChange={(e) =>
                     setFormData({ ...formData, email: e.target.value })
                   }
-                  className='placeholder:text-zinc-400 w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+                  className='placeholder:text-zinc-400 w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-2.5 text-sm sm:text-base border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all'
                   placeholder='john@example.com'
                 />
               </div>
             </div>
 
+            {/* Password Field */}
             <div>
-              <label className='flex text-sm font-medium text-slate-700 mb-2 items-center justify-between'>
+              <label className='flex text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2 items-center justify-between'>
                 Password{' '}
                 <button
                   onClick={() => setShowPass((s) => !s)}
-                  className='cursor-pointer'
+                  className='cursor-pointer focus:outline-none'
+                  type='button'
                 >
-                  <Eye size={20} color={showPass ? 'blue' : 'black'} />
+                  <Eye size={16} className='sm:w-5 sm:h-5' color={showPass ? 'blue' : 'black'} />
                 </button>
               </label>
               <div className='relative'>
-                <Lock className='absolute left-3 top-3 w-5 h-5 text-[#3E3F29]' />
+                <Lock className='absolute left-3 top-2.5 sm:top-3 w-4 h-4 sm:w-5 sm:h-5 text-[#3E3F29]' />
                 <input
                   type={showPass ? 'text' : 'password'}
                   value={formData.password}
                   onChange={(e) =>
                     setFormData({ ...formData, password: e.target.value })
                   }
-                  className='placeholder:text-zinc-400 w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+                  className='placeholder:text-zinc-400 w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-2.5 text-sm sm:text-base border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all'
                   placeholder='••••••••'
                 />
               </div>
             </div>
 
+            {/* Confirm Password Field */}
             <div>
-              <label className='flex text-sm font-medium text-slate-700 mb-2 items-center justify-between'>
+              <label className='flex text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2 items-center justify-between'>
                 Confirm Password
                 <button
                   onClick={() => setShowPass((s) => !s)}
-                  className='cursor-pointer'
+                  className='cursor-pointer focus:outline-none'
+                  type='button'
                 >
-                  <Eye size={20} color={showPass ? 'blue' : 'black'} />
+                  <Eye size={16} className='sm:w-5 sm:h-5' color={showPass ? 'blue' : 'black'} />
                 </button>
               </label>
               <div className='relative'>
-                <Lock className='absolute left-3 top-3 w-5 h-5 text-[#3E3F29]' />
+                <Lock className='absolute left-3 top-2.5 sm:top-3 w-4 h-4 sm:w-5 sm:h-5 text-[#3E3F29]' />
                 <input
                   type={showPass ? 'text' : 'password'}
                   value={formData.confirmPassword}
@@ -203,12 +220,13 @@ const RegisterPage = () => {
                       confirmPassword: e.target.value,
                     })
                   }
-                  className='placeholder:text-zinc-400 w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+                  className='placeholder:text-zinc-400 w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-2.5 text-sm sm:text-base border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all'
                   placeholder='••••••••'
                 />
               </div>
             </div>
 
+            {/* Create Account Button */}
             <CustomButton
               variant='primary'
               fullWidth
@@ -219,12 +237,13 @@ const RegisterPage = () => {
             </CustomButton>
           </div>
 
-          <div className='mt-6 text-center'>
-            <p className='text-slate-600'>
+          {/* Login Link */}
+          <div className='mt-4 sm:mt-6 text-center'>
+            <p className='text-xs sm:text-sm text-slate-600'>
               Already have an account?{' '}
               <Link
                 href={'/login'}
-                className='text-blue-600 hover:text-blue-700 font-medium'
+                className='text-blue-600 hover:text-blue-700 font-medium transition-colors'
               >
                 Sign in
               </Link>

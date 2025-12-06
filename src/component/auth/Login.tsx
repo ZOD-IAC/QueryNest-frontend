@@ -73,9 +73,19 @@ const LoginPage = ({}) => {
       }
 
       dispatch(loginSuccess({ user: data.user, token: data.token }));
+      dispatch(
+        showMessage({
+          message: data.message,
+          messageType: 'success',
+        })
+      );
       localStorage.setItem(
         'auth',
-        JSON.stringify({ user: data.user, token: data.token })
+        JSON.stringify({
+          user: data.user,
+          token: data.token,
+          isAuth: true,
+        })
       );
 
       navigation.push('/');
@@ -91,75 +101,55 @@ const LoginPage = ({}) => {
         <div className='text-center mb-6 sm:mb-8'>
           <div className='flex items-center justify-center gap-2 mb-3 sm:mb-4'>
             <Querynest height={'36px'} width={'36px'} color={'#BCA88D'} />
-            <h1 className='text-2xl sm:text-3xl lg:text-3xl font-bold text-slate-800'>
-              QueryNest
-            </h1>
+            <h1 className='text-2xl sm:text-3xl lg:text-3xl font-bold text-slate-800'>QueryNest</h1>
           </div>
-          <p className='text-sm sm:text-base text-slate-600'>
-            Welcome back to our community
-          </p>
+          <p className='text-sm sm:text-base text-slate-600'>Welcome back to our community</p>
         </div>
 
         {/* Form Card */}
         <div className='bg-white rounded-lg sm:rounded-xl shadow-md sm:shadow-lg p-6 sm:p-8'>
-          <h2 className='text-xl sm:text-2xl font-bold text-slate-800 mb-4 sm:mb-6'>
-            Sign In
-          </h2>
+          <h2 className='text-xl sm:text-2xl font-bold text-slate-800 mb-4 sm:mb-6'>Sign In</h2>
 
-          <div className='space-y-4'>
+          <div className='space-y-3 sm:space-y-4'>
+            {/* Email Field */}
             <div>
-              <label className='block text-sm font-medium text-slate-700 mb-2'>
+              <label className='block text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2'>
                 Email
               </label>
               <div className='relative'>
-                <Mail className='absolute left-3 top-3 w-5 h-5 text-zinc-800' />
+                <Mail className='absolute left-3 top-2.5 sm:top-3 w-4 h-4 sm:w-5 sm:h-5 text-zinc-800' />
                 <input
                   type='email'
                   value={formData.email}
                   onChange={(e) =>
                     setFormData({ ...formData, email: e.target.value })
                   }
-                  className='w-full pl-10 pr-4 py-2.5 text-black border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+                  className='w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-2.5 text-sm sm:text-base text-black border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all'
                   placeholder='john@example.com'
                 />
               </div>
             </div>
 
+            {/* Password Field */}
             <div>
-              <label className='block text-sm font-medium text-slate-700 mb-2'>
+              <label className='block text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2'>
                 Password
               </label>
               <div className='relative'>
-                <Lock className='absolute left-3 top-3 w-5 h-5 text-zinc-800' />
+                <Lock className='absolute left-3 top-2.5 sm:top-3 w-4 h-4 sm:w-5 sm:h-5 text-zinc-800' />
                 <input
                   type='password'
                   value={formData.password}
                   onChange={(e) =>
                     setFormData({ ...formData, password: e.target.value })
                   }
-                  className='w-full pl-10 pr-4 py-2.5 text-black border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+                  className='w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-2.5 text-sm sm:text-base text-black border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all'
                   placeholder='••••••••'
                 />
               </div>
             </div>
 
-            {/* <div className='flex items-center justify-between'>
-              <label className='flex items-center'>
-                <input
-                  type='checkbox'
-                  checked={formData.remember}
-                  onChange={(e) =>
-                    setFormData({ ...formData, remember: e.target.checked })
-                  }
-                  className='w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500'
-                />
-                <span className='ml-2 text-sm text-slate-600'>Remember me</span>
-              </label>
-              <button className='text-sm text-blue-600 hover:text-blue-700 font-medium'>
-                Forgot password?
-              </button>
-            </div> */}
-
+            {/* Sign In Button */}
             <CustomButton
               variant='primary'
               fullWidth
@@ -170,12 +160,13 @@ const LoginPage = ({}) => {
             </CustomButton>
           </div>
 
-          <div className='mt-6 text-center'>
-            <p className='text-slate-600'>
+          {/* Register Link */}
+          <div className='mt-4 sm:mt-6 text-center'>
+            <p className='text-xs sm:text-sm text-slate-600'>
               Don&lsquo;t have an account?{' '}
               <Link
                 href={'register'}
-                className='text-blue-600 hover:text-blue-700 font-medium'
+                className='text-blue-600 hover:text-blue-700 font-medium transition-colors'
               >
                 Create one
               </Link>

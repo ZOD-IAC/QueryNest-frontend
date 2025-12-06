@@ -68,7 +68,7 @@ function Navbar() {
                   <p>hi, {user.name}</p>
                   {user.avatar ? (
                     <Link
-                      href={'/profile'}
+                      href={`/profile/${user.id}`}
                       className='flex text-white items-center rounded-full hover:shadow-md'
                     >
                       <UserAvatar svg={user.avatar} />
