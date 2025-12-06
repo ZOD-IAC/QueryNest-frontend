@@ -119,7 +119,6 @@ const LoginPage = ({}) => {
           <h2 className='text-xl sm:text-2xl font-bold text-slate-800 mb-4 sm:mb-6'>
             Sign In
           </h2>
->>>>>>> Stashed changes
 
           <div className='space-y-4'>
             <div>
