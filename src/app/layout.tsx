@@ -5,6 +5,7 @@ import ReduxProvider from '@/libs/ReduxProvider';
 import Footer from '@/component/common/Footer';
 import MessagePopUp from '@/component/popup/MessagePopUp';
 import './globals.css';
+import "@mdxeditor/editor/style.css";
 
 const Tinosfont = Tinos({
   weight: ['400', '700'],

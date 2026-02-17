@@ -8,9 +8,7 @@ import { QuestionContent } from './components/QuestionContent';
 import { AnswerCard } from './components/AnswerCard';
 import { RelatedQuestions } from './components/RelatedQuestion';
 import { BASE_URL } from '@/utils/Setting';
-import QuestionEditor, { MyEditor } from '../form/Markdownform';
-import CustomEditor from '../form/Markdownform';
-
+import CustomEditor from "../common/CustomEditor"
 // ============================================
 // FILE: types/question.types.ts
 // ============================================
@@ -64,6 +62,12 @@ const QuestionDetailPage: React.FC<pageProp> = ({ questionId }) => {
   const [question, setQuestion] = useState<QuestionData>();
   const [answers, setAnswers] = useState<AnswerData[]>([]);
   const [content, setContent] = useState('');
+
+  const handleSubmit = () => {
+    console.log("Markdown Content:\n", content);
+    // send this to backend
+  };
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -125,10 +129,6 @@ const QuestionDetailPage: React.FC<pageProp> = ({ questionId }) => {
     );
   };
 
-  const handleChange = (value) => {
-    console.log(content, '<--- editor data');
-  };
-
   const isQuestionAuthor = true;
   if (!question) return;
   console.log(answers, '<--- answersssssss');
@@ -188,6 +188,13 @@ const QuestionDetailPage: React.FC<pageProp> = ({ questionId }) => {
             </div>
 
             <AnswerForm questionId={question?._id} />
+            <CustomEditor value={content} onChange={setContent} />
+            <button
+              onClick={handleSubmit}
+              className='mt-4 px-6 py-2 bg-black text-white rounded-lg'
+            >
+              Submit
+            </button>
           </main>
 
           {/* Sidebar */}
