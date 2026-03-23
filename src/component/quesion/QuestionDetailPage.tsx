@@ -8,7 +8,7 @@ import { QuestionContent } from './components/QuestionContent';
 import { AnswerCard } from './components/AnswerCard';
 import { RelatedQuestions } from './components/RelatedQuestion';
 import { BASE_URL } from '@/utils/Setting';
-import CustomEditor from "../common/CustomEditor"
+import CustomEditor from '../common/CustomEditor';
 // ============================================
 // FILE: types/question.types.ts
 // ============================================
@@ -64,7 +64,7 @@ const QuestionDetailPage: React.FC<pageProp> = ({ questionId }) => {
   const [content, setContent] = useState('');
 
   const handleSubmit = () => {
-    console.log("Markdown Content:\n", content);
+    console.log('Markdown Content:\n', content);
     // send this to backend
   };
 
@@ -76,7 +76,7 @@ const QuestionDetailPage: React.FC<pageProp> = ({ questionId }) => {
         `${BASE_URL}/question/api/get-question/${questionId}`,
         {
           method: 'GET',
-        }
+        },
       );
 
       const data = await res.json();
@@ -86,7 +86,7 @@ const QuestionDetailPage: React.FC<pageProp> = ({ questionId }) => {
           showMessage({
             message: data.message,
             messageType: 'error',
-          })
+          }),
         );
         return;
       }
@@ -114,8 +114,8 @@ const QuestionDetailPage: React.FC<pageProp> = ({ questionId }) => {
               votes: type === 'up' ? a.votes + 1 : a.votes - 1,
               userVote: a.userVote === type ? null : type,
             }
-          : a
-      )
+          : a,
+      ),
     );
   };
 
@@ -125,7 +125,7 @@ const QuestionDetailPage: React.FC<pageProp> = ({ questionId }) => {
 
   const handleAcceptAnswer = (answerId: number) => {
     setAnswers((prev) =>
-      prev.map((a) => ({ ...a, isAccepted: a.id === answerId }))
+      prev.map((a) => ({ ...a, isAccepted: a.id === answerId })),
     );
   };
 
@@ -188,7 +188,7 @@ const QuestionDetailPage: React.FC<pageProp> = ({ questionId }) => {
             </div>
 
             <AnswerForm questionId={question?._id} />
-            <CustomEditor value={content} onChange={setContent} />
+            {/* <CustomEditor value={content} onChange={setContent} /> */}
             <button
               onClick={handleSubmit}
               className='mt-4 px-6 py-2 bg-black text-white rounded-lg'
