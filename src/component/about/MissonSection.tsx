@@ -33,7 +33,7 @@ const MissionSection: React.FC = ({ userId }) => {
               <Button
                 variant='secondary'
                 size='md'
-                href={`/profile/${userId}?tab=ask`}
+                href={`/profile/${userId || ''}?tab=ask`}
               >
                 Ask a question
               </Button>

@@ -4,10 +4,13 @@ import Button from '../Button/Button';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { showMessage } from '@/features/messageSlice';
+import { BASE_URL } from '@/utils/Setting';
+import QuillEditor from '../editor/QuillEditor';
 
 // Ask Question Form Component
 const AskQuestionForm: React.FC = () => {
   const dispatch = useDispatch();
+  const [content, setContent] = useState('');
   const [isCode, setIsCode] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
@@ -37,7 +40,7 @@ const AskQuestionForm: React.FC = () => {
       showMessage({
         message: message,
         messageType: 'error',
-      })
+      }),
     );
   };
 
@@ -79,17 +82,14 @@ const AskQuestionForm: React.FC = () => {
       const auth = localStorage.getItem('auth');
       const { token } = JSON.parse(auth);
 
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/question/add-question`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const res = await fetch(`${BASE_URL}/question/add-question`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(formData),
+      });
       const data = await res.json();
 
       if (!data.ok) {
@@ -225,6 +225,11 @@ const AskQuestionForm: React.FC = () => {
             Add up to 5 tags to describe what your question is about
           </p>
         </div>
+        <QuillEditor
+          value={content}
+          onChange={setContent}
+          placeholder='ask your question herr...'
+        />
 
         <div className='flex gap-3 pt-4'>
           <Button variant='primary' fullWidth onClick={handleSubmit}>

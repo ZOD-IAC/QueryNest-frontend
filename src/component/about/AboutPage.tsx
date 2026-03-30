@@ -14,11 +14,15 @@ import { useSelector } from 'react-redux';
 // ============================================
 const AboutPage: React.FC = () => {
   const { isAuthenticated } = useSelector((state) => state.auth);
-  const { user } = JSON.parse(localStorage.getItem('auth') as string);
+  let userId = '';
+  if (isAuthenticated) {
+    const { user } = JSON.parse(localStorage.getItem('auth') as string);
+    userId = user.id;
+  }
   return (
     <div className='min-h-screen bg-white'>
       <HeroSection />
-      <MissionSection userId={user.id} />
+      <MissionSection userId={userId} />
       <ValuesSection />
       <StorySection />
       <TeamSection />

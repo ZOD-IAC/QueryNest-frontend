@@ -1,16 +1,17 @@
 'use client';
-import { X } from 'lucide-react';
 import Button from '../Button/Button';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { showMessage } from '@/features/messageSlice';
-
+import { BASE_URL } from '@/utils/Setting';
+import QuillEditor from '../editor/QuillEditor';
 interface prop {
   questionId: string;
 }
 // Ask Question Form Component
 const AnswerForm: React.FC<prop> = ({ questionId }) => {
   const dispatch = useDispatch();
+  const [content, setContent] = useState('');
   const [isCode, setIsCode] = useState(false);
   const [formData, setFormData] = useState({
     content: '',
@@ -24,7 +25,7 @@ const AnswerForm: React.FC<prop> = ({ questionId }) => {
       showMessage({
         message: message,
         messageType: 'error',
-      })
+      }),
     );
   };
 
@@ -52,17 +53,14 @@ const AnswerForm: React.FC<prop> = ({ questionId }) => {
       const auth = localStorage.getItem('auth');
       const { token } = JSON.parse(auth as string);
 
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/answer/api/write-answer/`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const res = await fetch(`${BASE_URL}/answer/api/write-answer/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(formData),
+      });
       const data = await res.json();
 
       if (!data.ok) {
@@ -104,7 +102,6 @@ const AnswerForm: React.FC<prop> = ({ questionId }) => {
             Provide context, what you&apos;ve tried, and what you expect
           </p>
         </div>
-
         <div className='flex space-x-2 items-center'>
           <label className='flex items-center gap-1'>code</label>
           <input
@@ -138,7 +135,11 @@ const AnswerForm: React.FC<prop> = ({ questionId }) => {
             </p>
           </div>
         )}
-
+        <QuillEditor
+          value={content}
+          onChange={setContent}
+          placeholder='type your question herr.. '
+        />
         <div className='flex gap-3 pt-4'>
           <Button variant='primary' fullWidth onClick={handleSubmit}>
             Post Question

@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { loginSuccess } from '@/features/authslice';
 import { useRouter } from 'next/navigation';
 import { showMessage } from '@/features/messageSlice';
+import { BASE_URL } from '@/utils/Setting';
 
 interface formData {
   password: string;
@@ -33,7 +34,7 @@ const RegisterPage = () => {
       showMessage({
         message: message,
         messageType: 'error',
-      })
+      }),
     );
   };
 
@@ -79,7 +80,7 @@ const RegisterPage = () => {
     }
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/user/api/register`, {
+      const res = await fetch(`${BASE_URL}/user/api/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -96,7 +97,7 @@ const RegisterPage = () => {
         showMessage({
           message: data.message,
           messageType: 'success',
-        })
+        }),
       );
 
       localStorage.setItem(
@@ -105,7 +106,7 @@ const RegisterPage = () => {
           user: data.user,
           token: data.token,
           isAuth: true,
-        })
+        }),
       );
 
       navigation.push('/');
@@ -121,9 +122,13 @@ const RegisterPage = () => {
         <div className='text-center mb-6 sm:mb-8'>
           <div className='flex items-center justify-center gap-2 mb-3 sm:mb-4'>
             <Querynest height={'36px'} width={'36px'} color={'#BCA88D'} />
-            <h1 className='text-2xl sm:text-3xl lg:text-3xl font-bold text-slate-800'>QueryNest</h1>
+            <h1 className='text-2xl sm:text-3xl lg:text-3xl font-bold text-slate-800'>
+              QueryNest
+            </h1>
           </div>
-          <p className='text-sm sm:text-base text-slate-600'>Join our developer community</p>
+          <p className='text-sm sm:text-base text-slate-600'>
+            Join our developer community
+          </p>
         </div>
 
         {/* Form Card */}
@@ -180,7 +185,11 @@ const RegisterPage = () => {
                   className='cursor-pointer focus:outline-none'
                   type='button'
                 >
-                  <Eye size={16} className='sm:w-5 sm:h-5' color={showPass ? 'blue' : 'black'} />
+                  <Eye
+                    size={16}
+                    className='sm:w-5 sm:h-5'
+                    color={showPass ? 'blue' : 'black'}
+                  />
                 </button>
               </label>
               <div className='relative'>
@@ -206,7 +215,11 @@ const RegisterPage = () => {
                   className='cursor-pointer focus:outline-none'
                   type='button'
                 >
-                  <Eye size={16} className='sm:w-5 sm:h-5' color={showPass ? 'blue' : 'black'} />
+                  <Eye
+                    size={16}
+                    className='sm:w-5 sm:h-5'
+                    color={showPass ? 'blue' : 'black'}
+                  />
                 </button>
               </label>
               <div className='relative'>
