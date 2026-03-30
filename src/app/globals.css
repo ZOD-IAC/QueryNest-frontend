@@ -39,13 +39,3 @@ body {
 .btn:hover {
   background: #f1f1f1;
 }
-
-.editor-codeblock {
-  background: #111;
-  color: #eee;
-  padding: 12px;
-  border-radius: 8px;
-  font-family: monospace;
-  font-size: 14px;
-  overflow-x: auto;
-}

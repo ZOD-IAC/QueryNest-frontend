@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { showMessage } from '@/features/messageSlice';
 import { BASE_URL } from '@/utils/Setting';
-import QuillEditor from '../editor/QuillEditor';
+import CustomEditor from '../editor/CustomEditor';
 
 // Ask Question Form Component
 const AskQuestionForm: React.FC = () => {
@@ -14,8 +14,6 @@ const AskQuestionForm: React.FC = () => {
   const [isCode, setIsCode] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
-    content: '',
-    code: '',
     tags: [] as string[],
   });
   const [tagInput, setTagInput] = useState('');
@@ -45,7 +43,12 @@ const AskQuestionForm: React.FC = () => {
   };
 
   const handleCheck = () => {
-    const { title, content, code, tags } = formData;
+    const { title, tags } = formData;
+
+
+    console.log(title ,'<--- title');
+    console.log(content ,'<---- content ')
+    console.log(tags ,'<---- tags')
 
     if (!title || !content || !tags.length) {
       handleError('All fields are required !');
@@ -61,19 +64,18 @@ const AskQuestionForm: React.FC = () => {
       handleError('Minimum 20 words are required for content !');
       return false;
     }
-    if (isCode && code.length < 0) {
-      handleError('Code is require , turn it off if not required !');
-    }
 
     if (tags.length <= 0) {
       handleError('Alteast 1 tag is required to ask question !');
       return false;
     }
+
     return true;
   };
 
   const handleSubmit = async () => {
     if (!handleCheck()) {
+      dispatch(showMessage({message: "All fields are required!" , messageType : 'error'}))
       console.log('check all the fields');
       return;
     }
@@ -98,8 +100,6 @@ const AskQuestionForm: React.FC = () => {
       }
       dispatch(showMessage({ message: data.message, messageType: 'success' }));
       setFormData({
-        code: '',
-        content: '',
         title: '',
         tags: [],
       });
@@ -138,53 +138,11 @@ const AskQuestionForm: React.FC = () => {
           <label className='block text-sm font-medium text-slate-900 mb-2'>
             Description
           </label>
-          <textarea
-            value={formData.content}
-            onChange={(e) =>
-              setFormData({ ...formData, content: e.target.value })
-            }
-            placeholder='Include all the information someone would need to answer your question...'
-            rows={8}
-            className='placeholder:text-slate-400 w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 resize-none'
-          />
+         <CustomEditor onChange={setContent} value={content}/>
           <p className='text-xs text-slate-500 mt-1'>
             Provide context, what you&apos;ve tried, and what you expect
           </p>
         </div>
-
-        <div className='flex space-x-2 items-center'>
-          <label className='flex items-center gap-1'>code</label>
-          <input
-            type='checkbox'
-            defaultChecked={isCode}
-            onChange={() => {
-              setFormData({
-                ...formData,
-                code: '',
-              });
-              setIsCode((s) => !s);
-            }}
-          />
-        </div>
-        {isCode && (
-          <div>
-            <label className='block text-sm font-medium text-slate-900 mb-2'>
-              Code
-            </label>
-            <textarea
-              value={formData.code}
-              onChange={(e) =>
-                setFormData({ ...formData, code: e.target.value })
-              }
-              placeholder='share your code or any other extra information here..'
-              rows={8}
-              className='placeholder:text-slate-400 w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 resize-none'
-            />
-            <p className='text-xs text-slate-500 mt-1'>
-              Provide Extra context or code, what you&apos;ve tried.
-            </p>
-          </div>
-        )}
         <div>
           <label className='block text-sm font-medium text-slate-900 mb-2'>
             Tags
@@ -225,11 +183,6 @@ const AskQuestionForm: React.FC = () => {
             Add up to 5 tags to describe what your question is about
           </p>
         </div>
-        <QuillEditor
-          value={content}
-          onChange={setContent}
-          placeholder='ask your question herr...'
-        />
 
         <div className='flex gap-3 pt-4'>
           <Button variant='primary' fullWidth onClick={handleSubmit}>

@@ -1,0 +1,136 @@
+/*
+  rich-text-editor.css
+  Import once in app/layout.jsx or globals.css:
+  @import '@/styles/rich-text-editor.css';
+*/
+
+/* ── Editor body base ──────────────────────────────────────────────────────── */
+.rte-body {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #111827;
+  word-break: break-word;
+}
+
+/* ── Placeholder ────────────────────────────────────────────────────────────── */
+.rte-body p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  color: #9ca3af;
+  pointer-events: none;
+  float: left;
+  height: 0;
+}
+
+/* ── Selection ──────────────────────────────────────────────────────────────── */
+.rte-body ::selection {
+  background: rgba(99, 102, 241, 0.15);
+}
+
+/* ── Headings — HTML native sizing + bold ───────────────────────────────────── */
+/* Matching browser default heading scale */
+.rte-body h1 {
+  font-size: 2em;        /* 28px at base 14px */
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 0.67em 0;
+  color: #111827;
+}
+
+.rte-body h2 {
+  font-size: 1.5em;      /* 21px */
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 0.75em 0;
+  color: #111827;
+}
+
+.rte-body h3 {
+  font-size: 1.17em;     /* ~16px */
+  font-weight: 700;
+  line-height: 1.35;
+  margin: 0.8em 0;
+  color: #1f2937;
+}
+
+.rte-body h4 {
+  font-size: 1em;        /* 14px — same size, bold only */
+  font-weight: 700;
+  line-height: 1.4;
+  margin: 0.85em 0;
+  color: #1f2937;
+}
+
+/* ── Paragraph ──────────────────────────────────────────────────────────────── */
+.rte-body p {
+  margin: 0.4em 0;
+}
+
+.rte-body p:first-child { margin-top: 0; }
+.rte-body p:last-child  { margin-bottom: 0; }
+
+/* ── Inline marks ───────────────────────────────────────────────────────────── */
+.rte-body strong { font-weight: 700; }
+.rte-body em     { font-style: italic; }
+.rte-body u      { text-decoration: underline; }
+.rte-body s      { text-decoration: line-through; color: #9ca3af; }
+
+/* ── Inline code ────────────────────────────────────────────────────────────── */
+.rte-body code {
+  background: #f3f4f6;
+  color: #4f46e5;
+  font-family: 'Fira Code', ui-monospace, 'Courier New', monospace;
+  font-size: 0.875em;
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+}
+
+/* ── Lists ──────────────────────────────────────────────────────────────────── */
+.rte-body ul {
+  list-style-type: disc;
+  padding-left: 1.5em;
+  margin: 0.4em 0;
+}
+
+.rte-body ol {
+  list-style-type: decimal;
+  padding-left: 1.5em;
+  margin: 0.4em 0;
+}
+
+.rte-body li {
+  margin: 0.2em 0;
+}
+
+.rte-body li > p {
+  margin: 0;
+}
+
+/* ── Blockquote ─────────────────────────────────────────────────────────────── */
+.rte-body blockquote {
+  border-left: 3px solid #818cf8;
+  background: #f5f3ff;
+  padding: 0.5em 1em;
+  margin: 0.75em 0;
+  border-radius: 0 4px 4px 0;
+  color: #4b5563;
+  font-style: italic;
+}
+
+/* ── Links ──────────────────────────────────────────────────────────────────── */
+.rte-body a {
+  color: #4f46e5;
+  text-decoration: underline;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.rte-body a:hover {
+  color: #4338ca;
+}
+
+/* ── Horizontal rule ────────────────────────────────────────────────────────── */
+.rte-body hr {
+  border: none;
+  border-top: 2px solid #e5e7eb;
+  margin: 1em 0;
+}
