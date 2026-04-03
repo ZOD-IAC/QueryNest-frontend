@@ -8,7 +8,8 @@ import { QuestionContent } from './components/QuestionContent';
 import { AnswerCard } from './components/AnswerCard';
 import { RelatedQuestions } from './components/RelatedQuestion';
 import { BASE_URL } from '@/utils/Setting';
-import CustomEditor from '../common/CustomEditor';
+import CustomEditor from '../../component/editor/CustomEditor';
+
 // ============================================
 // FILE: types/question.types.ts
 // ============================================
@@ -131,7 +132,6 @@ const QuestionDetailPage: React.FC<pageProp> = ({ questionId }) => {
 
   const isQuestionAuthor = true;
   if (!question) return;
-  console.log(answers, '<--- answersssssss');
   return (
     <div className='min-h-screen bg-slate-50'>
       {/* questoin header */}

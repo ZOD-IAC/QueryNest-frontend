@@ -58,3 +58,8 @@ export type TabType =
   | 'activity'
   | 'saved'
   | 'ask';
+
+export interface formData {
+  password: string;
+  email: string;
+}

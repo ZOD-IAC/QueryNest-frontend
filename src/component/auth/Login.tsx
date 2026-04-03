@@ -8,12 +8,8 @@ import { useDispatch } from 'react-redux';
 import { showMessage } from '@/features/messageSlice';
 import { loginSuccess } from '@/features/authslice';
 import { useRouter } from 'next/navigation';
-import { BASE_URL } from '../../utils/Setting.js';
-
-interface formData {
-  password: string;
-  email: string;
-}
+import {loginUser} from "../../api/user/index.js"
+import { formData } from '@/utils/contants/type.js'
 
 // Login Page Component
 const LoginPage = ({}) => {
@@ -60,16 +56,10 @@ const LoginPage = ({}) => {
     }
 
     try {
-      const res = await fetch(`${BASE_URL}/user/api/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-      const data = await res.json();
+      const data = await loginUser("/user/api/login" ,formData);
 
       if (!data.ok) {
-        alert('something went wrong');
-        return;
+        throw new Error(data.message || 'Something went wrong!')
       }
 
       dispatch(loginSuccess({ user: data.user, token: data.token }));
@@ -90,7 +80,12 @@ const LoginPage = ({}) => {
 
       navigation.push('/');
     } catch (error) {
-      console.error(error, 'something went wrong');
+      const err = error?.message ||  "Something went wrong!";
+
+      dispatch(showMessage({
+        message: err,
+        messageType: 'error',
+      }))
     }
   };
 

@@ -17,6 +17,7 @@ export const QuestionContent: React.FC<QuestionContentProps> = ({
   onBookmark,
 }) => {
   const [showMenu, setShowMenu] = useState(false);
+  console.log(question.body, '<----- body');
 
   return (
     <div className='bg-white rounded-lg border border-slate-200 p-4 sm:p-6 max-w-full overflow-hidden'>
@@ -46,9 +47,10 @@ export const QuestionContent: React.FC<QuestionContentProps> = ({
         {/* Content Section */}
         <div className='flex-1 min-w-0'>
           <div className='prose max-w-none mb-4'>
-            <p className='text-slate-700 leading-relaxed whitespace-pre-wrap'>
-              {question.body}
-            </p>
+            <p
+              className='text-slate-700 leading-relaxed whitespace-pre-wrap'
+              dangerouslySetInnerHTML={{ __html: question.body }}
+            />
           </div>
 
           {question.code && (

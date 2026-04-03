@@ -11,7 +11,6 @@ import CustomEditor from '../editor/CustomEditor';
 const AskQuestionForm: React.FC = () => {
   const dispatch = useDispatch();
   const [content, setContent] = useState('');
-  const [isCode, setIsCode] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
     tags: [] as string[],
@@ -45,12 +44,7 @@ const AskQuestionForm: React.FC = () => {
   const handleCheck = () => {
     const { title, tags } = formData;
 
-
-    console.log(title ,'<--- title');
-    console.log(content ,'<---- content ')
-    console.log(tags ,'<---- tags')
-
-    if (!title || !content || !tags.length) {
+    if (!title || !content || tags.length <= 0) {
       handleError('All fields are required !');
       return false;
     }
@@ -75,8 +69,12 @@ const AskQuestionForm: React.FC = () => {
 
   const handleSubmit = async () => {
     if (!handleCheck()) {
-      dispatch(showMessage({message: "All fields are required!" , messageType : 'error'}))
-      console.log('check all the fields');
+      dispatch(
+        showMessage({
+          message: 'All fields are required!',
+          messageType: 'error',
+        }),
+      );
       return;
     }
 
@@ -90,7 +88,7 @@ const AskQuestionForm: React.FC = () => {
           'Content-Type': 'application/json',
           authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, content }),
       });
       const data = await res.json();
 
@@ -103,6 +101,7 @@ const AskQuestionForm: React.FC = () => {
         title: '',
         tags: [],
       });
+      setContent('');
       return;
     } catch (error) {
       console.warn('Error :', error);
@@ -138,7 +137,7 @@ const AskQuestionForm: React.FC = () => {
           <label className='block text-sm font-medium text-slate-900 mb-2'>
             Description
           </label>
-         <CustomEditor onChange={setContent} value={content}/>
+          <CustomEditor onChange={setContent} value={content} />
           <p className='text-xs text-slate-500 mt-1'>
             Provide context, what you&apos;ve tried, and what you expect
           </p>
