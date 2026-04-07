@@ -9,6 +9,7 @@ import { AnswerCard } from './components/AnswerCard';
 import { RelatedQuestions } from './components/RelatedQuestion';
 import { BASE_URL } from '@/utils/Setting';
 import CustomEditor from '../../component/editor/CustomEditor';
+import { AnswerVoting } from '@/api/answer';
 
 // ============================================
 // FILE: types/question.types.ts
@@ -65,13 +66,13 @@ const QuestionDetailPage: React.FC<pageProp> = ({ questionId }) => {
   const [content, setContent] = useState('');
 
   const handleSubmit = () => {
-    console.log('Markdown Content:\n', content);
     // send this to backend
   };
 
   const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log("run 1")
     const fetchQuestion = async () => {
       const res = await fetch(
         `${BASE_URL}/question/api/get-question/${questionId}`,
@@ -106,18 +107,24 @@ const QuestionDetailPage: React.FC<pageProp> = ({ questionId }) => {
     // }));
   };
 
-  const handleAnswerVote = (answerId: number, type: 'up' | 'down') => {
-    setAnswers((prev) =>
-      prev.map((a) =>
-        a.id === answerId
-          ? {
-              ...a,
-              votes: type === 'up' ? a.votes + 1 : a.votes - 1,
-              userVote: a.userVote === type ? null : type,
-            }
-          : a,
-      ),
-    );
+  const handleAnswerVote = async (answerId: number, type: 'up' | 'down') => {
+    try {
+      const res = await AnswerVoting({ answerId, type });
+      if(!res.ok) {
+        throw new Error(res.message)
+      }
+      dispatch(showMessage({
+        message : res.message,
+        messageType : 'info'
+      }))
+    } catch (error) {
+      const err =  error?.message || "something went wrong!";
+      dispatch(showMessage({
+        message : err, 
+        messageType : 'error'
+      }))
+
+    }
   };
 
   const handleBookmark = () => {

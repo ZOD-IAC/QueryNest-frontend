@@ -17,7 +17,6 @@ export const QuestionContent: React.FC<QuestionContentProps> = ({
   onBookmark,
 }) => {
   const [showMenu, setShowMenu] = useState(false);
-  console.log(question.body, '<----- body');
 
   return (
     <div className='bg-white rounded-lg border border-slate-200 p-4 sm:p-6 max-w-full overflow-hidden'>

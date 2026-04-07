@@ -56,9 +56,7 @@ export const AnswerCard: React.FC<AnswerCardProps> = ({
         {/* Content Section */}
         <div className='flex-1 min-w-0'>
           <div className='prose max-w-none mb-4'>
-            <p className='text-slate-700 leading-relaxed whitespace-pre-wrap'>
-              {answer.body}
-            </p>
+            <p className='text-slate-700 leading-relaxed whitespace-pre-wrap' dangerouslySetInnerHTML={{__html : answer.body}} />
           </div>
 
           {answer.code && (

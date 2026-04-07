@@ -13,12 +13,6 @@ interface prop {
 const AnswerForm: React.FC<prop> = ({ questionId }) => {
   const dispatch = useDispatch();
   const [content, setContent] = useState('');
-  const [isCode, setIsCode] = useState(false);
-  const [formData, setFormData] = useState({
-    content: '',
-    code: '',
-    questionId,
-  });
 
   const handleError = (message: string) => {
     if (!message) return;
@@ -31,14 +25,10 @@ const AnswerForm: React.FC<prop> = ({ questionId }) => {
   };
 
   const handleCheck = () => {
-    const { content, code } = formData;
 
     if (content.split(' ').length < 20) {
       handleError('Minimum 20 words are required for content !');
       return false;
-    }
-    if (isCode && code.length < 0) {
-      handleError('Code is require , turn it off if not required !');
     }
 
     return true;
@@ -46,7 +36,10 @@ const AnswerForm: React.FC<prop> = ({ questionId }) => {
 
   const handleSubmit = async () => {
     if (!handleCheck()) {
-      console.log('check all the fields');
+      dispatch(showMessage({
+        message :'check all the fields',
+        messageType : 'error'
+      }));
       return;
     }
 
@@ -60,7 +53,7 @@ const AnswerForm: React.FC<prop> = ({ questionId }) => {
           'Content-Type': 'application/json',
           authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({content : content , questionId : questionId,}),
       });
       const data = await res.json();
 
@@ -69,11 +62,7 @@ const AnswerForm: React.FC<prop> = ({ questionId }) => {
         throw new Error(data.message);
       }
       dispatch(showMessage({ message: data.message, messageType: 'success' }));
-      setFormData({
-        ...formData,
-        code: '',
-        content: '',
-      });
+      setContent('');
       return;
     } catch (error) {
       console.warn('Error :', error);

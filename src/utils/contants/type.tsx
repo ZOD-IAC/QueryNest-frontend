@@ -39,6 +39,7 @@ export interface Answer {
   votes: number;
   isAccepted: boolean;
   createdAt: string;
+  question : Question[]
 }
 
 export interface Badge {
@@ -62,4 +63,8 @@ export type TabType =
 export interface formData {
   password: string;
   email: string;
+}
+
+export interface AnswersTabProps {
+  answers: Answer[];
 }
