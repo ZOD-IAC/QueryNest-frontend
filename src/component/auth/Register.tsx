@@ -80,7 +80,7 @@ const RegisterPage = () => {
     }
 
     try {
-      const data = await registerUser('/user/api/register' , formData); 
+      const data = await registerUser(formData); 
 
       if (!data.ok) {
         throw new Error(data?.message || "something went wrong");

@@ -8,8 +8,8 @@ import { useDispatch } from 'react-redux';
 import { showMessage } from '@/features/messageSlice';
 import { loginSuccess } from '@/features/authslice';
 import { useRouter } from 'next/navigation';
-import {loginUser} from "../../api/user/index.js"
-import { formData } from '@/utils/contants/type.js'
+import { loginUser } from '../../api/user/index.js';
+import { formData } from '@/utils/contants/type.js';
 
 // Login Page Component
 const LoginPage = ({}) => {
@@ -25,7 +25,7 @@ const LoginPage = ({}) => {
       showMessage({
         message: message,
         messageType: 'error',
-      })
+      }),
     );
   };
 
@@ -56,10 +56,10 @@ const LoginPage = ({}) => {
     }
 
     try {
-      const data = await loginUser("/user/api/login" ,formData);
+      const data = await loginUser(formData);
 
       if (!data.ok) {
-        throw new Error(data.message || 'Something went wrong!')
+        throw new Error(data.message || 'Something went wrong!');
       }
 
       dispatch(loginSuccess({ user: data.user, token: data.token }));
@@ -67,7 +67,7 @@ const LoginPage = ({}) => {
         showMessage({
           message: data.message,
           messageType: 'success',
-        })
+        }),
       );
       localStorage.setItem(
         'auth',
@@ -75,17 +75,19 @@ const LoginPage = ({}) => {
           user: data.user,
           token: data.token,
           isAuth: true,
-        })
+        }),
       );
 
       navigation.push('/');
     } catch (error) {
-      const err = error?.message ||  "Something went wrong!";
+      const err = error?.message || 'Something went wrong!';
 
-      dispatch(showMessage({
-        message: err,
-        messageType: 'error',
-      }))
+      dispatch(
+        showMessage({
+          message: err,
+          messageType: 'error',
+        }),
+      );
     }
   };
 
@@ -96,14 +98,20 @@ const LoginPage = ({}) => {
         <div className='text-center mb-6 sm:mb-8'>
           <div className='flex items-center justify-center gap-2 mb-3 sm:mb-4'>
             <Querynest height={'36px'} width={'36px'} color={'#BCA88D'} />
-            <h1 className='text-2xl sm:text-3xl lg:text-3xl font-bold text-slate-800'>QueryNest</h1>
+            <h1 className='text-2xl sm:text-3xl lg:text-3xl font-bold text-slate-800'>
+              QueryNest
+            </h1>
           </div>
-          <p className='text-sm sm:text-base text-slate-600'>Welcome back to our community</p>
+          <p className='text-sm sm:text-base text-slate-600'>
+            Welcome back to our community
+          </p>
         </div>
 
         {/* Form Card */}
         <div className='bg-white rounded-lg sm:rounded-xl shadow-md sm:shadow-lg p-6 sm:p-8'>
-          <h2 className='text-xl sm:text-2xl font-bold text-slate-800 mb-4 sm:mb-6'>Sign In</h2>
+          <h2 className='text-xl sm:text-2xl font-bold text-slate-800 mb-4 sm:mb-6'>
+            Sign In
+          </h2>
 
           <div className='space-y-3 sm:space-y-4'>
             {/* Email Field */}

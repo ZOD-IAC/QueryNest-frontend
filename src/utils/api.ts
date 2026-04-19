@@ -1,19 +1,19 @@
-import { BASE_URL } from "./Setting";
+import { BASE_URL } from './Setting';
 
-export async function api(
-  path: string,
-  options: RequestInit = {},
-  body?: any
-) {
+export async function api(path: string, options: RequestInit = {}, body?: any) {
   try {
     const res = await fetch(`${BASE_URL}${path}`, {
       ...options,
-      body: body ? JSON.stringify(body) : null,
+      headers: {
+        'Content-Type': 'application/json',
+        ...(options.headers || {}),
+      },
+      body: body ? JSON.stringify(body) : undefined,
     });
 
     return await res.json();
   } catch (err) {
-    console.error("API Error:", err);
+    console.error('API Error:', err);
     throw err;
   }
 }
@@ -22,16 +22,16 @@ export async function api(
 
 // GET → no body
 export const GET = (p: string, options: RequestInit = {}) =>
-  api(p, { method: "GET", ...options });
+  api(p, { method: 'GET', ...options });
 
 // POST → has body
 export const POST = (p: string, body?: any, options: RequestInit = {}) =>
-  api(p, { method: "POST", ...options }, body);
+  api(p, { method: 'POST', ...options }, body);
 
 // PUT → has body
 export const PUT = (p: string, body?: any, options: RequestInit = {}) =>
-  api(p, { method: "PUT", ...options }, body);
+  api(p, { method: 'PUT', ...options }, body);
 
 // DELETE → no body
 export const DELETE_REQ = (p: string, options: RequestInit = {}) =>
-  api(p, { method: "DELETE", ...options });
+  api(p, { method: 'DELETE', ...options });

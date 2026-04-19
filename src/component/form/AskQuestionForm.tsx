@@ -6,6 +6,8 @@ import { useDispatch } from 'react-redux';
 import { showMessage } from '@/features/messageSlice';
 import { BASE_URL } from '@/utils/Setting';
 import CustomEditor from '../editor/CustomEditor';
+import DebounceSelect from '../common/DebounceSelect';
+import { getQuestionTags } from '../../api/question/index'
 
 // Ask Question Form Component
 const AskQuestionForm: React.FC = () => {
@@ -15,21 +17,21 @@ const AskQuestionForm: React.FC = () => {
     title: '',
     tags: [] as string[],
   });
-  const [tagInput, setTagInput] = useState('');
+  const [tagInput, setTagInput] = useState([]);
 
-  const addTag = () => {
-    if (tagInput && !formData.tags.includes(tagInput)) {
-      setFormData({ ...formData, tags: [...formData.tags, tagInput.trim()] });
-      setTagInput('');
-    }
-  };
+  // const addTag = () => {
+  //   if (tagInput && !formData.tags.includes(tagInput)) {
+  //     setFormData({ ...formData, tags: [...formData.tags, tagInput.trim()] });
+  //     setTagInput('');
+  //   }
+  // };
 
-  const removeTag = (tagToRemove: string) => {
-    setFormData({
-      ...formData,
-      tags: formData.tags.filter((tag) => tag !== tagToRemove),
-    });
-  };
+  // const removeTag = (tagToRemove: string) => {
+  //   setFormData({
+  //     ...formData,
+  //     tags: formData.tags.filter((tag) => tag !== tagToRemove),
+  //   });
+  // };
 
   const handleError = (message: string) => {
     if (!message) return;
@@ -108,6 +110,11 @@ const AskQuestionForm: React.FC = () => {
     }
   };
 
+  const fetchTags = async (query) => {
+    const res = await getQuestionTags(query);
+    return res?.data || [];
+  };
+
   return (
     <div className={`bg-white rounded-lg border border-slate-200 p-6`}>
       <div className='px-2 py-4 border-b border-slate-200'>
@@ -142,46 +149,13 @@ const AskQuestionForm: React.FC = () => {
             Provide context, what you&apos;ve tried, and what you expect
           </p>
         </div>
-        <div>
-          <label className='block text-sm font-medium text-slate-900 mb-2'>
-            Tags
-          </label>
-          <div className='flex gap-2 mb-2'>
-            <input
-              type='text'
-              value={tagInput}
-              onChange={(e) => setTagInput(e.target.value)}
-              onClick={(e) => {
-                e.preventDefault();
-                addTag();
-              }}
-              placeholder='Add a tag (press Enter)'
-              className='placeholder:text-slate-400 flex-1 px-4 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500'
-            />
-            <Button onClick={addTag} variant='outline'>
-              Add
-            </Button>
-          </div>
-          <div className='flex flex-wrap gap-2 mb-2'>
-            {formData.tags.map((tag) => (
-              <span
-                key={tag}
-                className='px-3 py-1 bg-blue-100 text-blue-700 text-sm rounded-full flex items-center gap-2'
-              >
-                {tag}
-                <button
-                  onClick={() => removeTag(tag)}
-                  className='hover:text-blue-900'
-                >
-                  <X className='w-3 h-3' />
-                </button>
-              </span>
-            ))}
-          </div>
-          <p className='text-xs text-slate-500'>
-            Add up to 5 tags to describe what your question is about
-          </p>
-        </div>
+        <DebounceSelect
+          value={tagInput}
+          onChange={setTagInput}
+          fetchTags={fetchTags}
+          multiple={true}
+          max={5}
+        />
 
         <div className='flex gap-3 pt-4'>
           <Button variant='primary' fullWidth onClick={handleSubmit}>
