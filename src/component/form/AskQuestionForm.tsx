@@ -1,23 +1,28 @@
 'use client';
 import { X } from 'lucide-react';
 import Button from '../Button/Button';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { showMessage } from '@/features/messageSlice';
 import { BASE_URL } from '@/utils/Setting';
 import CustomEditor from '../editor/CustomEditor';
 import DebounceSelect from '../common/DebounceSelect';
-import { getQuestionTags } from '../../api/question/index'
+import { getQuestionTags } from '../../api/question/index';
 
 // Ask Question Form Component
 const AskQuestionForm: React.FC = () => {
   const dispatch = useDispatch();
   const [content, setContent] = useState('');
+  const [tagInput, setTagInput] = useState([]);
   const [formData, setFormData] = useState({
     title: '',
     tags: [] as string[],
   });
-  const [tagInput, setTagInput] = useState([]);
+
+  useEffect(() => {
+    const tagNames = tagInput.map((t) => t.tagName);
+    setFormData({ ...formData, tags: tagNames });
+  }, [tagInput]);
 
   // const addTag = () => {
   //   if (tagInput && !formData.tags.includes(tagInput)) {

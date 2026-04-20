@@ -1,11 +1,11 @@
 'use client';
-import { addQuestionTag } from '@/api/question';
 import { useEffect, useState } from 'react';
+import { addQuestionTag } from '@/api/question';
 
 export default function DebounceSelect({
   value = [],
   onChange,
-  fetchTags, // (query) => Promise<tag[]>
+  fetchTags,
   multiple = true,
   max = 5,
   placeholder = 'Search or add tag...',
@@ -14,16 +14,18 @@ export default function DebounceSelect({
   const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // 🔥 Debounce API call
+  // 🔥 Debounce search
   useEffect(() => {
-    if (!input.trim()) return;
+    if (!input.trim()) {
+      setSuggestions([]);
+      return;
+    }
 
     const timer = setTimeout(async () => {
       setLoading(true);
       try {
         const res = await fetchTags(input);
         setSuggestions(res || []);
-        console.log(suggestions, '<<--- suggestions');
       } finally {
         setLoading(false);
       }
@@ -32,30 +34,29 @@ export default function DebounceSelect({
     return () => clearTimeout(timer);
   }, [input]);
 
-  // ➕ Add tag
+  // ➕ Add tag (always object-based)
   const addTag = async (tag) => {
     if (!tag) return;
 
     let finalTag = tag;
 
     try {
-      // 🔥 only create if it's not from suggestions
-      if (!suggestions.includes(tag)) {
+      // if it's string → create
+      if (typeof tag === 'string') {
         const res = await addQuestionTag(tag);
-
-        if (res?.ok) {
-          finalTag = res.newtag.tagName; // or use slug / id later
-        }
+        if (res?.ok) finalTag = res.newtag;
+        else return;
       }
     } catch (err) {
       console.error(err);
       return;
     }
 
+    // dedupe by _id
+    const exists = value.some((t) => t._id === finalTag._id);
+    if (exists) return;
+
     let updated = multiple ? [...value, finalTag] : [finalTag];
-
-    updated = [...new Set(updated)];
-
     if (multiple && updated.length > max) return;
 
     onChange(updated);
@@ -63,12 +64,12 @@ export default function DebounceSelect({
     setSuggestions([]);
   };
 
-  // ❌ Remove tag
-  const removeTag = (tag) => {
-    onChange(value.filter((t) => t !== tag));
+  // ❌ Remove
+  const removeTag = (id) => {
+    onChange(value.filter((t) => t._id !== id));
   };
 
-  // ⌨️ Enter key = add/create
+  // ⌨️ Enter = create
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
@@ -93,10 +94,9 @@ export default function DebounceSelect({
           {loading && <p className='p-2 text-sm'>Loading...</p>}
 
           {!loading &&
-            suggestions.length > 0 &&
-            suggestions.map((tag, i) => (
+            suggestions.map((tag) => (
               <div
-                key={i}
+                key={tag._id}
                 onClick={() => addTag(tag)}
                 className='p-2 hover:bg-gray-100 cursor-pointer text-black'
               >
@@ -117,18 +117,18 @@ export default function DebounceSelect({
 
       {/* Selected Tags */}
       <div className='flex flex-wrap gap-2 mt-2'>
-        {value.map((tag, i) => (
+        {value.map((tag) => (
           <span
-            key={i}
+            key={tag._id}
             className='px-2 py-1 bg-blue-100 rounded flex items-center gap-1'
           >
-            {tag}
-            <button onClick={() => removeTag(tag)}>✕</button>
+            {tag.tagName}
+            <button onClick={() => removeTag(tag._id)}>✕</button>
           </span>
         ))}
       </div>
 
-      {/* Clear all */}
+      {/* Clear */}
       {value.length > 0 && (
         <button
           onClick={() => onChange([])}
