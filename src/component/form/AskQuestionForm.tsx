@@ -7,7 +7,7 @@ import { showMessage } from '@/features/messageSlice';
 import { BASE_URL } from '@/utils/Setting';
 import CustomEditor from '../editor/CustomEditor';
 import DebounceSelect from '../common/DebounceSelect';
-import { getQuestionTags } from '../../api/question/index';
+import { addQuestionTag, getQuestionTags } from '../../api/question/index';
 
 // Ask Question Form Component
 const AskQuestionForm: React.FC = () => {
@@ -20,23 +20,42 @@ const AskQuestionForm: React.FC = () => {
   });
 
   useEffect(() => {
-    const tagNames = tagInput.map((t) => t.tagName);
-    setFormData({ ...formData, tags: tagNames });
+    setFormData((prev) => ({
+      ...prev,
+      tags: tagInput.map((t) => t._id),
+    }));
   }, [tagInput]);
 
-  // const addTag = () => {
-  //   if (tagInput && !formData.tags.includes(tagInput)) {
-  //     setFormData({ ...formData, tags: [...formData.tags, tagInput.trim()] });
-  //     setTagInput('');
-  //   }
-  // };
+  // ── createTag: must return Tag | null ────────────────────────────────────────
+  const createTag = async (query: string): Promise<Tag | null> => {
+    const res = await addQuestionTag(query);
 
-  // const removeTag = (tagToRemove: string) => {
-  //   setFormData({
-  //     ...formData,
-  //     tags: formData.tags.filter((tag) => tag !== tagToRemove),
-  //   });
-  // };
+    // 🔍 Log the raw response once during development to confirm the shape:
+    // console.log('[createTag] raw response:', res);
+
+    const tag = res?.data ?? res?.newtag ?? null;
+
+    // Guard: if _id is missing the key-prop warning will reappear.
+    if (!tag?._id) {
+      console.warn('[createTag] returned tag is missing _id:', tag);
+      return null;
+    }
+
+    return tag as Tag;
+  };
+
+  // ── fetchTags: must return Tag[] ──────────────────────────────────────────────
+  const fetchTags = async (query: string): Promise<Tag[]> => {
+    const res = await getQuestionTags(query);
+
+    // 🔍 Log during development:
+    // console.log('[fetchTags] raw response:', res);
+
+    const list: unknown[] = res?.data ?? [];
+
+    // Guard: filter out any items missing _id so they can never cause key issues.
+    return (list as Tag[]).filter((t) => !!t._id);
+  };
 
   const handleError = (message: string) => {
     if (!message) return;
@@ -115,11 +134,6 @@ const AskQuestionForm: React.FC = () => {
     }
   };
 
-  const fetchTags = async (query) => {
-    const res = await getQuestionTags(query);
-    return res?.data || [];
-  };
-
   return (
     <div className={`bg-white rounded-lg border border-slate-200 p-6`}>
       <div className='px-2 py-4 border-b border-slate-200'>
@@ -158,6 +172,7 @@ const AskQuestionForm: React.FC = () => {
           value={tagInput}
           onChange={setTagInput}
           fetchTags={fetchTags}
+          createTag={createTag}
           multiple={true}
           max={5}
         />
