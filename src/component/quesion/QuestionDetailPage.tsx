@@ -63,6 +63,7 @@ interface pageProp {
 const QuestionDetailPage: React.FC<pageProp> = ({ questionId }) => {
   const [question, setQuestion] = useState<QuestionData>();
   const [answers, setAnswers] = useState<AnswerData[]>([]);
+  const [tags, setTags] = useState([])
   const [content, setContent] = useState('');
 
   const handleSubmit = () => {
@@ -92,8 +93,9 @@ const QuestionDetailPage: React.FC<pageProp> = ({ questionId }) => {
         );
         return;
       }
-      setQuestion(data.question);
-      setAnswers(data?.question?.answers);
+      setQuestion(data?.data?.question);
+      setTags(data?.data?.tags)
+      setAnswers(data?.data?.question?.answers);
     };
 
     fetchQuestion();
@@ -110,18 +112,18 @@ const QuestionDetailPage: React.FC<pageProp> = ({ questionId }) => {
   const handleAnswerVote = async (answerId: number, type: 'up' | 'down') => {
     try {
       const res = await AnswerVoting({ answerId, type });
-      if(!res.ok) {
+      if (!res.ok) {
         throw new Error(res.message)
       }
       dispatch(showMessage({
-        message : res.message,
-        messageType : 'info'
+        message: res.message,
+        messageType: 'info'
       }))
     } catch (error) {
-      const err =  error?.message || "something went wrong!";
+      const err = error?.message || "something went wrong!";
       dispatch(showMessage({
-        message : err, 
-        messageType : 'error'
+        message: err,
+        messageType: 'error'
       }))
 
     }
@@ -171,6 +173,7 @@ const QuestionDetailPage: React.FC<pageProp> = ({ questionId }) => {
           {/* Main Content */}
           <main className='lg:col-span-9 space-y-4 sm:space-y-6'>
             <QuestionContent
+              tags={tags}
               question={question}
               onVote={handleQuestionVote}
               onBookmark={handleBookmark}

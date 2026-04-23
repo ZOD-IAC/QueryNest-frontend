@@ -6,13 +6,15 @@ import { Bookmark, Edit, Flag, Share2, Star } from 'lucide-react';
 import { CodeBlock } from './CodeBlock';
 
 interface QuestionContentProps {
-  question: QuestionData;
+  question: any;
+  tags: Object[],
   onVote: (type: 'up' | 'down') => void;
   onBookmark: () => void;
 }
 
 export const QuestionContent: React.FC<QuestionContentProps> = ({
   question,
+  tags,
   onVote,
   onBookmark,
 }) => {
@@ -30,11 +32,10 @@ export const QuestionContent: React.FC<QuestionContentProps> = ({
           />
           <button
             onClick={onBookmark}
-            className={`w-10 h-10 rounded-lg border-2 flex items-center justify-center md:mt-4 transition-all ${
-              question.isBookmarked
-                ? 'bg-amber-100 border-amber-500 text-amber-600'
-                : 'border-slate-300 text-slate-600 hover:bg-amber-50 hover:border-amber-400'
-            }`}
+            className={`w-10 h-10 rounded-lg border-2 flex items-center justify-center md:mt-4 transition-all ${question.isBookmarked
+              ? 'bg-amber-100 border-amber-500 text-amber-600'
+              : 'border-slate-300 text-slate-600 hover:bg-amber-50 hover:border-amber-400'
+              }`}
           >
             <Bookmark
               className='w-5 h-5'
@@ -58,12 +59,12 @@ export const QuestionContent: React.FC<QuestionContentProps> = ({
 
           {/* Tags */}
           <div className='flex flex-wrap gap-2 mb-6'>
-            {question.tags.map((tag) => (
+            {tags.map((tag) => (
               <span
-                key={tag}
+                key={tag._id}
                 className='px-2 sm:px-3 py-1 sm:py-1.5 bg-blue-50 text-blue-700 text-xs sm:text-sm rounded-md border border-blue-200 hover:bg-blue-100 cursor-pointer whitespace-nowrap'
               >
-                {tag}
+                {tag.tagName}
               </span>
             ))}
           </div>
