@@ -26,7 +26,7 @@ export const QuestionContent: React.FC<QuestionContentProps> = ({
         {/* Vote Section */}
         <div className='flex md:flex-col items-center gap-4 md:gap-0'>
           <VoteButtons
-            votes={question.upvotes.length}
+            votes={question.upvotes}
             userVote={question.userVote?.length}
             onVote={onVote}
           />
