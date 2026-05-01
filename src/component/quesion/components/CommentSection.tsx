@@ -1,6 +1,14 @@
 // ============================================
 // FILE: components/question/CommentSection.tsx
+import { useState } from "react";
 // ============================================
+
+interface Comment {
+  content : string;
+  id : string;
+  author : any;
+  createdAt : string;
+}
 interface CommentSectionProps {
   comments: Comment[];
 }

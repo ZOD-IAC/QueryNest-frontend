@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux';
 import { loginSuccess } from '@/features/authslice';
 import { useRouter } from 'next/navigation';
 import { showMessage } from '@/features/messageSlice';
-import { BASE_URL } from '@/utils/Setting';
+import { registerUser } from '@/api/user';
 
 interface formData {
   password: string;
@@ -80,16 +80,10 @@ const RegisterPage = () => {
     }
 
     try {
-      const res = await fetch(`${BASE_URL}/user/api/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-      const data = await res.json();
+      const data = await registerUser(formData); 
 
       if (!data.ok) {
-        alert('something went wrong');
-        return;
+        throw new Error(data?.message || "something went wrong");
       }
 
       dispatch(loginSuccess({ user: data.user, token: data.token }));
@@ -111,7 +105,13 @@ const RegisterPage = () => {
 
       navigation.push('/');
     } catch (error) {
-      console.error(error, 'something went wrong');
+      const err =  error?.message || "something went wrong";
+      dispatch(
+        showMessage({
+          message: err,
+          messageType: 'error',
+        }),
+      );
     }
   };
 

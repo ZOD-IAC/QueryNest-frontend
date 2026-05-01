@@ -1,35 +1,61 @@
 'use client';
 import { X } from 'lucide-react';
 import Button from '../Button/Button';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { showMessage } from '@/features/messageSlice';
 import { BASE_URL } from '@/utils/Setting';
 import CustomEditor from '../editor/CustomEditor';
+import DebounceSelect from '../common/DebounceSelect';
+import { addQuestionTag, getQuestionTags } from '../../api/question/index';
+import { Tag } from "../../utils/contants/type"
 
 // Ask Question Form Component
 const AskQuestionForm: React.FC = () => {
   const dispatch = useDispatch();
   const [content, setContent] = useState('');
-  const [isCode, setIsCode] = useState(false);
+  const [tagInput, setTagInput] = useState<Tag[]>([]);
   const [formData, setFormData] = useState({
     title: '',
     tags: [] as string[],
   });
-  const [tagInput, setTagInput] = useState('');
 
-  const addTag = () => {
-    if (tagInput && !formData.tags.includes(tagInput)) {
-      setFormData({ ...formData, tags: [...formData.tags, tagInput.trim()] });
-      setTagInput('');
+  useEffect(() => {
+    setFormData((prev) => ({
+      ...prev,
+      tags: tagInput.map((t: any) => t._id),
+    }));
+  }, [tagInput]);
+
+  // ── createTag: must return Tag | null ────────────────────────────────────────
+  const createTag = async (query: string): Promise<Tag | null> => {
+    const res = await addQuestionTag(query);
+
+    // 🔍 Log the raw response once during development to confirm the shape:
+    // console.log('[createTag] raw response:', res);
+
+    const tag = res?.data ?? res?.newtag ?? null;
+
+    // Guard: if _id is missing the key-prop warning will reappear.
+    if (!tag?._id) {
+      console.warn('[createTag] returned tag is missing _id:', tag);
+      return null;
     }
+
+    return tag as Tag;
   };
 
-  const removeTag = (tagToRemove: string) => {
-    setFormData({
-      ...formData,
-      tags: formData.tags.filter((tag) => tag !== tagToRemove),
-    });
+  // ── fetchTags: must return Tag[] ──────────────────────────────────────────────
+  const fetchTags = async (query: string): Promise<Tag[]> => {
+    const res = await getQuestionTags(query);
+
+    // 🔍 Log during development:
+    // console.log('[fetchTags] raw response:', res);
+
+    const list: unknown[] = res?.data ?? [];
+
+    // Guard: filter out any items missing _id so they can never cause key issues.
+    return (list as Tag[]).filter((t) => !!t._id);
   };
 
   const handleError = (message: string) => {
@@ -45,12 +71,7 @@ const AskQuestionForm: React.FC = () => {
   const handleCheck = () => {
     const { title, tags } = formData;
 
-
-    console.log(title ,'<--- title');
-    console.log(content ,'<---- content ')
-    console.log(tags ,'<---- tags')
-
-    if (!title || !content || !tags.length) {
+    if (!title || !content || tags.length <= 0) {
       handleError('All fields are required !');
       return false;
     }
@@ -75,22 +96,26 @@ const AskQuestionForm: React.FC = () => {
 
   const handleSubmit = async () => {
     if (!handleCheck()) {
-      dispatch(showMessage({message: "All fields are required!" , messageType : 'error'}))
-      console.log('check all the fields');
+      dispatch(
+        showMessage({
+          message: 'All fields are required!',
+          messageType: 'error',
+        }),
+      );
       return;
     }
 
     try {
       const auth = localStorage.getItem('auth');
-      const { token } = JSON.parse(auth);
+      const { token } = JSON.parse(auth as any);
 
-      const res = await fetch(`${BASE_URL}/question/add-question`, {
+      const res = await fetch(`${BASE_URL}/question/create-question`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, content }),
       });
       const data = await res.json();
 
@@ -103,6 +128,7 @@ const AskQuestionForm: React.FC = () => {
         title: '',
         tags: [],
       });
+      setContent('');
       return;
     } catch (error) {
       console.warn('Error :', error);
@@ -138,51 +164,19 @@ const AskQuestionForm: React.FC = () => {
           <label className='block text-sm font-medium text-slate-900 mb-2'>
             Description
           </label>
-         <CustomEditor onChange={setContent} value={content}/>
+          <CustomEditor onChange={setContent} value={content} />
           <p className='text-xs text-slate-500 mt-1'>
             Provide context, what you&apos;ve tried, and what you expect
           </p>
         </div>
-        <div>
-          <label className='block text-sm font-medium text-slate-900 mb-2'>
-            Tags
-          </label>
-          <div className='flex gap-2 mb-2'>
-            <input
-              type='text'
-              value={tagInput}
-              onChange={(e) => setTagInput(e.target.value)}
-              onClick={(e) => {
-                e.preventDefault();
-                addTag();
-              }}
-              placeholder='Add a tag (press Enter)'
-              className='placeholder:text-slate-400 flex-1 px-4 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500'
-            />
-            <Button onClick={addTag} variant='outline'>
-              Add
-            </Button>
-          </div>
-          <div className='flex flex-wrap gap-2 mb-2'>
-            {formData.tags.map((tag) => (
-              <span
-                key={tag}
-                className='px-3 py-1 bg-blue-100 text-blue-700 text-sm rounded-full flex items-center gap-2'
-              >
-                {tag}
-                <button
-                  onClick={() => removeTag(tag)}
-                  className='hover:text-blue-900'
-                >
-                  <X className='w-3 h-3' />
-                </button>
-              </span>
-            ))}
-          </div>
-          <p className='text-xs text-slate-500'>
-            Add up to 5 tags to describe what your question is about
-          </p>
-        </div>
+        <DebounceSelect
+          value={tagInput}
+          onChange={setTagInput}
+          fetchTags={fetchTags}
+          createTag={createTag}
+          multiple={true}
+          max={5}
+        />
 
         <div className='flex gap-3 pt-4'>
           <Button variant='primary' fullWidth onClick={handleSubmit}>

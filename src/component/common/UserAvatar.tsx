@@ -1,7 +1,7 @@
 'use client'
 import React from 'react';
 interface userProp {
-  svg: SVGAElement;
+  svg: string;
   className?: string;
 }
 function UserAvatar({ svg, className }: userProp) {

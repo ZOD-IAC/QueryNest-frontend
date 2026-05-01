@@ -1,6 +1,6 @@
 'use client';
 import { Bomb, LaptopMinimalCheck, BadgeInfo } from 'lucide-react';
-import { useEffect } from 'react';
+import { EffectCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearMessage } from '@/features/messageSlice';
 
@@ -32,7 +32,7 @@ function MessagePopUp() {
       dispatch(clearMessage());
     }, 3000);
 
-    () => clearMessage(clear);
+    return () => clearMessage(clear);
   }, [message]);
 
   return (

@@ -3,16 +3,22 @@
 import { useState } from 'react';
 import { VoteButtons } from './VoteButton';
 import { Bookmark, Edit, Flag, Share2, Star } from 'lucide-react';
-import { CodeBlock } from './CodeBlock';
+
+interface Tags {
+  _id : string , 
+  tagName : string
+}
 
 interface QuestionContentProps {
-  question: QuestionData;
+  question: any;
+  tags: Tags[],
   onVote: (type: 'up' | 'down') => void;
   onBookmark: () => void;
 }
 
 export const QuestionContent: React.FC<QuestionContentProps> = ({
   question,
+  tags,
   onVote,
   onBookmark,
 }) => {
@@ -24,17 +30,16 @@ export const QuestionContent: React.FC<QuestionContentProps> = ({
         {/* Vote Section */}
         <div className='flex md:flex-col items-center gap-4 md:gap-0'>
           <VoteButtons
-            votes={question.upvotes.length}
+            votes={question.upvotes}
             userVote={question.userVote?.length}
             onVote={onVote}
           />
           <button
             onClick={onBookmark}
-            className={`w-10 h-10 rounded-lg border-2 flex items-center justify-center md:mt-4 transition-all ${
-              question.isBookmarked
-                ? 'bg-amber-100 border-amber-500 text-amber-600'
-                : 'border-slate-300 text-slate-600 hover:bg-amber-50 hover:border-amber-400'
-            }`}
+            className={`w-10 h-10 rounded-lg border-2 flex items-center justify-center md:mt-4 transition-all ${question.isBookmarked
+              ? 'bg-amber-100 border-amber-500 text-amber-600'
+              : 'border-slate-300 text-slate-600 hover:bg-amber-50 hover:border-amber-400'
+              }`}
           >
             <Bookmark
               className='w-5 h-5'
@@ -46,23 +51,20 @@ export const QuestionContent: React.FC<QuestionContentProps> = ({
         {/* Content Section */}
         <div className='flex-1 min-w-0'>
           <div className='prose max-w-none mb-4'>
-            <p className='text-slate-700 leading-relaxed whitespace-pre-wrap'>
-              {question.body}
-            </p>
+            <p
+              className='text-slate-700 leading-relaxed whitespace-pre-wrap'
+              dangerouslySetInnerHTML={{ __html: question.body }}
+            />
           </div>
-
-          {question.code && (
-            <CodeBlock code={question.code} language={question.codeLanguage} />
-          )}
 
           {/* Tags */}
           <div className='flex flex-wrap gap-2 mb-6'>
-            {question.tags.map((tag) => (
+            {tags.map((tag) => (
               <span
-                key={tag}
+                key={tag._id}
                 className='px-2 sm:px-3 py-1 sm:py-1.5 bg-blue-50 text-blue-700 text-xs sm:text-sm rounded-md border border-blue-200 hover:bg-blue-100 cursor-pointer whitespace-nowrap'
               >
-                {tag}
+                {tag.tagName}
               </span>
             ))}
           </div>
@@ -90,7 +92,7 @@ export const QuestionContent: React.FC<QuestionContentProps> = ({
                   <div className='w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-sm'>
                     {question.author.name
                       .split(' ')
-                      .map((n) => n[0])
+                      .map((n:any) => n[0])
                       .join('')}
                   </div>
                   <div>

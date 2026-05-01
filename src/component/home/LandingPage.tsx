@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 
 // Landing/Home Page Component
 const LandingPage = () => {
-  const { isAuthenticated } = useSelector((state) => state.auth);
+  const { isAuthenticated } = useSelector((state:any) => state.auth);
 
   return (
     <div className='min-h-screen bg-white'>

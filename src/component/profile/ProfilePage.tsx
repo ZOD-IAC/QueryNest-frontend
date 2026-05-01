@@ -15,16 +15,21 @@ import AskQuestionForm from '../form/AskQuestionForm';
 import { useDispatch, useSelector } from 'react-redux';
 import { showMessage } from '@/features/messageSlice';
 import { BASE_URL } from '@/utils/Setting';
+import { UserProfile } from '../../utils/contants/type';
+
+interface Id {
+  userId  : Number,
+}
 
 // ============================================
 // FILE: pages/ProfilePage.tsx
 // ============================================
-const ProfilePage: React.FC = ({ userId }) => {
+const ProfilePage: React.FC<Id> = ({ userId }) => {
   const param = useSearchParams();
   const dispatch = useDispatch();
   const tab = param?.get('tab');
-  const { isAuthenticated } = useSelector((state) => state.auth);
-  const [user, setUser] = useState();
+  const { isAuthenticated } = useSelector((state:any) => state.auth);
+  const [user, setUser] = useState<UserProfile>();
 
   // State with URL parameter sync (lazy initializer to avoid calling setState in effect)
   const [activeTab, setActiveTab] = useState<TabType>('profile');
@@ -85,7 +90,7 @@ const ProfilePage: React.FC = ({ userId }) => {
       id: 1,
       questionId: 101,
       questionTitle: 'How to handle CORS in Express.js?',
-      content:
+      body:
         'You can handle CORS in Express by using the cors middleware package. First install it: npm install cors. Then in your Express app: const cors = require("cors"); app.use(cors());. For more control, you can configure specific origins, methods, and headers.',
       votes: 156,
       isAccepted: true,
@@ -95,7 +100,7 @@ const ProfilePage: React.FC = ({ userId }) => {
       id: 2,
       questionId: 102,
       questionTitle: 'MongoDB query optimization for large datasets',
-      content:
+      body:
         'For large datasets, proper indexing is crucial. Create compound indexes for frequently queried fields. Use explain() to analyze query performance. Consider using aggregation pipelines for complex queries and limit() with skip() for pagination.',
       votes: 89,
       isAccepted: true,
@@ -105,7 +110,7 @@ const ProfilePage: React.FC = ({ userId }) => {
       id: 3,
       questionId: 103,
       questionTitle: 'React useEffect cleanup function',
-      content:
+      body:
         'The cleanup function in useEffect is important for preventing memory leaks. It runs before the component unmounts and before re-running the effect. Return a function from useEffect that cancels subscriptions, clears timers, or aborts API calls.',
       votes: 64,
       isAccepted: false,

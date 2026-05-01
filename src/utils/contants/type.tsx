@@ -17,28 +17,37 @@ export interface UserProfile {
     answers: number;
     accepted: number;
   };
+  questions : Question[];
 }
 
 export interface Question {
-  id: number;
+  _id: number;
   title: string;
   body: string;
-  tags: string[];
-  upvotes: number;
-  answers: number;
+  tags: Tag[];
+  upvotes: string[];
+  answers: string[];
   views: number;
   createdAt: string;
   isAnswered: boolean;
+  answersCount: number;
+}
+
+export interface Tag {
+  _id : string , 
+  tagName : string
 }
 
 export interface Answer {
   id: number;
   questionId: number;
   questionTitle: string;
-  content: string;
+  body: string;
   votes: number;
   isAccepted: boolean;
   createdAt: string;
+  // question : Question[]
+  userVote?: 'up' | 'down' | null;
 }
 
 export interface Badge {
@@ -58,3 +67,12 @@ export type TabType =
   | 'activity'
   | 'saved'
   | 'ask';
+
+export interface formData {
+  password: string;
+  email: string;
+}
+
+export interface AnswersTabProps {
+  answers: Answer[];
+}

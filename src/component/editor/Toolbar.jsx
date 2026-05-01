@@ -36,6 +36,7 @@ const ICONS = {
   undo:        'M3 7v6h6 M3 13C4.16 8.44 8.1 5 13 5a9 9 0 0 1 0 18 9 9 0 0 1-8.35-5.65',
   redo:        'M21 7v6h-6 M21 13a9 9 0 1 0-2.65 6.35',
   clear:       'M18 6L6 18M6 6l12 12',
+  codeBlock: 'M8 3H4a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h4M16 3h4a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1h-4M9 12h6',
 }
 
 // ── Toolbar presets ───────────────────────────────────────────────────────────
@@ -45,7 +46,7 @@ const PRESETS = {
   full: [
     'textStyle', '|',
     'bold', 'italic', 'underline', 'strike', '|',
-    'ul', 'ol', 'blockquote', 'code', '|',
+    'ul', 'ol', 'blockquote', 'code', 'codeBlock', '|',
     'alignLeft', 'alignCenter', 'alignRight', '|',
     'link', 'hr', '|',
     'undo', 'redo', 'clear',
@@ -192,6 +193,7 @@ const Toolbar = ({ editor, config = 'full' }) => {
         isUnderline: e.isActive('underline'),
         isStrike:    e.isActive('strike'),
         isCode:      e.isActive('code'),
+        isCodeBlock: e.isActive('codeBlock'),
         isLink:      e.isActive('link'),
         // Headings
         isH1:        e.isActive('heading', { level: 1 }),
@@ -247,6 +249,7 @@ const Toolbar = ({ editor, config = 'full' }) => {
     undo:        { label: 'Undo',          iconKey: 'undo',        active: false, disabled: !editorState.canUndo, onClick: () => editor.chain().focus().undo().run() },
     redo:        { label: 'Redo',          iconKey: 'redo',        active: false, disabled: !editorState.canRedo, onClick: () => editor.chain().focus().redo().run() },
     clear:       { label: 'Clear Format',  iconKey: 'clear',       active: false,                     onClick: () => editor.chain().focus().clearNodes().unsetAllMarks().run() },
+    codeBlock: { label: 'Code Block', iconKey: 'codeBlock', active: editorState.isCodeBlock, onClick: () => editor.chain().focus().toggleCodeBlock().run() },
   }
 
   return (
