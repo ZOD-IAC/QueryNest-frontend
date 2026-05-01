@@ -129,6 +129,7 @@ const LoginPage = ({}) => {
                   }
                   className='w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-2.5 text-sm sm:text-base text-black border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all'
                   placeholder='john@example.com'
+                  autoComplete='home email'
                 />
               </div>
             </div>
@@ -148,6 +149,7 @@ const LoginPage = ({}) => {
                   }
                   className='w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-2.5 text-sm sm:text-base text-black border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all'
                   placeholder='••••••••'
+                  autoComplete='password'
                 />
               </div>
             </div>

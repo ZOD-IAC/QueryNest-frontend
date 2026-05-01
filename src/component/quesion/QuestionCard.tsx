@@ -59,9 +59,9 @@ const QuestionCard: React.FC<{ question: Question }> = ({ question }) => {
 
           {/* Tags */}
           <div className='flex flex-wrap gap-2 mb-3'>
-            {question.tags.map((tag) => (
+            {question.tags.map((tag , idx) => (
               <span
-                key={tag?._id}
+                key={idx}
                 className='px-2.5 py-1 bg-slate-100 text-slate-700 text-xs rounded-md hover:bg-slate-200 cursor-pointer'
               >
                 {tag?.tagName}

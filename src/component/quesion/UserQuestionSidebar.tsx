@@ -56,7 +56,7 @@ const UserQuestionsSidebar: React.FC<{ isLoggedIn: boolean }> = ({
         <p className='text-sm text-slate-600 mb-4'>
           Log in to see your questions and track answers
         </p>
-        <Button variant='primary' size='sm' fullWidth>
+        <Button variant='primary' size='sm' fullWidth href='/login'>
           Log In
         </Button>
       </div>

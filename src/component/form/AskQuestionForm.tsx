@@ -22,7 +22,8 @@ const AskQuestionForm: React.FC = () => {
   useEffect(() => {
     setFormData((prev) => ({
       ...prev,
-      tags: tagInput.map((t) => t._id),
+      tags: tagInput,
+      // tags: tagInput.map((t) => t._id),
     }));
   }, [tagInput]);
 
@@ -108,7 +109,7 @@ const AskQuestionForm: React.FC = () => {
       const auth = localStorage.getItem('auth');
       const { token } = JSON.parse(auth);
 
-      const res = await fetch(`${BASE_URL}/question/add-question`, {
+      const res = await fetch(`${BASE_URL}/question/create-question`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

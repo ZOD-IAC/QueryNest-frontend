@@ -87,6 +87,7 @@ function Navbar() {
                   onClick={() => {
                     dispatch(logout());
                     localStorage.removeItem('auth');
+                    window.location.reload();
                   }}
                   className='flex items-center text-sm border-2 gap-1.5 px-1.5 border-rose-600 h-8 rounded-md bg-rose-600 text-white hover:shadow-md'
                 >
