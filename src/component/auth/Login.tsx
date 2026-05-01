@@ -10,6 +10,7 @@ import { loginSuccess } from '@/features/authslice';
 import { useRouter } from 'next/navigation';
 import { loginUser } from '../../api/user/index.js';
 import { formData } from '@/utils/contants/type.js';
+import { isValidEmail } from '@/utils/helper.js';
 
 // Login Page Component
 const LoginPage = ({}) => {
@@ -37,7 +38,7 @@ const LoginPage = ({}) => {
       return false;
     }
 
-    if (email.trim() === '' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    if (isValidEmail(email)) {
       handleError('please enter a valid email');
       return false;
     }
@@ -79,7 +80,7 @@ const LoginPage = ({}) => {
       );
 
       navigation.push('/');
-    } catch (error) {
+    } catch (error: any) {
       const err = error?.message || 'Something went wrong!';
 
       dispatch(

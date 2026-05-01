@@ -9,7 +9,8 @@ export const getDataFromlocal = () => {
 };
 
 export const getHeaders = () => {
-  const auth = localStorage.getItem("auth") || "{}";
+  if (typeof localStorage != "object") return {};
+  const auth = localStorage.getItem("auth") ?? "{}";
   const { token } = JSON.parse(auth);
 
   return {
@@ -18,4 +19,13 @@ export const getHeaders = () => {
       authorization: `Bearer ${token}`,
     },
   };
+};
+
+export const isValidEmail = (email) => {
+  const emialId = email.trim();
+  const regex = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if (emialId != "" && regex.test(emialId)) return true;
+  
+  return false;
 };
