@@ -3,10 +3,11 @@
 import { CheckCircle, Edit, Flag, Share2, Star } from 'lucide-react';
 import { CodeBlock } from './CodeBlock';
 import { VoteButtons } from './VoteButton';
+import { Answer } from '@/utils/contants/type';
 // import { CommentSection } from '../QuestionDetailPage';
 
 interface AnswerCardProps {
-  answer: AnswerData;
+  answer: Answer
   onVote: (type: 'up' | 'down') => void;
   onAccept?: () => void;
   isQuestionAuthor: boolean;
@@ -59,9 +60,9 @@ export const AnswerCard: React.FC<AnswerCardProps> = ({
             <p className='text-slate-700 leading-relaxed whitespace-pre-wrap' dangerouslySetInnerHTML={{__html : answer.body}} />
           </div>
 
-          {answer.code && (
+          {/* {answer.code && (
             <CodeBlock code={answer.code} language={answer.codeLanguage} />
-          )}
+          )} */}
 
           {/* Actions and Author */}
           <div className='flex flex-col md:flex-row items-start md:items-center justify-between pt-4 border-t border-slate-200 gap-4 w-full'>

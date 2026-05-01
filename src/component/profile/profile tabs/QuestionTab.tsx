@@ -75,7 +75,7 @@ export const QuestionsTab: React.FC<QuestionsTabProps> = ({ question }) => {
     'all'
   );
 
-  const filteredQuestions = questions.filter((q) => {
+  const filteredQuestions = questions.filter((q:any) => {
     if (filter === 'answered') return q.answersCount > 0;
     if (filter === 'unanswered') return q.answersCount === 0;
     return true;

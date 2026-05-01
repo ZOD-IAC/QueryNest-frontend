@@ -30,15 +30,15 @@ const QuestionsPage: React.FC = () => {
               <p className='text-slate-600'>24,567 questions</p>
             </div>
 
-            {showAskForm && isAuth ? (
+            {isAuth ? (
               <div className='mb-6'>
-                <AskQuestionForm onClose={() => setShowAskForm(false)} />
+                <AskQuestionForm />
               </div>
-            ) : showAskForm && !isAuth ? (
+            ) :(
               <div className='mb-6'>
                 <LoginPromptBanner />
               </div>
-            ) : null}
+            )}
 
             <SearchFilterBar />
             <div className='mt-4'>

@@ -119,7 +119,7 @@ const QuestionDetailPage: React.FC<pageProp> = ({ questionId }) => {
         message: res.message,
         messageType: 'info'
       }))
-    } catch (error) {
+    } catch (error:any) {
       const err = error?.message || "something went wrong!";
       dispatch(showMessage({
         message: err,
@@ -135,7 +135,7 @@ const QuestionDetailPage: React.FC<pageProp> = ({ questionId }) => {
 
   const handleAcceptAnswer = (answerId: number) => {
     setAnswers((prev) =>
-      prev.map((a) => ({ ...a, isAccepted: a.id === answerId })),
+      prev.map((a:any) => ({ ...a, isAccepted: a.id === answerId })),
     );
   };
 
@@ -189,8 +189,8 @@ const QuestionDetailPage: React.FC<pageProp> = ({ questionId }) => {
                   <AnswerCard
                     key={answer._id}
                     answer={answer}
-                    onVote={(type) => handleAnswerVote(answer.id, type)}
-                    onAccept={() => handleAcceptAnswer(answer.id)}
+                    onVote={(type) => handleAnswerVote(answer._id, type)}
+                    onAccept={() => handleAcceptAnswer(answer._id)}
                     isQuestionAuthor={isQuestionAuthor}
                   />
                 ))}
@@ -219,7 +219,7 @@ const QuestionDetailPage: React.FC<pageProp> = ({ questionId }) => {
 
 const mockAnswers: AnswerData[] = [
   {
-    id: 1,
+    _id: 1,
     content:
       "Here's a complete solution using React Context and TypeScript. First, create an AuthContext to manage the authentication state throughout your app.\n\nThe key points are:\n1. Use Context API to share auth state globally\n2. Store JWT in localStorage\n3. Create a custom hook for easy access\n4. Add proper TypeScript types",
     code: `// AuthContext.tsx
@@ -252,7 +252,7 @@ export const useAuth = () => {
     userVote: null,
   },
   {
-    id: 2,
+    _id: 2,
     content:
       'You can also use a library like react-query or SWR to handle the authentication state. This approach gives you automatic refetching and caching capabilities.',
     author: {

@@ -24,7 +24,7 @@ const QuestionCard: React.FC<{ question: Question }> = ({ question }) => {
         <div className='flex flex-col items-center gap-3 text-sm min-w-[80px]'>
           <div className='flex flex-col items-center'>
             <span className='font-semibold text-slate-700'>
-              {question.votes}
+              {question.upvotes.length}
             </span>
             <span className='text-slate-500 text-xs'>votes</span>
           </div>
@@ -54,7 +54,7 @@ const QuestionCard: React.FC<{ question: Question }> = ({ question }) => {
             {question.title}
           </h3>
           <p className='text-slate-600 text-sm mb-3 line-clamp-2'>
-            {question.content}
+            {question.body}
           </p>
 
           {/* Tags */}

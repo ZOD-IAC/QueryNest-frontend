@@ -3,11 +3,15 @@
 import { useState } from 'react';
 import { VoteButtons } from './VoteButton';
 import { Bookmark, Edit, Flag, Share2, Star } from 'lucide-react';
-import { CodeBlock } from './CodeBlock';
+
+interface Tags {
+  _id : string , 
+  tagName : string
+}
 
 interface QuestionContentProps {
   question: any;
-  tags: Object[],
+  tags: Tags[],
   onVote: (type: 'up' | 'down') => void;
   onBookmark: () => void;
 }
@@ -53,10 +57,6 @@ export const QuestionContent: React.FC<QuestionContentProps> = ({
             />
           </div>
 
-          {question.code && (
-            <CodeBlock code={question.code} language={question.codeLanguage} />
-          )}
-
           {/* Tags */}
           <div className='flex flex-wrap gap-2 mb-6'>
             {tags.map((tag) => (
@@ -92,7 +92,7 @@ export const QuestionContent: React.FC<QuestionContentProps> = ({
                   <div className='w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-sm'>
                     {question.author.name
                       .split(' ')
-                      .map((n) => n[0])
+                      .map((n:any) => n[0])
                       .join('')}
                   </div>
                   <div>

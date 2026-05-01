@@ -8,12 +8,13 @@ import { BASE_URL } from '@/utils/Setting';
 import CustomEditor from '../editor/CustomEditor';
 import DebounceSelect from '../common/DebounceSelect';
 import { addQuestionTag, getQuestionTags } from '../../api/question/index';
+import { Tag } from "../../utils/contants/type"
 
 // Ask Question Form Component
 const AskQuestionForm: React.FC = () => {
   const dispatch = useDispatch();
   const [content, setContent] = useState('');
-  const [tagInput, setTagInput] = useState([]);
+  const [tagInput, setTagInput] = useState<Tag[]>([]);
   const [formData, setFormData] = useState({
     title: '',
     tags: [] as string[],
@@ -22,8 +23,7 @@ const AskQuestionForm: React.FC = () => {
   useEffect(() => {
     setFormData((prev) => ({
       ...prev,
-      tags: tagInput,
-      // tags: tagInput.map((t) => t._id),
+      tags: tagInput.map((t: any) => t._id),
     }));
   }, [tagInput]);
 
@@ -107,7 +107,7 @@ const AskQuestionForm: React.FC = () => {
 
     try {
       const auth = localStorage.getItem('auth');
-      const { token } = JSON.parse(auth);
+      const { token } = JSON.parse(auth as any);
 
       const res = await fetch(`${BASE_URL}/question/create-question`, {
         method: 'POST',

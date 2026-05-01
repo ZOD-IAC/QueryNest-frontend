@@ -7,7 +7,7 @@ import { BASE_URL } from '@/utils/Setting';
 import CustomEditor from '../../component/editor/CustomEditor';
 
 interface prop {
-  questionId: string;
+  questionId: Number;
 }
 // Ask Question Form Component
 const AnswerForm: React.FC<prop> = ({ questionId }) => {

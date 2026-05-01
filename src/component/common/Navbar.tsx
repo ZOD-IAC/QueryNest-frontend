@@ -10,7 +10,7 @@ import UserAvatar from './UserAvatar';
 
 function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const { isAuthenticated, user } = useSelector((state : any) => state.auth);
   const dispatch = useDispatch();
 
   useEffect(() => {
