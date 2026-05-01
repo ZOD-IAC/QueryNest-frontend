@@ -7,11 +7,14 @@ import { User2 } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout, setAuthFromStorage } from '@/features/authslice';
 import UserAvatar from './UserAvatar';
+import { logoutUser } from '@/api/user';
+import { useRouter } from 'next/navigation';
 
 function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { isAuthenticated, user } = useSelector((state : any) => state.auth);
+  const { isAuthenticated, user } = useSelector((state: any) => state.auth);
   const dispatch = useDispatch();
+  const router = useRouter()
 
   useEffect(() => {
     const stored = localStorage.getItem('auth');
@@ -19,6 +22,18 @@ function Navbar() {
       dispatch(setAuthFromStorage(JSON.parse(stored)));
     }
   }, []);
+
+  const handleLogout = async () => {
+    try {
+      await logoutUser();
+    } catch (error) {
+      console.log(error, ": some error occurred");
+    } finally {
+      dispatch(logout());
+      localStorage.removeItem('auth');
+      router?.push('/login');
+    }
+  };
 
   return (
     <nav className='border-b border-slate-200 sticky top-0 bg-white z-50'>
@@ -84,11 +99,7 @@ function Navbar() {
                 </div>
 
                 <button
-                  onClick={() => {
-                    dispatch(logout());
-                    localStorage.removeItem('auth');
-                    window.location.reload();
-                  }}
+                  onClick={handleLogout}
                   className='flex items-center text-sm border-2 gap-1.5 px-1.5 border-rose-600 h-8 rounded-md bg-rose-600 text-white hover:shadow-md'
                 >
                   <LogOut size={15} />

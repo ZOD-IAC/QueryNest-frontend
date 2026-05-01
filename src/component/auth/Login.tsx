@@ -38,7 +38,7 @@ const LoginPage = ({}) => {
       return false;
     }
 
-    if (isValidEmail(email)) {
+    if (!isValidEmail(email)) {
       handleError('please enter a valid email');
       return false;
     }
