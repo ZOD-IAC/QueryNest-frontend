@@ -49,10 +49,6 @@ const AnswerForm: React.FC<prop> = ({ questionId }) => {
 
       const res = await fetch(`${BASE_URL}/answer/api/write-answer/`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          authorization: `Bearer ${token}`,
-        },
         body: JSON.stringify({content : content , questionId : questionId,}),
       });
       const data = await res.json();

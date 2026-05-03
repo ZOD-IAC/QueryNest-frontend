@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import Querynest from '@/icons/Querynest';
 import { User2 } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout, setAuthFromStorage } from '@/features/authslice';
+import { logout } from '@/features/authslice';
 import UserAvatar from './UserAvatar';
 import { logoutUser } from '@/api/user';
 import { useRouter } from 'next/navigation';
@@ -14,20 +14,13 @@ function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { isAuthenticated, user } = useSelector((state: any) => state.auth);
   const dispatch = useDispatch();
-  const router = useRouter()
-
-  useEffect(() => {
-    const stored = localStorage.getItem('auth');
-    if (stored) {
-      dispatch(setAuthFromStorage(JSON.parse(stored)));
-    }
-  }, []);
+  const router = useRouter();
 
   const handleLogout = async () => {
     try {
       await logoutUser();
     } catch (error) {
-      console.log(error, ": some error occurred");
+      console.log(error, ': some error occurred');
     } finally {
       dispatch(logout());
       localStorage.removeItem('auth');

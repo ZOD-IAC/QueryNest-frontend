@@ -6,11 +6,12 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { showMessage } from '@/features/messageSlice';
-import { loginSuccess } from '@/features/authslice';
-import { useRouter } from 'next/navigation';
+import { loginSuccess, setLoading } from '@/features/authslice';
 import { loginUser } from '../../api/user/index.js';
 import { formData } from '@/utils/contants/type.js';
 import { isValidEmail } from '@/utils/helper.js';
+import Button from '@/component/Button/Button';
+import { useRouter } from 'next/navigation.js';
 
 // Login Page Component
 const LoginPage = ({}) => {
@@ -52,9 +53,13 @@ const LoginPage = ({}) => {
   };
 
   const handleSubmit = async () => {
-    if (!handlechecks(formData)) {
-      return;
-    }
+    if (!handlechecks(formData)) return;
+
+    dispatch(
+      setLoading({
+        loading: true,
+      }),
+    );
 
     try {
       const data = await loginUser(formData);
@@ -63,29 +68,24 @@ const LoginPage = ({}) => {
         throw new Error(data.message || 'Something went wrong!');
       }
 
-      dispatch(loginSuccess({ user: data.user, token: data.token }));
+      dispatch(
+        loginSuccess({
+          user: data.user,
+        }),
+      );
+
       dispatch(
         showMessage({
           message: data.message,
           messageType: 'success',
         }),
       );
-      localStorage.setItem(
-        'auth',
-        JSON.stringify({
-          user: data.user,
-          token: data.token,
-          isAuth: true,
-        }),
-      );
 
       navigation.push('/');
     } catch (error: any) {
-      const err = error?.message || 'Something went wrong!';
-
       dispatch(
         showMessage({
-          message: err,
+          message: error?.message || 'Something went wrong!',
           messageType: 'error',
         }),
       );
@@ -156,14 +156,14 @@ const LoginPage = ({}) => {
             </div>
 
             {/* Sign In Button */}
-            <CustomButton
-              variant='primary'
+            <Button
               fullWidth
+              variant='primary'
               size='lg'
               onClick={handleSubmit}
             >
               Sign In
-            </CustomButton>
+            </Button>
           </div>
 
           {/* Register Link */}

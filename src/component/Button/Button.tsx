@@ -9,6 +9,7 @@ interface ButtonProps {
   size?: 'sm' | 'md' | 'lg';
   fullWidth?: boolean;
   onClick?: () => void;
+  onKeyDown?: () => void;
   disabled?: boolean;
   href?: string;
 }
@@ -57,6 +58,7 @@ const Button: React.FC<ButtonProps> = ({
 
   return (
     <button
+      onKeyDown={onClick}
       onClick={onClick}
       disabled={disabled}
       className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${
