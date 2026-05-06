@@ -183,7 +183,7 @@ const ProfilePage: React.FC<Id> = ({ userId }) => {
           <main className='lg:col-span-8'>
             {activeTab === 'profile' && <ProfileTab user={data?.user} />}
             {activeTab === 'questions' && (
-              <QuestionsTab question={data?.questions} />
+              <QuestionsTab question={data?.question} />
             )}
             {activeTab === 'answers' && <AnswersTab answers={answers} />}
             {activeTab === 'badges' && <BadgesTab badges={badges} />}
