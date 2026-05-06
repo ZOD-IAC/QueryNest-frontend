@@ -9,7 +9,7 @@ import { getDataFromlocal } from '@/utils/helper';
 import UserQuestionCard from './components/UserQuestionCard';
 
 // Main Questions Page Component
-const QuestionsPage: React.FC = () => {
+const QuestionsPage: React.FC = ({data}) => {
   const { user, isAuth } = getDataFromlocal();
   const [showAskForm, setShowAskForm] = useState(false);
 
