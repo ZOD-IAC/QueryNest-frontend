@@ -4,8 +4,7 @@ import Navbar from '@/component/common/Navbar';
 import Footer from '@/component/common/Footer';
 import MessagePopUp from '@/component/popup/MessagePopUp';
 import './globals.css';
-import '@/styles/Richtexteditor.css'
-import { cookies } from 'next/headers';
+import '@/styles/Richtexteditor.css';
 import StoreProvider from '@/libs/ReduxProvider';
 import AuthProvider from '@/libs/AuthProvider';
 
@@ -27,39 +26,13 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const cookieStore = cookies();
-
-  let user = null;
-
-  try {
-    const cookieHeader = (await cookieStore).getAll().map((c) => `${c.name}=${c.value}`).join('; ');
-
-    const res = await fetch(`http://localhost:5000/user/me`, {
-      method: 'GET',
-      headers: {
-        Cookie: cookieHeader, // ✅ correct
-      },
-      cache: 'no-store',
-    });
-
-    if (res.ok) {
-      const data = await res.json();
-      user = data.user;
-    }
-  } catch (err) {
-    console.error('Auth fetch failed:', err);
-  }
-
-
   return (
     <html lang='en'>
       <body className={`${Tinosfont.className} antialiased`}>
         <StoreProvider>
           <Navbar />
           <MessagePopUp />
-          <AuthProvider>
-            {children}
-          </AuthProvider>
+          <AuthProvider>{children}</AuthProvider>
           <Footer />
         </StoreProvider>
       </body>

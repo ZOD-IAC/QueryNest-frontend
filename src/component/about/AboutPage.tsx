@@ -13,16 +13,12 @@ import { useSelector } from 'react-redux';
 // FILE: pages/AboutPage.tsx
 // ============================================
 const AboutPage: React.FC = () => {
-  const { isAuthenticated } = useSelector((state) => state.auth);
-  let userId = '';
-  if (isAuthenticated) {
-    const { user } = JSON.parse(localStorage.getItem('auth') as string);
-    userId = user.id;
-  }
+  const { isAuthenticated , user } = useSelector((state) => state.auth);
+
   return (
     <div className='min-h-screen bg-white'>
       <HeroSection />
-      <MissionSection userId={userId} />
+      <MissionSection userId={user?._id} />
       <ValuesSection />
       <StorySection />
       <TeamSection />

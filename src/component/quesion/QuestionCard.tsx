@@ -38,24 +38,25 @@ const QuestionCard: React.FC<{ question: Question }> = ({ question }) => {
           <h3 className='text-lg font-semibold text-blue-600 hover:text-blue-700 cursor-pointer mb-2'>
             {question?.title}
           </h3>
-          <p className='text-slate-600 text-sm mb-3 line-clamp-2'>
-            {question?.body}
-          </p>
+          <p
+            className='text-slate-600 text-sm mb-3 line-clamp-2'
+            dangerouslySetInnerHTML={{ __html: question?.body }}
+          />
 
           {/* Tags */}
           <div className='flex flex-wrap gap-2 mb-3'>
-            {question?.tags?.map((tag , idx) => (
+            {question?.tags.map((tag, idx) => (
               <span
-                key={idx}
+                key={tag._id}
                 className='px-2.5 py-1 bg-slate-100 text-slate-700 text-xs rounded-md hover:bg-slate-200 cursor-pointer'
               >
-                {tag}
+                {tag.tagName}
               </span>
             ))}
           </div>
 
           {/* Author Info */}
-          <div className='flex items-center justify-between text-xs text-slate-500'>
+          {/* <div className='flex items-center justify-between text-xs text-slate-500'>
             <div className='flex items-center gap-2'>
               <div className='w-6 h-6 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center text-white font-semibold'>
                 {question?.author[0]}
@@ -65,7 +66,7 @@ const QuestionCard: React.FC<{ question: Question }> = ({ question }) => {
               </span>
               <span>asked {question.createdAt}</span>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

@@ -11,11 +11,10 @@ import { logoutUser } from '@/api/user';
 import { useRouter } from 'next/navigation';
 
 function Navbar() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { isAuthenticated, user } = useSelector((state: any) => state.auth);
   const dispatch = useDispatch();
   const router = useRouter();
-
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { isAuthenticated, user } = useSelector((state: any) => state.auth);
   const handleLogout = async () => {
     try {
       await logoutUser();
@@ -23,11 +22,9 @@ function Navbar() {
       console.log(error, ': some error occurred');
     } finally {
       dispatch(logout());
-      localStorage.removeItem('auth');
       router?.push('/login');
     }
   };
-
   return (
     <nav className='border-b border-slate-200 sticky top-0 bg-white z-50'>
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>

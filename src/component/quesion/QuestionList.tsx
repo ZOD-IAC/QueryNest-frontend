@@ -1,4 +1,4 @@
-import QuestionCard from "./QuestionCard";
+import QuestionCard from './QuestionCard';
 
 // Types
 interface Question {
@@ -16,7 +16,8 @@ interface Question {
 }
 
 // Question List Component
-const QuestionList: React.FC = () => {
+const QuestionList: React.FC = ({ data }: Question[]) => {
+  if (!data) return;
   const mockQuestions: Question[] = [
     {
       id: 1,
@@ -92,9 +93,11 @@ const QuestionList: React.FC = () => {
 
   return (
     <div className='space-y-4'>
-      {mockQuestions.map((question) => (
-        <QuestionCard key={question.id} question={question} />
-      ))}
+      {data?.map((question: any) => {
+        console.log(question ,'<---- ques');
+        
+        return <QuestionCard key={question._id} question={question} />;
+      })}
     </div>
   );
 };
