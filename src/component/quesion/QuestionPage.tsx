@@ -3,15 +3,23 @@ import React, { useState } from 'react';
 import SearchFilterBar from '../common/Search';
 import QuestionList from './QuestionList';
 import InfoSidebar from './InfoSidebar';
-import LoginPromptBanner from '../common/LoginPromptBanner';
-import AskQuestionForm from '../form/AskQuestionForm';
-import { getDataFromlocal } from '@/utils/helper';
 import UserQuestionCard from './components/UserQuestionCard';
+import { useDispatch, useSelector } from 'react-redux';
+import { showMessage } from '@/features/messageSlice';
 
 // Main Questions Page Component
-const QuestionsPage: React.FC = () => {
-  const { user, isAuth } = getDataFromlocal();
-  const [showAskForm, setShowAskForm] = useState(false);
+const QuestionsPage: React.FC = ({ data }: any) => {
+  const { isAuthenticated, user } = useSelector((state:any) => state.auth);
+  const dispatch = useDispatch();
+  if (!data.ok) {
+    dispatch(
+      showMessage({
+        messageType: 'error',
+        message: data?.message,
+      }),
+    );
+    return;
+  }
 
   return (
     <div className='min-h-screen bg-slate-50'>
@@ -19,7 +27,7 @@ const QuestionsPage: React.FC = () => {
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6'>
         <div className='grid grid-cols-1 lg:grid-cols-12 gap-6'>
           {/* Left Sidebar - User Questions */}
-          <UserQuestionCard isAuthenticated={isAuth} user={user} />
+          <UserQuestionCard isAuthenticated={isAuthenticated} user={user} />
 
           {/* Main Content - Questions List */}
           <main className='lg:col-span-6'>
@@ -30,19 +38,9 @@ const QuestionsPage: React.FC = () => {
               <p className='text-slate-600'>24,567 questions</p>
             </div>
 
-            {isAuth ? (
-              <div className='mb-6'>
-                <AskQuestionForm />
-              </div>
-            ) :(
-              <div className='mb-6'>
-                <LoginPromptBanner />
-              </div>
-            )}
-
             <SearchFilterBar />
             <div className='mt-4'>
-              <QuestionList />
+              <QuestionList data={data?.questions} />
             </div>
 
             {/* Pagination */}

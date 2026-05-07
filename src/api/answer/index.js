@@ -16,3 +16,11 @@ export const AnswerVoting = (body) => {
 
   return res;
 };
+
+
+export const writeAnswer = (body) =>{
+  const url = `/answer/api/write-answer`;
+  const res = POST(url, body);
+
+  return res;
+}

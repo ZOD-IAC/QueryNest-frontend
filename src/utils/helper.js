@@ -23,7 +23,7 @@ export const getHeaders = () => {
 
 export const isValidEmail = (email) => {
   const emialId = email.trim();
-  const regex = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   if (emialId != "" && regex.test(emialId)) return true;
   

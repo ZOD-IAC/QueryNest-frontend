@@ -1,23 +1,28 @@
 import React from 'react';
 import QuestionsPage from '@/component/quesion/QuestionPage';
+import { BASE_URL } from '@/utils/Setting';
 
-type Repo = {
-  name: string
-  stargazers_count: number
-}
- 
-// export const getServerSideProps = (async () => {
-//   // Fetch data from external API
-//   const res = await fetch('')
-//   const repo: Repo = await res.json()
-//   // Pass data to the page via props
-//   return { props: { repo } }
-// }) satisfies GetServerSideProps<{ repo: Repo }>
+const fetchPageData = async (params: any) => {
+  const param = new URLSearchParams(params);
+  const res = await fetch(
+    `${BASE_URL}/question/api/get-questionList?${param}`,
+    {
+      method: 'GET',
+    },
+  );
 
-function page() {
+  const data = await res.json();
+
+  return data;
+};
+
+async function page({ searchParams }: any) {
+  const query = await searchParams;
+  const data = await fetchPageData(query);
+
   return (
     <div>
-      <QuestionsPage />
+      <QuestionsPage data={data} />
     </div>
   );
 }

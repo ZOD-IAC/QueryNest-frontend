@@ -12,14 +12,15 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
+@media (prefers-color-scheme: light) {
+  /* :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+  } */
+  :root {
+    --background: #ffffff;
+    --foreground: #171717;
   }
-}
-input::placeholder {
-  color: #0a0a0a;
 }
 
 body {
@@ -28,33 +29,34 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.btn {
-  background: white;
-  border: 1px solid #ddd;
-  padding: 4px 6px;
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  transition: 0.15s;
-}
-
-.btn:hover {
-  background: #f1f1f1;
-}
-
 code {
-  background: #f4f4f4;
-  border: 1px solid #ddd;
-  border-left: 3px solid #f36d33;
-  color: #434343;
-  page-break-inside: avoid;
-  font-family: monospace;
-  font-size: 15px;
-  line-height: 1.6;
-  margin-bottom: 1.6em;
-  max-width: 100%;
-  overflow: auto;
-  padding: 1em 1.5em;
   display: block;
-  word-wrap: break-word;
+  overflow-x: auto;
+
+  padding: 1rem 1.2rem;
+  margin: 1.2rem 0;
+
+  background: #111827;
+  color: #e5e7eb;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+
+  font-family: "JetBrains Mono", monospace;
+  font-size: 14px;
+  line-height: 1.7;
+
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+
+  transition: all 0.25s ease;
+}
+
+/* Clean scrollbar */
+code::-webkit-scrollbar {
+  height: 8px;
+}
+
+code::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
 }

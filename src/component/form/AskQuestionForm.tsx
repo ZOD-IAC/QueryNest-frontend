@@ -8,7 +8,7 @@ import { BASE_URL } from '@/utils/Setting';
 import CustomEditor from '../editor/CustomEditor';
 import DebounceSelect from '../common/DebounceSelect';
 import { addQuestionTag, getQuestionTags } from '../../api/question/index';
-import { Tag } from "../../utils/contants/type"
+import { Tag } from '../../utils/contants/type';
 
 // Ask Question Form Component
 const AskQuestionForm: React.FC = () => {
@@ -107,14 +107,9 @@ const AskQuestionForm: React.FC = () => {
 
     try {
       const auth = localStorage.getItem('auth');
-      const { token } = JSON.parse(auth as any);
 
       const res = await fetch(`${BASE_URL}/question/create-question`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          authorization: `Bearer ${token}`,
-        },
         body: JSON.stringify({ ...formData, content }),
       });
       const data = await res.json();

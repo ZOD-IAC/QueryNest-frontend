@@ -14,27 +14,6 @@ import { AnswerVoting } from '@/api/answer';
 // ============================================
 // FILE: types/question.types.ts
 // ============================================
-interface QuestionData {
-  _id: number;
-  title: string;
-  content: string;
-  code?: string;
-  codeLanguage?: string;
-  tags: string[];
-  author: {
-    id: number;
-    name: string;
-    username: string;
-    reputation: number;
-    avatar: string;
-  };
-  votes: number;
-  views: number;
-  createdAt: string;
-  updatedAt?: string;
-  isBookmarked: boolean;
-  userVote?: 'up' | 'down' | null;
-}
 
 interface AnswerData {
   _id: number;
@@ -54,52 +33,25 @@ interface AnswerData {
   updatedAt?: string;
   userVote?: 'up' | 'down' | null;
 }
-interface pageProp {
-  questionId: string;
-}
+
 // ============================================
 // FILE: pages/QuestionDetailPage.tsx
 // ============================================
-const QuestionDetailPage: React.FC<pageProp> = ({ questionId }) => {
-  const [question, setQuestion] = useState<QuestionData>();
-  const [answers, setAnswers] = useState<AnswerData[]>([]);
-  const [tags, setTags] = useState([])
-  const [content, setContent] = useState('');
-
-  const handleSubmit = () => {
-    // send this to backend
-  };
-
+const QuestionDetailPage: React.FC<any> = ({ data }) => {
   const dispatch = useDispatch();
+  if (!data.ok) {
+    dispatch(
+      showMessage({
+        message: data.message,
+        messageType: 'error',
+      }),
+    );
+    return;
+  }
 
-  useEffect(() => {
-    console.log("run 1")
-    const fetchQuestion = async () => {
-      const res = await fetch(
-        `${BASE_URL}/question/api/get-question/${questionId}`,
-        {
-          method: 'GET',
-        },
-      );
-
-      const data = await res.json();
-
-      if (!data) {
-        dispatch(
-          showMessage({
-            message: data.message,
-            messageType: 'error',
-          }),
-        );
-        return;
-      }
-      setQuestion(data?.data?.question);
-      setTags(data?.data?.tags)
-      setAnswers(data?.data?.question?.answers);
-    };
-
-    fetchQuestion();
-  }, []);
+  const { question, tags } = data?.data;
+  const { answers } = question
+  console.log(answers ,'<--- answer');
 
   const handleQuestionVote = (type: 'up' | 'down') => {
     // setQuestion((prev) => ({
@@ -119,7 +71,7 @@ const QuestionDetailPage: React.FC<pageProp> = ({ questionId }) => {
         message: res.message,
         messageType: 'info'
       }))
-    } catch (error:any) {
+    } catch (error: any) {
       const err = error?.message || "something went wrong!";
       dispatch(showMessage({
         message: err,
@@ -131,12 +83,6 @@ const QuestionDetailPage: React.FC<pageProp> = ({ questionId }) => {
 
   const handleBookmark = () => {
     // setQuestion((prev) => ({ ...prev, isBookmarked: !prev.isBookmarked }));
-  };
-
-  const handleAcceptAnswer = (answerId: number) => {
-    setAnswers((prev) =>
-      prev.map((a:any) => ({ ...a, isAccepted: a.id === answerId })),
-    );
   };
 
   const isQuestionAuthor = true;
@@ -185,12 +131,12 @@ const QuestionDetailPage: React.FC<pageProp> = ({ questionId }) => {
                 {answers.length} {answers.length === 1 ? 'Answer' : 'Answers'}
               </h2>
               <div className='space-y-4 sm:space-y-6'>
-                {answers.map((answer) => (
+                {answers.map((answer:AnswerData) => (
                   <AnswerCard
                     key={answer._id}
                     answer={answer}
                     onVote={(type) => handleAnswerVote(answer._id, type)}
-                    onAccept={() => handleAcceptAnswer(answer._id)}
+                    // onAccept={() => handleAcceptAnswer(answer._id)}
                     isQuestionAuthor={isQuestionAuthor}
                   />
                 ))}
@@ -198,13 +144,6 @@ const QuestionDetailPage: React.FC<pageProp> = ({ questionId }) => {
             </div>
 
             <AnswerForm questionId={question?._id} />
-            {/* <CustomEditor value={content} onChange={setContent} /> */}
-            <button
-              onClick={handleSubmit}
-              className='mt-4 px-6 py-2 bg-black text-white rounded-lg'
-            >
-              Submit
-            </button>
           </main>
 
           {/* Sidebar */}
@@ -217,56 +156,5 @@ const QuestionDetailPage: React.FC<pageProp> = ({ questionId }) => {
   );
 };
 
-const mockAnswers: AnswerData[] = [
-  {
-    _id: 1,
-    content:
-      "Here's a complete solution using React Context and TypeScript. First, create an AuthContext to manage the authentication state throughout your app.\n\nThe key points are:\n1. Use Context API to share auth state globally\n2. Store JWT in localStorage\n3. Create a custom hook for easy access\n4. Add proper TypeScript types",
-    code: `// AuthContext.tsx
-import React, { createContext, useContext, useState } from 'react';
-
-interface AuthContextType {
-  user: User | null;
-  login: (email: string, password: string) => Promise<void>;
-  logout: () => void;
-}
-
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) throw new Error('useAuth must be used within AuthProvider');
-  return context;
-};`,
-    codeLanguage: 'typescript',
-    author: {
-      id: 2,
-      name: 'Sarah Wilson',
-      username: 'sarahw',
-      reputation: 8540,
-      avatar: '',
-    },
-    votes: 156,
-    isAccepted: true,
-    createdAt: '1 hour ago',
-    userVote: null,
-  },
-  {
-    _id: 2,
-    content:
-      'You can also use a library like react-query or SWR to handle the authentication state. This approach gives you automatic refetching and caching capabilities.',
-    author: {
-      id: 3,
-      name: 'Mike Chen',
-      username: 'mikechen',
-      reputation: 4230,
-      avatar: '',
-    },
-    votes: 23,
-    isAccepted: false,
-    createdAt: '30 minutes ago',
-    userVote: null,
-  },
-];
 
 export default QuestionDetailPage;

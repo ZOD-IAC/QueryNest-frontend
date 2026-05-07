@@ -15,3 +15,10 @@ export const addQuestionTag = (body) => {
 
   return res;
 };
+
+export const getUserRecentQuestion = (user) =>{
+  const url = `/question/api/get-questionList?user=${user}&limit=2&sort=1`
+  const res = GET(url);
+
+  return res;
+}

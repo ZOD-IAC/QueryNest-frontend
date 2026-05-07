@@ -29,7 +29,7 @@ const ProfilePage: React.FC<Id> = ({ userId }) => {
   const dispatch = useDispatch();
   const tab = param?.get('tab');
   const { isAuthenticated } = useSelector((state:any) => state.auth);
-  const [user, setUser] = useState<UserProfile>();
+  const [data, setData] = useState<any>();
 
   // State with URL parameter sync (lazy initializer to avoid calling setState in effect)
   const [activeTab, setActiveTab] = useState<TabType>('profile');
@@ -52,7 +52,7 @@ const ProfilePage: React.FC<Id> = ({ userId }) => {
           })
         );
       }
-      setUser(data.user);
+      setData(data?.data);
     };
 
     fetchUser();
@@ -171,20 +171,19 @@ const ProfilePage: React.FC<Id> = ({ userId }) => {
 
   const isOwnProfile = true; // Change to false to see non-owner view
 
-  if (!user) return;
-
+  if (!data) return;  
   return (
     <div className='min-h-screen bg-slate-50'>
-      <ProfileHeader user={user} isOwnProfile={isOwnProfile} />
+      <ProfileHeader user={data?.user} isOwnProfile={isOwnProfile} />
       <TabNavigation activeTab={activeTab} onTabChange={handleTabChange} />
 
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8'>
         <div className='grid lg:grid-cols-12 gap-6'>
           {/* Main Content */}
           <main className='lg:col-span-8'>
-            {activeTab === 'profile' && <ProfileTab user={user} />}
+            {activeTab === 'profile' && <ProfileTab user={data?.user} />}
             {activeTab === 'questions' && (
-              <QuestionsTab question={user?.questions} />
+              <QuestionsTab question={data?.question} />
             )}
             {activeTab === 'answers' && <AnswersTab answers={answers} />}
             {activeTab === 'badges' && <BadgesTab badges={badges} />}
@@ -195,7 +194,7 @@ const ProfilePage: React.FC<Id> = ({ userId }) => {
 
           {/* Sidebar */}
           <aside className='lg:col-span-4'>
-            <ProfileSidebar user={user} />
+            <ProfileSidebar user={data?.user} />
           </aside>
         </div>
       </div>

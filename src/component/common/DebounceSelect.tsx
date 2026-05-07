@@ -16,7 +16,8 @@ export interface DebounceSelectProps {
   /** Async fn that resolves to matching tags for a query string */
   fetchTags: (query: string) => Promise<Tag[]>;
   /** Called when the user wants to create a brand-new tag by name */
-  createTag: (name: string) => Promise<Tag | null>;
+  createTag?: (name: string) => Promise<Tag | null>;
+  allowCreateTag?: boolean; 
   multiple?: boolean;
   /** Omit for unlimited selection */
   max?: number;
@@ -46,6 +47,7 @@ export default function DebounceSelect({
   fetchTags,
   createTag,
   multiple = true,
+  allowCreateTag = true,
   max,
   placeholder = "Search or add tag…",
   debounceMs = 300,
@@ -154,6 +156,8 @@ export default function DebounceSelect({
   // ── Create a new tag via prop, then add it ────────────────────────────────
   const handleCreate = useCallback(async () => {
     const name = trimmedInput;
+    if(!allowCreateTag) return;
+    if (typeof createTag !== 'function') return;
     if (!name || creating || isAtMax) return;
 
     setCreating(true);
@@ -275,7 +279,7 @@ export default function DebounceSelect({
             )}
 
             {/* Empty */}
-            {!loading && suggestions.length === 0 && !canCreate && (
+            {!loading && suggestions.length === 0 && (!allowCreateTag || !canCreate) && (
               <li className={styles.meta}>No matching tags</li>
             )}
 
@@ -299,7 +303,7 @@ export default function DebounceSelect({
               ))}
 
             {/* Create option */}
-            {!loading && canCreate && !isAtMax && (
+            {allowCreateTag && !loading && canCreate && !isAtMax && (
               <li
                 role="option"
                 aria-selected={activeIndex === suggestions.length}

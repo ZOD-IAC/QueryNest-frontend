@@ -2,7 +2,7 @@
 // FILE: types/profile.types.ts
 // ============================================
 export interface UserProfile {
-  id: number;
+  _id: string;
   name: string;
   email: string;
   bio: string;
@@ -28,6 +28,7 @@ export interface Question {
   upvotes: string[];
   answers: string[];
   views: number;
+  user : UserProfile;
   createdAt: string;
   isAnswered: boolean;
   answersCount: number;

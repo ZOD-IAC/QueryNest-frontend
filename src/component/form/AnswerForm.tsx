@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { showMessage } from '@/features/messageSlice';
 import { BASE_URL } from '@/utils/Setting';
 import CustomEditor from '../../component/editor/CustomEditor';
+import { writeAnswer } from '@/api/answer';
 
 interface prop {
   questionId: Number;
@@ -37,25 +38,14 @@ const AnswerForm: React.FC<prop> = ({ questionId }) => {
   const handleSubmit = async () => {
     if (!handleCheck()) {
       dispatch(showMessage({
-        message :'check all the fields',
-        messageType : 'error'
+        message: 'check all the fields',
+        messageType: 'error'
       }));
       return;
     }
 
     try {
-      const auth = localStorage.getItem('auth');
-      const { token } = JSON.parse(auth as string);
-
-      const res = await fetch(`${BASE_URL}/answer/api/write-answer/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({content : content , questionId : questionId,}),
-      });
-      const data = await res.json();
+      const data = await writeAnswer({ content: content, questionId: questionId })
 
       if (!data.ok) {
         handleError(data?.message);
@@ -79,12 +69,12 @@ const AnswerForm: React.FC<prop> = ({ questionId }) => {
           <label className='block text-sm font-medium text-slate-900 mb-2'>
             Description
           </label>
-         
+
           <p className='text-xs text-slate-500 mt-1'>
             Provide context, what you&apos;ve tried, and what you expect
           </p>
         </div>
-        
+
         <CustomEditor
           value={content}
           onChange={setContent}
