@@ -1,55 +1,39 @@
 import { Eye, MessageSquare, ThumbsUp } from 'lucide-react';
 import Button from '../Button/Button';
-
-// Types
-interface Question {
-  id: number;
-  title: string;
-  content: string;
-  author: string;
-  authorAvatar: string;
-  tags: string[];
-  votes: number;
-  answers: number;
-  views: number;
-  createdAt: string;
-  isAnswered: boolean;
-}
+import { useEffect, useState } from 'react';
+import { getUserRecentQuestion } from '@/api/question';
+import { useDispatch } from 'react-redux';
+import { showMessage } from '@/features/messageSlice';
+import { Question } from '@/utils/contants/type';
+import Link from 'next/link';
 
 // User Questions Sidebar Component
-const UserQuestionsSidebar: React.FC<{ isLoggedIn: boolean }> = ({
-  isLoggedIn,
+const UserQuestionsSidebar: React.FC<{ isAuthenticated: boolean, user: string }> = ({
+  isAuthenticated,
+  user
 }) => {
-  const userQuestions: Question[] = [
-    {
-      id: 101,
-      title: 'How to handle CORS in Express?',
-      content: '',
-      author: 'Current User',
-      authorAvatar: '',
-      tags: ['Express', 'CORS'],
-      votes: 12,
-      answers: 3,
-      views: 456,
-      createdAt: '2 days ago',
-      isAnswered: true,
-    },
-    {
-      id: 102,
-      title: 'React useState vs useReducer',
-      content: '',
-      author: 'Current User',
-      authorAvatar: '',
-      tags: ['React', 'Hooks'],
-      votes: 8,
-      answers: 1,
-      views: 234,
-      createdAt: '1 week ago',
-      isAnswered: false,
-    },
-  ];
+  const dispatch = useDispatch();
+  const [userQuestions, setUserQuesrion] = useState([])
 
-  if (!isLoggedIn) {
+  useEffect(() => {
+    const fetchUserQuestion = async () => {
+      const res = await getUserRecentQuestion(user);
+
+      if (!res.ok) {
+        dispatch(showMessage({
+          messageType: 'error',
+          message: res?.message || 'Unable to fetch user&apos;s recent question'
+        }))
+        return;
+      }
+      setUserQuesrion(res?.questions)
+    }
+
+
+    fetchUserQuestion();
+  }, [])
+
+  if (!isAuthenticated) {
     return (
       <div className='bg-slate-50 border border-slate-200 rounded-lg p-6'>
         <h3 className='font-semibold text-slate-800 mb-3'>Your Questions</h3>
@@ -63,6 +47,8 @@ const UserQuestionsSidebar: React.FC<{ isLoggedIn: boolean }> = ({
     );
   }
 
+  if (!userQuestions.length) return;
+
   return (
     <div className='bg-white border border-slate-200 rounded-lg p-4'>
       <div className='flex items-center justify-between mb-4'>
@@ -72,26 +58,27 @@ const UserQuestionsSidebar: React.FC<{ isLoggedIn: boolean }> = ({
         </span>
       </div>
       <div className='space-y-3'>
-        {userQuestions.map((q) => (
+        {userQuestions.map((q: Question) => (
           <div
-            key={q.id}
+            key={q._id}
             className='pb-3 border-b border-slate-100 last:border-0'
           >
-            <h4 className='text-sm font-medium text-slate-800 hover:text-blue-600 cursor-pointer mb-2 line-clamp-2'>
-              {q.title}
-            </h4>
+            <Link href={`/question/${q._id}`}>
+              <h4 className='text-sm font-medium text-slate-800 hover:text-blue-600 cursor-pointer mb-2 line-clamp-2'>
+                {q.title}
+              </h4>
+            </Link>
             <div className='flex items-center gap-3 text-xs text-slate-500'>
               <span className='flex items-center gap-1'>
                 <ThumbsUp className='w-3 h-3' />
-                {q.votes}
+                {q.upvotes}
               </span>
               <span
-                className={`flex items-center gap-1 ${
-                  q.isAnswered ? 'text-green-600' : ''
-                }`}
+                className={`flex items-center gap-1 ${q.isAnswered ? 'text-green-600' : ''
+                  }`}
               >
                 <MessageSquare className='w-3 h-3' />
-                {q.answers}
+                {q.answersCount}
               </span>
               <span className='flex items-center gap-1'>
                 <Eye className='w-3 h-3' />

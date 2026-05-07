@@ -14,27 +14,6 @@ import { AnswerVoting } from '@/api/answer';
 // ============================================
 // FILE: types/question.types.ts
 // ============================================
-interface QuestionData {
-  _id: number;
-  title: string;
-  content: string;
-  code?: string;
-  codeLanguage?: string;
-  tags: string[];
-  author: {
-    id: number;
-    name: string;
-    username: string;
-    reputation: number;
-    avatar: string;
-  };
-  votes: number;
-  views: number;
-  createdAt: string;
-  updatedAt?: string;
-  isBookmarked: boolean;
-  userVote?: 'up' | 'down' | null;
-}
 
 interface AnswerData {
   _id: number;
@@ -72,6 +51,7 @@ const QuestionDetailPage: React.FC<any> = ({ data }) => {
 
   const { question, tags } = data?.data;
   const { answers } = question
+  console.log(answers ,'<--- answer');
 
   const handleQuestionVote = (type: 'up' | 'down') => {
     // setQuestion((prev) => ({
@@ -176,56 +156,5 @@ const QuestionDetailPage: React.FC<any> = ({ data }) => {
   );
 };
 
-const mockAnswers: AnswerData[] = [
-  {
-    _id: 1,
-    content:
-      "Here's a complete solution using React Context and TypeScript. First, create an AuthContext to manage the authentication state throughout your app.\n\nThe key points are:\n1. Use Context API to share auth state globally\n2. Store JWT in localStorage\n3. Create a custom hook for easy access\n4. Add proper TypeScript types",
-    code: `// AuthContext.tsx
-import React, { createContext, useContext, useState } from 'react';
-
-interface AuthContextType {
-  user: User | null;
-  login: (email: string, password: string) => Promise<void>;
-  logout: () => void;
-}
-
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) throw new Error('useAuth must be used within AuthProvider');
-  return context;
-};`,
-    codeLanguage: 'typescript',
-    author: {
-      id: 2,
-      name: 'Sarah Wilson',
-      username: 'sarahw',
-      reputation: 8540,
-      avatar: '',
-    },
-    votes: 156,
-    isAccepted: true,
-    createdAt: '1 hour ago',
-    userVote: null,
-  },
-  {
-    _id: 2,
-    content:
-      'You can also use a library like react-query or SWR to handle the authentication state. This approach gives you automatic refetching and caching capabilities.',
-    author: {
-      id: 3,
-      name: 'Mike Chen',
-      username: 'mikechen',
-      reputation: 4230,
-      avatar: '',
-    },
-    votes: 23,
-    isAccepted: false,
-    createdAt: '30 minutes ago',
-    userVote: null,
-  },
-];
 
 export default QuestionDetailPage;
