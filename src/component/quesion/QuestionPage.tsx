@@ -3,16 +3,13 @@ import React, { useState } from 'react';
 import SearchFilterBar from '../common/Search';
 import QuestionList from './QuestionList';
 import InfoSidebar from './InfoSidebar';
-import LoginPromptBanner from '../common/LoginPromptBanner';
-import AskQuestionForm from '../form/AskQuestionForm';
-import { getDataFromlocal } from '@/utils/helper';
 import UserQuestionCard from './components/UserQuestionCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { showMessage } from '@/features/messageSlice';
 
 // Main Questions Page Component
-const QuestionsPage: React.FC = ({ data }) => {
-  const { isAuthenticated, user } = useSelector((state) => state.auth);
+const QuestionsPage: React.FC = ({ data }: any) => {
+  const { isAuthenticated, user } = useSelector((state:any) => state.auth);
   const dispatch = useDispatch();
   if (!data.ok) {
     dispatch(
