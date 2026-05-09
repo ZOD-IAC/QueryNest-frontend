@@ -11,6 +11,6 @@ export const registerUser = async (body) => {
 };
 
 export const logoutUser = async () => {
-  const res = await POST('user/api/logout');
+  const res = await POST('/user/api/logout');
   return res;
 };

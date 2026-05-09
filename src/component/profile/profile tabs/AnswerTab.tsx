@@ -4,9 +4,10 @@
 import { CheckCircle, Clock, ThumbsUp } from 'lucide-react';
 import { Answer } from '../../../utils/contants/type';
 import React, { useEffect, useState } from 'react';
-import { AnswersTabProps } from "@/utils/contants/type"
-import { getAnswers } from "../../../api/answer/index"
-import {getDataFromlocal} from "@/utils/helper"
+import { AnswersTabProps } from '@/utils/contants/type';
+import { getAnswers } from '../../../api/answer/index';
+import { getDataFromlocal } from '@/utils/helper';
+import { useSelector } from 'react-redux';
 const AnswerCard: React.FC<{ answer: Answer }> = ({ answer }) => {
   return (
     <div className='bg-white rounded-lg border border-slate-200 p-5 hover:shadow-md transition-shadow'>
@@ -27,11 +28,17 @@ const AnswerCard: React.FC<{ answer: Answer }> = ({ answer }) => {
         <div className='flex-1'>
           <h3 className='text-lg font-semibold text-slate-900 mb-2'>
             Answer to:{' '}
-            <a href={`/question/${answer.question[0]._id}`} className='text-blue-600 hover:text-blue-700 cursor-pointer'>
+            <a
+              href={`/question/${answer.question[0]._id}`}
+              className='text-blue-600 hover:text-blue-700 cursor-pointer'
+            >
               {answer.question[0]?.title}
             </a>
           </h3>
-          <p className='text-slate-600 text-sm mb-3 line-clamp-3' dangerouslySetInnerHTML={{__html : answer.body}}/>
+          <p
+            className='text-slate-600 text-sm mb-3 line-clamp-3'
+            dangerouslySetInnerHTML={{ __html: answer.body }}
+          />
           <div className='flex items-center gap-2 text-xs text-slate-500'>
             <Clock className='w-3 h-3' />
             <span>answered {answer.createdAt}</span>
@@ -43,37 +50,37 @@ const AnswerCard: React.FC<{ answer: Answer }> = ({ answer }) => {
 };
 
 export const AnswersTab: React.FC<AnswersTabProps> = () => {
-  const [answers , setAnswers] = useState([]);
+  const [answers, setAnswers] = useState([]);
   const [filter, setFilter] = useState<'all' | 'accepted'>('all');
-  const {user} = getDataFromlocal();
+  const { user } = useSelector((s) => s.auth);
 
-  useEffect(()=>{
-    const fetchAnswers = async () =>{
+  useEffect(() => {
+    const fetchAnswers = async () => {
       try {
-        if(!user) return;
+        if (!user) return;
         const params = {
-          userId : user.id,
-        }
+          userId: user.id,
+        };
         const res = await getAnswers(params);
-        if(!res.ok) {
+        if (!res.ok) {
           throw new Error(res.message);
         }
-        setAnswers(res.data)
-        
+
+        setAnswers(res.data);
       } catch (error) {
-        const err = error?.message || "something went wrong!"
-        console.log(err)
+        const err = error?.message || 'something went wrong!';
+        console.log(err);
       }
-    }
+    };
     fetchAnswers();
-   } ,[]);
+  }, []);
 
   const filteredAnswers = answers?.filter((a) => {
     if (filter === 'accepted') return a.isAccepted;
     return true;
   });
 
-  console.log(answers ,'<---- asnwer')
+  console.log(answers, '<---- asnwer');
 
   return (
     <div className='space-y-4'>

@@ -2,36 +2,39 @@ import { Eye, MessageSquare, ThumbsUp } from 'lucide-react';
 import Button from '../Button/Button';
 import { useEffect, useState } from 'react';
 import { getUserRecentQuestion } from '@/api/question';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { showMessage } from '@/features/messageSlice';
-import { Question } from '@/utils/contants/type';
+import { Question, UserProfile } from '@/utils/contants/type';
 import Link from 'next/link';
 
 // User Questions Sidebar Component
-const UserQuestionsSidebar: React.FC<{ isAuthenticated: boolean, user: string }> = ({
-  isAuthenticated,
-  user
-}) => {
+const UserQuestionsSidebar: React.FC<{
+  isAuthenticated: boolean;
+  user: UserProfile;
+}> = ({ isAuthenticated, user }) => {
   const dispatch = useDispatch();
-  const [userQuestions, setUserQuesrion] = useState([])
+  const [userQuestions, setUserQuestion] = useState([]);
 
   useEffect(() => {
+    if (!user) return;
     const fetchUserQuestion = async () => {
-      const res = await getUserRecentQuestion(user);
+      const res = await getUserRecentQuestion(user?.id);
 
       if (!res.ok) {
-        dispatch(showMessage({
-          messageType: 'error',
-          message: res?.message || 'Unable to fetch user&apos;s recent question'
-        }))
+        dispatch(
+          showMessage({
+            messageType: 'error',
+            message:
+              res?.message || 'Unable to fetch user&apos;s recent question',
+          }),
+        );
         return;
       }
-      setUserQuesrion(res?.questions)
-    }
-
+      setUserQuestion(res?.questions);
+    };
 
     fetchUserQuestion();
-  }, [])
+  }, []);
 
   if (!isAuthenticated) {
     return (
@@ -74,8 +77,9 @@ const UserQuestionsSidebar: React.FC<{ isAuthenticated: boolean, user: string }>
                 {q.upvotes}
               </span>
               <span
-                className={`flex items-center gap-1 ${q.isAnswered ? 'text-green-600' : ''
-                  }`}
+                className={`flex items-center gap-1 ${
+                  q.isAnswered ? 'text-green-600' : ''
+                }`}
               >
                 <MessageSquare className='w-3 h-3' />
                 {q.answersCount}
@@ -88,7 +92,12 @@ const UserQuestionsSidebar: React.FC<{ isAuthenticated: boolean, user: string }>
           </div>
         ))}
       </div>
-      <Button variant='ghost' size='sm' fullWidth href='profile?tab=questions'>
+      <Button
+        variant='ghost'
+        size='sm'
+        fullWidth
+        href={`/profile/${user}?tab=questions`}
+      >
         View All
       </Button>
     </div>

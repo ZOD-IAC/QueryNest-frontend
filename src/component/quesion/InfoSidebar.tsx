@@ -1,7 +1,40 @@
+import { getStatsData } from '@/api/question';
+import { showMessage } from '@/features/messageSlice';
 import { Tag, TrendingUp } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 // Stats and Info Sidebar Component
 const InfoSidebar: React.FC = () => {
+  const dispatch = useDispatch();
+  const [statsData, setStatsData] = useState({
+    answersToday: 0,
+    questionsToday: 0,
+    activeUsersToday: 0,
+  });
+
+  useEffect(() => {
+    const fetchStatsData = async () => {
+      const res = await getStatsData();
+
+      if (!res.ok) {
+        dispatch(
+          showMessage({
+            messageType: 'error',
+            message: res.message,
+          }),
+        );
+        return;
+      }
+
+      setStatsData(res.stats);
+    };
+
+    fetchStatsData();
+  }, []);
+
+  console.log(statsData, '<--- stast data');
+
   return (
     <div className='space-y-4'>
       {/* Quick Stats */}
@@ -13,15 +46,15 @@ const InfoSidebar: React.FC = () => {
         <div className='space-y-2 text-sm'>
           <div className='flex justify-between'>
             <span className='text-blue-100'>Questions</span>
-            <span className='font-semibold'>1,247</span>
+            <span className='font-semibold'>{statsData?.questionsToday}</span>
           </div>
           <div className='flex justify-between'>
             <span className='text-blue-100'>Answers</span>
-            <span className='font-semibold'>3,892</span>
+            <span className='font-semibold'>{statsData?.answersToday}</span>
           </div>
           <div className='flex justify-between'>
             <span className='text-blue-100'>Active Users</span>
-            <span className='font-semibold'>12,451</span>
+            <span className='font-semibold'>{statsData?.activeUsersToday}</span>
           </div>
         </div>
       </div>
@@ -44,7 +77,7 @@ const InfoSidebar: React.FC = () => {
                 </span>
                 <span className='text-slate-400 text-xs'>+125 today</span>
               </div>
-            )
+            ),
           )}
         </div>
       </div>

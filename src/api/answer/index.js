@@ -5,6 +5,7 @@ export const getAnswers = (body = {}) => {
   const params = new URLSearchParams(body);
   const url = `/answer/api/get-answers?${params.toString()}`;
   const res = GET(url);
+  console.log(res ,'<000000 res')
 
   return res;
 };

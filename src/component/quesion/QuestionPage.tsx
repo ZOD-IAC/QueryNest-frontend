@@ -9,7 +9,7 @@ import { showMessage } from '@/features/messageSlice';
 
 // Main Questions Page Component
 const QuestionsPage: React.FC = ({ data }: any) => {
-  const { isAuthenticated, user } = useSelector((state:any) => state.auth);
+  const { isAuthenticated, user } = useSelector((state: any) => state.auth);
   const dispatch = useDispatch();
   if (!data.ok) {
     dispatch(
@@ -35,7 +35,9 @@ const QuestionsPage: React.FC = ({ data }: any) => {
               <h2 className='text-2xl font-bold text-slate-800 mb-2'>
                 All Questions
               </h2>
-              <p className='text-slate-600'>24,567 questions</p>
+              <p className='text-slate-600'>
+                {data?.questions?.length || 0} questions
+              </p>
             </div>
 
             <SearchFilterBar />

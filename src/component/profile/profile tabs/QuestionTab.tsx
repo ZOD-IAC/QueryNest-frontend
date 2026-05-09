@@ -23,12 +23,14 @@ const QuestionCard: React.FC<{ question: Question }> = ({ question }) => {
             <span className='text-slate-500 text-xs'>votes</span>
           </div>
           <div
-            className={`flex flex-col items-center ${question.isAnswered ? 'text-green-600' : 'text-slate-500'
-              }`}
+            className={`flex flex-col items-center ${
+              question.isAnswered ? 'text-green-600' : 'text-slate-500'
+            }`}
           >
             <span
-              className={`font-semibold ${question.isAnswered ? 'bg-green-100 px-2 py-1 rounded' : ''
-                }`}
+              className={`font-semibold ${
+                question.isAnswered ? 'bg-green-100 px-2 py-1 rounded' : ''
+              }`}
             >
               {question.answersCount}
             </span>
@@ -46,9 +48,10 @@ const QuestionCard: React.FC<{ question: Question }> = ({ question }) => {
               {question.title}
             </h3>
           </Link>
-          <p className='text-slate-600 text-sm mb-3 line-clamp-2'>
-            {question.body}
-          </p>
+          <p
+            className='text-slate-600 text-sm mb-3 line-clamp-2'
+            dangerouslySetInnerHTML={{ __html: question.body }}
+          />
           <div className='flex flex-wrap gap-2 mb-2'>
             {question?.tags.map((tag) => (
               <span
@@ -72,7 +75,7 @@ const QuestionCard: React.FC<{ question: Question }> = ({ question }) => {
 export const QuestionsTab: React.FC<QuestionsTabProps> = ({ question }) => {
   const [questions, setQuestions] = useState(question || []);
   const [filter, setFilter] = useState<'all' | 'answered' | 'unanswered'>(
-    'all'
+    'all',
   );
 
   const filteredQuestions = questions.filter((q: any) => {
@@ -90,28 +93,31 @@ export const QuestionsTab: React.FC<QuestionsTabProps> = ({ question }) => {
         <div className='flex gap-2'>
           <button
             onClick={() => setFilter('all')}
-            className={`px-3 py-1.5 rounded-lg text-sm font-medium ${filter === 'all'
-              ? 'bg-blue-600 text-white'
-              : 'bg-slate-100 text-slate-700'
-              }`}
+            className={`px-3 py-1.5 rounded-lg text-sm font-medium ${
+              filter === 'all'
+                ? 'bg-blue-600 text-white'
+                : 'bg-slate-100 text-slate-700'
+            }`}
           >
             All
           </button>
           <button
             onClick={() => setFilter('answered')}
-            className={`px-3 py-1.5 rounded-lg text-sm font-medium ${filter === 'answered'
-              ? 'bg-green-600 text-white'
-              : 'bg-slate-100 text-slate-700'
-              }`}
+            className={`px-3 py-1.5 rounded-lg text-sm font-medium ${
+              filter === 'answered'
+                ? 'bg-green-600 text-white'
+                : 'bg-slate-100 text-slate-700'
+            }`}
           >
             Answered
           </button>
           <button
             onClick={() => setFilter('unanswered')}
-            className={`px-3 py-1.5 rounded-lg text-sm font-medium ${filter === 'unanswered'
-              ? 'bg-amber-600 text-white'
-              : 'bg-slate-100 text-slate-700'
-              }`}
+            className={`px-3 py-1.5 rounded-lg text-sm font-medium ${
+              filter === 'unanswered'
+                ? 'bg-amber-600 text-white'
+                : 'bg-slate-100 text-slate-700'
+            }`}
           >
             Unanswered
           </button>

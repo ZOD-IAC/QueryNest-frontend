@@ -7,7 +7,11 @@ import { showMessage } from '@/features/messageSlice';
 import { BASE_URL } from '@/utils/Setting';
 import CustomEditor from '../editor/CustomEditor';
 import DebounceSelect from '../common/DebounceSelect';
-import { addQuestionTag, getQuestionTags } from '../../api/question/index';
+import {
+  addQuestionTag,
+  createQuestion,
+  getQuestionTags,
+} from '../../api/question/index';
 import { Tag } from '../../utils/contants/type';
 
 // Ask Question Form Component
@@ -48,9 +52,6 @@ const AskQuestionForm: React.FC = () => {
   // ── fetchTags: must return Tag[] ──────────────────────────────────────────────
   const fetchTags = async (query: string): Promise<Tag[]> => {
     const res = await getQuestionTags(query);
-
-    // 🔍 Log during development:
-    // console.log('[fetchTags] raw response:', res);
 
     const list: unknown[] = res?.data ?? [];
 
@@ -106,14 +107,7 @@ const AskQuestionForm: React.FC = () => {
     }
 
     try {
-      const auth = localStorage.getItem('auth');
-
-      const res = await fetch(`${BASE_URL}/question/create-question`, {
-        method: 'POST',
-        body: JSON.stringify({ ...formData, content }),
-      });
-      const data = await res.json();
-
+      const data = await createQuestion({ ...formData, content });
       if (!data.ok) {
         handleError(data?.message);
         throw new Error(data.message);
@@ -124,6 +118,7 @@ const AskQuestionForm: React.FC = () => {
         tags: [],
       });
       setContent('');
+      setTagInput([])
       return;
     } catch (error) {
       console.warn('Error :', error);

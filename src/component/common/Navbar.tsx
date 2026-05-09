@@ -9,6 +9,7 @@ import { logout } from '@/features/authslice';
 import UserAvatar from './UserAvatar';
 import { logoutUser } from '@/api/user';
 import { useRouter } from 'next/navigation';
+import Button from '../Button/Button';
 
 function Navbar() {
   const dispatch = useDispatch();
@@ -88,12 +89,9 @@ function Navbar() {
                   )}
                 </div>
 
-                <button
-                  onClick={handleLogout}
-                  className='flex items-center text-sm border-2 gap-1.5 px-1.5 border-rose-600 h-8 rounded-md bg-rose-600 text-white hover:shadow-md'
-                >
-                  <LogOut size={15} />
-                </button>
+                <Button onClick={handleLogout} size='sm' variant='secondary'>
+                  <LogOut size={18} />
+                </Button>
               </div>
             ) : (
               <div className='space-x-2.5 text-black'>
