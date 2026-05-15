@@ -32,3 +32,11 @@ export const getStatsData = async () => {
   const res = GET('/question/api/getStats/');
   return res;
 };
+
+
+export const saveQuestgion = async (questionId) =>{
+  const url = `/question/api/${questionId}/save`
+  const res = POST(url);
+
+  return res;
+}

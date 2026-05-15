@@ -40,7 +40,7 @@ export interface Tag {
 }
 
 export interface Answer {
-  id: number;
+  _id: string;
   questionId: number;
   questionTitle: string;
   body: string;

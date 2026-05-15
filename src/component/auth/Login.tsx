@@ -55,11 +55,7 @@ const LoginPage = ({}) => {
   const handleSubmit = async () => {
     if (!handlechecks(formData)) return;
 
-    dispatch(
-      setLoading({
-        loading: true,
-      }),
-    );
+    dispatch(setLoading(true));
 
     try {
       const data = await loginUser(formData);
@@ -89,6 +85,8 @@ const LoginPage = ({}) => {
           messageType: 'error',
         }),
       );
+    }finally{
+      dispatch(setLoading(false));
     }
   };
 

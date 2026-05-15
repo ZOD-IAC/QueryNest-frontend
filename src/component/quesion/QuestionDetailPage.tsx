@@ -7,32 +7,9 @@ import { showMessage } from '@/features/messageSlice';
 import { QuestionContent } from './components/QuestionContent';
 import { AnswerCard } from './components/AnswerCard';
 import { RelatedQuestions } from './components/RelatedQuestion';
-import { BASE_URL } from '@/utils/Setting';
-import CustomEditor from '../../component/editor/CustomEditor';
+import { Answer } from '@/utils/contants/type';
+import { saveQuestgion } from '@/api/question';
 import { AnswerVoting } from '@/api/answer';
-
-// ============================================
-// FILE: types/question.types.ts
-// ============================================
-
-interface AnswerData {
-  _id: number;
-  content: string;
-  code?: string;
-  codeLanguage?: string;
-  author: {
-    id: number;
-    name: string;
-    username: string;
-    reputation: number;
-    avatar: string;
-  };
-  votes: number;
-  isAccepted: boolean;
-  createdAt: string;
-  updatedAt?: string;
-  userVote?: 'up' | 'down' | null;
-}
 
 // ============================================
 // FILE: pages/QuestionDetailPage.tsx
@@ -51,7 +28,6 @@ const QuestionDetailPage: React.FC<any> = ({ data }) => {
 
   const { question, tags } = data?.data;
   const { answers } = question
-  console.log(answers ,'<--- answer');
 
   const handleQuestionVote = (type: 'up' | 'down') => {
     // setQuestion((prev) => ({
@@ -81,8 +57,17 @@ const QuestionDetailPage: React.FC<any> = ({ data }) => {
     }
   };
 
-  const handleBookmark = () => {
-    // setQuestion((prev) => ({ ...prev, isBookmarked: !prev.isBookmarked }));
+  const handleBookmark = async (questionId: string) => {
+    try {
+      const res = await saveQuestgion(questionId)
+      dispatch(showMessage({
+        messageType: !res?.ok ? 'error' : 'success',
+        message: res.message
+      }))
+
+    } catch (err) {
+      console.warn(err)
+    }
   };
 
   const isQuestionAuthor = true;
@@ -131,7 +116,7 @@ const QuestionDetailPage: React.FC<any> = ({ data }) => {
                 {answers.length} {answers.length === 1 ? 'Answer' : 'Answers'}
               </h2>
               <div className='space-y-4 sm:space-y-6'>
-                {answers.map((answer:AnswerData) => (
+                {answers.map((answer: Answer) => (
                   <AnswerCard
                     key={answer._id}
                     answer={answer}

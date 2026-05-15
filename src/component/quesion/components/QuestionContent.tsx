@@ -13,7 +13,7 @@ interface QuestionContentProps {
   question: any;
   tags: Tags[],
   onVote: (type: 'up' | 'down') => void;
-  onBookmark: () => void;
+  onBookmark: (questionId : string) => void;
 }
 
 export const QuestionContent: React.FC<QuestionContentProps> = ({
@@ -35,7 +35,7 @@ export const QuestionContent: React.FC<QuestionContentProps> = ({
             onVote={onVote}
           />
           <button
-            onClick={onBookmark}
+            onClick={()=>onBookmark(question?.id)}
             className={`w-10 h-10 rounded-lg border-2 flex items-center justify-center md:mt-4 transition-all ${question.isBookmarked
               ? 'bg-amber-100 border-amber-500 text-amber-600'
               : 'border-slate-300 text-slate-600 hover:bg-amber-50 hover:border-amber-400'
