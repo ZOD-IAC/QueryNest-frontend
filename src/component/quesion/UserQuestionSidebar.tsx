@@ -18,7 +18,7 @@ const UserQuestionsSidebar: React.FC<{
   useEffect(() => {
     if (!user) return;
     const fetchUserQuestion = async () => {
-      const res = await getUserRecentQuestion(user?.id);
+      const res = await getUserRecentQuestion(user?._id);
 
       if (!res.ok) {
         dispatch(

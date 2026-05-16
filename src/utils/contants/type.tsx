@@ -41,6 +41,7 @@ export interface Tag {
 
 export interface Answer {
   _id: string;
+  question:Question[];
   questionId: number;
   questionTitle: string;
   body: string;

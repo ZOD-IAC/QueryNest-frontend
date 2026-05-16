@@ -13,7 +13,7 @@ import { useSelector } from 'react-redux';
 // FILE: pages/AboutPage.tsx
 // ============================================
 const AboutPage: React.FC = () => {
-  const { isAuthenticated , user } = useSelector((state) => state.auth);
+  const { isAuthenticated , user } = useSelector((state:any) => state.auth);
 
   return (
     <div className='min-h-screen bg-white'>

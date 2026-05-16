@@ -50,9 +50,9 @@ const AnswerCard: React.FC<{ answer: Answer }> = ({ answer }) => {
 };
 
 export const AnswersTab: React.FC<AnswersTabProps> = () => {
-  const [answers, setAnswers] = useState([]);
+  const [answers, setAnswers] = useState<Answer[]>([]);
   const [filter, setFilter] = useState<'all' | 'accepted'>('all');
-  const { user } = useSelector((s) => s.auth);
+  const { user } = useSelector((s:any) => s.auth);
 
   useEffect(() => {
     const fetchAnswers = async () => {
@@ -68,8 +68,10 @@ export const AnswersTab: React.FC<AnswersTabProps> = () => {
 
         setAnswers(res.data);
       } catch (error) {
-        const err = error?.message || 'something went wrong!';
-        console.log(err);
+        // Narrow the type to ensure error is an Error instance
+        const errMessage =
+          error instanceof Error ? error.message : 'Something went wrong';
+        console.warn(errMessage, ': some error occurred');
       }
     };
     fetchAnswers();
@@ -79,8 +81,6 @@ export const AnswersTab: React.FC<AnswersTabProps> = () => {
     if (filter === 'accepted') return a.isAccepted;
     return true;
   });
-
-  console.log(answers, '<---- asnwer');
 
   return (
     <div className='space-y-4'>
@@ -113,7 +113,7 @@ export const AnswersTab: React.FC<AnswersTabProps> = () => {
       </div>
 
       {filteredAnswers.map((answer) => (
-        <AnswerCard key={answer.id} answer={answer} />
+        <AnswerCard key={answer._id} answer={answer} />
       ))}
     </div>
   );

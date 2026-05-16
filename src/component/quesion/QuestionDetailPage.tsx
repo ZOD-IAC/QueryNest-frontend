@@ -37,7 +37,7 @@ const QuestionDetailPage: React.FC<any> = ({ data }) => {
     // }));
   };
 
-  const handleAnswerVote = async (answerId: number, type: 'up' | 'down') => {
+  const handleAnswerVote = async (answerId: string, type: 'up' | 'down') => {
     try {
       const res = await AnswerVoting({ answerId, type });
       if (!res.ok) {

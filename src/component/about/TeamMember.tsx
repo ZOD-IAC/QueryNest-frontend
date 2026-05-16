@@ -77,7 +77,7 @@ const TeamSection: React.FC = () => {
             Meet Our Team
           </h2>
           <p className='text-xl text-slate-600 max-w-2xl mx-auto'>
-            The passionate people behind QueryNest, dedicated to building the
+            The passionate people behind Solvly, dedicated to building the
             best platform for developers.
           </p>
         </div>

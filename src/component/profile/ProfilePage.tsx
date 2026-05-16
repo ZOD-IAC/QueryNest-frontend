@@ -18,7 +18,7 @@ import { BASE_URL } from '@/utils/Setting';
 import { UserProfile } from '../../utils/contants/type';
 
 interface Id {
-  userId  : Number,
+  userId: string;
 }
 
 // ============================================
@@ -28,7 +28,7 @@ const ProfilePage: React.FC<Id> = ({ userId }) => {
   const param = useSearchParams();
   const dispatch = useDispatch();
   const tab = param?.get('tab');
-  const { isAuthenticated } = useSelector((state:any) => state.auth);
+  const { isAuthenticated } = useSelector((state: any) => state.auth);
   const [data, setData] = useState<any>();
 
   // State with URL parameter sync (lazy initializer to avoid calling setState in effect)
@@ -36,12 +36,9 @@ const ProfilePage: React.FC<Id> = ({ userId }) => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await fetch(
-        `${BASE_URL}/user/api/get-user/${userId}`,
-        {
-          method: 'GET',
-        }
-      );
+      const res = await fetch(`${BASE_URL}/user/api/get-user/${userId}`, {
+        method: 'GET',
+      });
       const data = await res.json();
 
       if (!data.ok) {
@@ -49,7 +46,7 @@ const ProfilePage: React.FC<Id> = ({ userId }) => {
           showMessage({
             message: data.message,
             messageType: 'error',
-          })
+          }),
         );
       }
       setData(data?.data);
@@ -87,31 +84,31 @@ const ProfilePage: React.FC<Id> = ({ userId }) => {
 
   const answers: Answer[] = [
     {
-      id: 1,
+      _id: '1e',
+      question: [],
       questionId: 101,
       questionTitle: 'How to handle CORS in Express.js?',
-      body:
-        'You can handle CORS in Express by using the cors middleware package. First install it: npm install cors. Then in your Express app: const cors = require("cors"); app.use(cors());. For more control, you can configure specific origins, methods, and headers.',
+      body: 'You can handle CORS in Express by using the cors middleware package. First install it: npm install cors. Then in your Express app: const cors = require("cors"); app.use(cors());. For more control, you can configure specific origins, methods, and headers.',
       votes: 156,
       isAccepted: true,
       createdAt: '5 hours ago',
     },
     {
-      id: 2,
+      _id: '2e',
+      question: [],
       questionId: 102,
       questionTitle: 'MongoDB query optimization for large datasets',
-      body:
-        'For large datasets, proper indexing is crucial. Create compound indexes for frequently queried fields. Use explain() to analyze query performance. Consider using aggregation pipelines for complex queries and limit() with skip() for pagination.',
+      body: 'For large datasets, proper indexing is crucial. Create compound indexes for frequently queried fields. Use explain() to analyze query performance. Consider using aggregation pipelines for complex queries and limit() with skip() for pagination.',
       votes: 89,
       isAccepted: true,
       createdAt: '1 day ago',
     },
     {
-      id: 3,
+      _id: '3e',
+      question: [],
       questionId: 103,
       questionTitle: 'React useEffect cleanup function',
-      body:
-        'The cleanup function in useEffect is important for preventing memory leaks. It runs before the component unmounts and before re-running the effect. Return a function from useEffect that cancels subscriptions, clears timers, or aborts API calls.',
+      body: 'The cleanup function in useEffect is important for preventing memory leaks. It runs before the component unmounts and before re-running the effect. Return a function from useEffect that cancels subscriptions, clears timers, or aborts API calls.',
       votes: 64,
       isAccepted: false,
       createdAt: '2 days ago',
@@ -171,7 +168,7 @@ const ProfilePage: React.FC<Id> = ({ userId }) => {
 
   const isOwnProfile = true; // Change to false to see non-owner view
 
-  if (!data) return;  
+  if (!data) return;
   return (
     <div className='min-h-screen bg-slate-50'>
       <ProfileHeader user={data?.user} isOwnProfile={isOwnProfile} />

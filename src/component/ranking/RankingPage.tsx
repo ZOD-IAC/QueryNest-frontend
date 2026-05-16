@@ -59,7 +59,7 @@ const RankingHeader: React.FC = () => {
           <h1 className='text-4xl md:text-5xl font-bold'>Community Rankings</h1>
         </div>
         <p className='text-center text-xl text-amber-50 max-w-2xl mx-auto'>
-          Recognizing our top contributors who make QueryNest an amazing
+          Recognizing our top contributors who make Solvly an amazing
           community
         </p>
       </div>

@@ -9,20 +9,6 @@ interface ProfileHeaderProps {
   isOwnProfile: boolean;
 }
 
-// Mock data
-// const user: UserProfile = {
-//   id: 1,
-//   name: 'Sarah Johnson',
-//   email: 'sarah@example.com',
-//   bio: 'Full-stack developer passionate about React, TypeScript, and building scalable applications. Love helping others learn to code and sharing knowledge with the community.',
-//   location: 'San Francisco, CA',
-//   website: 'https://sarahdev.com',
-//   joinedDate: 'January 2020',
-//   avatar: '',
-//   reputation: 125840,
-//   stats: { questions: 234, answers: 1567, accepted: 892 },
-// };
-
 export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   user,
   isOwnProfile,

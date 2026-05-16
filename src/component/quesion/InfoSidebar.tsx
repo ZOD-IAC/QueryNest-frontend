@@ -33,8 +33,6 @@ const InfoSidebar: React.FC = () => {
     fetchStatsData();
   }, []);
 
-  console.log(statsData, '<--- stast data');
-
   return (
     <div className='space-y-4'>
       {/* Quick Stats */}

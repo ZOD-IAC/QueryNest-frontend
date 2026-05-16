@@ -1,6 +1,6 @@
 'use client';
 import CustomButton from '@/component/Button/Button';
-import Querynest from '@/icons/Querynest';
+import Solvly from '@/icons/Solvly.jsx';
 import { Mail, Lock } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -96,9 +96,9 @@ const LoginPage = ({}) => {
         {/* Header */}
         <div className='text-center mb-6 sm:mb-8'>
           <div className='flex items-center justify-center gap-2 mb-3 sm:mb-4'>
-            <Querynest height={'36px'} width={'36px'} color={'#BCA88D'} />
+            <Solvly height={'36px'} width={'36px'} color={'#BCA88D'} />
             <h1 className='text-2xl sm:text-3xl lg:text-3xl font-bold text-slate-800'>
-              QueryNest
+              Solvly
             </h1>
           </div>
           <p className='text-sm sm:text-base text-slate-600'>

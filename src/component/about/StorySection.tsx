@@ -9,7 +9,7 @@ const StorySection: React.FC = () => {
       <div className='max-w-4xl mx-auto px-4 sm:px-6 lg:px-8'>
         <div className='text-center mb-12'>
           <h2 className='text-4xl font-bold text-slate-900 mb-4'>Our Story</h2>
-          <p className='text-xl text-slate-600'>How QueryNest came to be</p>
+          <p className='text-xl text-slate-600'>How Solvly came to be</p>
         </div>
 
         <div className='space-y-12'>
@@ -24,7 +24,7 @@ const StorySection: React.FC = () => {
                 The Beginning
               </h3>
               <p className='text-slate-600 leading-relaxed'>
-                QueryNest was founded by a group of developers who experienced
+                Solvly was founded by a group of developers who experienced
                 firsthand the challenges of finding reliable answers to coding
                 questions. Frustrated with scattered resources and outdated
                 solutions, they envisioned a platform that would bring the
@@ -44,7 +44,7 @@ const StorySection: React.FC = () => {
                 Rapid Growth
               </h3>
               <p className='text-slate-600 leading-relaxed'>
-                Within the first year, QueryNest attracted over 1 million
+                Within the first year, Solvly attracted over 1 million
                 developers. The platform&apos;s intuitive design and focus on
                 quality content resonated with the community, leading to
                 exponential growth in both users and content.
@@ -63,7 +63,7 @@ const StorySection: React.FC = () => {
                 Global Community
               </h3>
               <p className='text-slate-600 leading-relaxed'>
-                Today, QueryNest serves millions of developers across 190+
+                Today, Solvly serves millions of developers across 190+
                 countries. We&apos;ve expanded our features to include
                 specialized communities, learning paths, and enterprise
                 solutions, while staying true to our core mission of making
@@ -85,7 +85,7 @@ const StorySection: React.FC = () => {
               <p className='text-slate-600 leading-relaxed'>
                 We&apos;re just getting started. With AI-powered features,
                 enhanced collaboration tools, and a growing global community,
-                QueryNest continues to innovate and evolve, shaping the future
+                Solvly continues to innovate and evolve, shaping the future
                 of developer education and collaboration.
               </p>
             </div>

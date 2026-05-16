@@ -3,11 +3,12 @@ import React from 'react';
 import Button from '../Button/Button';
 import { useSelector } from 'react-redux';
 
-// ============================================
-// FILE: components/about/MissionSection.tsx
-// ============================================
-const MissionSection: React.FC = ({ userId }) => {
-  const { isAuthenticated } = useSelector((state) => state.auth);
+interface props {
+  userId: string;
+}
+
+const MissionSection: React.FC<props> = ({ userId }) => {
+  const { isAuthenticated } = useSelector((state: any) => state.auth);
 
   return (
     <section className='py-20 bg-white'>
@@ -18,7 +19,7 @@ const MissionSection: React.FC = ({ userId }) => {
               Our Mission
             </h2>
             <p className='text-lg text-slate-600 mb-6 leading-relaxed'>
-              At QueryNest, we believe that knowledge should be accessible to
+              At Solvly, we believe that knowledge should be accessible to
               everyone. Our mission is to create a collaborative platform where
               developers of all skill levels can ask questions, share insights,
               and grow together.

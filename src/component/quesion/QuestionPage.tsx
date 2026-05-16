@@ -1,14 +1,25 @@
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
 import SearchFilterBar from '../common/Search';
 import QuestionList from './QuestionList';
 import InfoSidebar from './InfoSidebar';
 import UserQuestionCard from './components/UserQuestionCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { showMessage } from '@/features/messageSlice';
+import { Question } from '@/utils/contants/type';
+
+type QuestionData = {
+  ok: boolean;
+  message?: string;
+  questions?: Question[];
+};
+
+type QuestionsPageProps = {
+  data: QuestionData;
+};
 
 // Main Questions Page Component
-const QuestionsPage: React.FC = ({ data }: any) => {
+const QuestionsPage: React.FC<QuestionsPageProps> = ({ data }) => {
   const { isAuthenticated, user } = useSelector((state: any) => state.auth);
   const dispatch = useDispatch();
   if (!data.ok) {
@@ -42,7 +53,7 @@ const QuestionsPage: React.FC = ({ data }: any) => {
 
             <SearchFilterBar />
             <div className='mt-4'>
-              <QuestionList data={data?.questions} />
+              <QuestionList data={data?.questions || []} />
             </div>
 
             {/* Pagination */}

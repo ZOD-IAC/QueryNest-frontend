@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Mail, Lock, User, Eye } from 'lucide-react';
 import CustomButton from '@/component/Button/Button';
 import Link from 'next/link';
-import Querynest from '@/icons/Querynest';
+import Solvly from '@/icons/Solvly';
 import { useDispatch } from 'react-redux';
 import { loginSuccess } from '@/features/authslice';
 import { useRouter } from 'next/navigation';
@@ -80,10 +80,10 @@ const RegisterPage = () => {
     }
 
     try {
-      const data = await registerUser(formData); 
+      const data = await registerUser(formData);
 
       if (!data.ok) {
-        throw new Error(data?.message || "something went wrong");
+        throw new Error(data?.message || 'something went wrong');
       }
 
       dispatch(loginSuccess({ user: data.user, token: data.token }));
@@ -105,10 +105,12 @@ const RegisterPage = () => {
 
       navigation.push('/');
     } catch (error) {
-      const err =  error?.message || "something went wrong";
+      // Narrow the type to ensure error is an Error instance
+      const errMessage =
+        error instanceof Error ? error.message : 'Something went wrong';
       dispatch(
         showMessage({
-          message: err,
+          message: errMessage,
           messageType: 'error',
         }),
       );
@@ -121,9 +123,9 @@ const RegisterPage = () => {
         {/* Header */}
         <div className='text-center mb-6 sm:mb-8'>
           <div className='flex items-center justify-center gap-2 mb-3 sm:mb-4'>
-            <Querynest height={'36px'} width={'36px'} color={'#BCA88D'} />
+            <Solvly height={'36px'} width={'36px'} color={'#BCA88D'} />
             <h1 className='text-2xl sm:text-3xl lg:text-3xl font-bold text-slate-800'>
-              QueryNest
+              Solvly
             </h1>
           </div>
           <p className='text-sm sm:text-base text-slate-600'>

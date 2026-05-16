@@ -1,7 +1,13 @@
 import React from 'react';
 import ProfilePage from '@/component/profile/ProfilePage';
 
-const Page = async ({ params }) => {
+type PageProps = {
+  params: {
+    slug: string;
+  };
+};
+
+const Page = async ({ params }: PageProps) => {
   const { slug } = await params;
   return (
     <div>

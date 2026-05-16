@@ -7,7 +7,7 @@ const QuestionList: React.FC<{ data: Question[] }> = ({ data }) => {
 
   return (
     <div className='space-y-4'>
-      {data?.map((question: any) => {
+      {data?.map((question: Question) => {
         return <QuestionCard key={question._id} question={question} />;
       })}
     </div>

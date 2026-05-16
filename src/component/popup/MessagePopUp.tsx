@@ -12,7 +12,7 @@ function MessagePopUp() {
         messageType: 'error' | 'info' | 'success';
         message: string;
       };
-    }) => state.message
+    }) => state.message,
   );
 
   const bg_color = {
@@ -28,12 +28,12 @@ function MessagePopUp() {
   };
 
   useEffect(() => {
-    const clear = setTimeout(() => {
+    const timer = setTimeout(() => {
       dispatch(clearMessage());
     }, 3000);
 
-    return () => clearMessage(clear);
-  }, [message]);
+    return () => clearTimeout(timer);
+  }, [message, dispatch]);
 
   return (
     message.message.trim() !== '' && (

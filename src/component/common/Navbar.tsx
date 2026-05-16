@@ -1,8 +1,8 @@
 'use client';
 import Link from 'next/link';
 import { LogOut, Menu, X } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import Querynest from '@/icons/Querynest';
+import { useState } from 'react';
+import Solvly from '@/icons/Solvly';
 import { User2 } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '@/features/authslice';
@@ -20,7 +20,10 @@ function Navbar() {
     try {
       await logoutUser();
     } catch (error) {
-      console.log(error, ': some error occurred');
+      // Narrow the type to ensure error is an Error instance
+      const errMessage =
+        error instanceof Error ? error.message : 'Something went wrong';
+      console.warn(errMessage, ': some error occurred');
     } finally {
       dispatch(logout());
       router?.push('/login');
@@ -32,10 +35,8 @@ function Navbar() {
         <div className='flex justify-between items-center h-16'>
           <div>
             <Link href={'/'} className='flex items-center gap-2'>
-              <Querynest height={'20px'} width={'20px'} color={'#BCA88D'} />
-              <span className='text-xl font-bold text-slate-800'>
-                QueryNest
-              </span>
+              <Solvly height={'30px'} width={'30px'} color={'#BCA88D'} />
+              <span className='text-xl font-bold text-slate-800'>Solvly</span>
             </Link>
           </div>
 

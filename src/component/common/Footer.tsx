@@ -9,7 +9,7 @@ function Footer() {
           <div>
             <div className='flex items-center gap-2 mb-4'>
               <Code2 className='w-6 h-6 text-blue-500' />
-              <span className='text-lg font-bold text-white'>QueryNest</span>
+              <span className='text-lg font-bold text-white'>Solvly</span>
             </div>
             <p className='text-sm'>
               Empowering developers worldwide since 2025.
@@ -41,7 +41,7 @@ function Footer() {
           </div>
         </div>
         <div className='border-t border-slate-800 mt-8 pt-8 text-center text-sm'>
-          © 2025 QueryNest. All rights reserved.
+          © 2025 Solvly. All rights reserved.
         </div>
       </div>
     </footer>

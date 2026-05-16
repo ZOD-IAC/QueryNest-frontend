@@ -35,9 +35,6 @@ const AskQuestionForm: React.FC = () => {
   const createTag = async (query: string): Promise<Tag | null> => {
     const res = await addQuestionTag(query);
 
-    // 🔍 Log the raw response once during development to confirm the shape:
-    // console.log('[createTag] raw response:', res);
-
     const tag = res?.data ?? res?.newtag ?? null;
 
     // Guard: if _id is missing the key-prop warning will reappear.
@@ -118,10 +115,13 @@ const AskQuestionForm: React.FC = () => {
         tags: [],
       });
       setContent('');
-      setTagInput([])
+      setTagInput([]);
       return;
     } catch (error) {
-      console.warn('Error :', error);
+      // Narrow the type to ensure error is an Error instance
+      const errMessage =
+        error instanceof Error ? error.message : 'Something went wrong';
+      console.warn(errMessage, ': some error occurred');
     }
   };
 

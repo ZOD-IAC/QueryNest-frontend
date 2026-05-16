@@ -55,7 +55,10 @@ const AnswerForm: React.FC<prop> = ({ questionId }) => {
       setContent('');
       return;
     } catch (error) {
-      console.warn('Error :', error);
+      // Narrow the type to ensure error is an Error instance
+      const errMessage =
+        error instanceof Error ? error.message : 'Something went wrong';
+      console.warn(errMessage, ': some error occurred');
     }
   };
 

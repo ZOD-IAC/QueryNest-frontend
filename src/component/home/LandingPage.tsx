@@ -15,7 +15,7 @@ const LandingPage = () => {
         <div className='text-center max-w-3xl mx-auto'>
           <h1 className='text-5xl md:text-6xl font-bold text-slate-900 mb-6'>
             Every developer has a tab open to{' '}
-            <span className='text-blue-600'>QueryNest</span>
+            <span className='text-blue-600'>Solvly</span>
           </h1>
           <p className='text-xl text-slate-600 mb-8'>
             Join millions of developers getting answers to their coding
@@ -48,7 +48,7 @@ const LandingPage = () => {
       <section className='bg-slate-50 py-20'>
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
           <h2 className='text-3xl font-bold text-slate-900 text-center mb-12'>
-            Why developers choose QueryNest
+            Why developers choose Solvly
           </h2>
           <div className='grid md:grid-cols-3 gap-8'>
             <div className='bg-white p-8 rounded-xl shadow-sm'>
