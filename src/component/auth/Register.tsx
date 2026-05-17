@@ -86,7 +86,11 @@ const RegisterPage = () => {
         throw new Error(data?.message || 'something went wrong');
       }
 
-      dispatch(loginSuccess({ user: data.user, token: data.token }));
+      dispatch(
+        loginSuccess({
+          user: data.user,
+        }),
+      );
       dispatch(
         showMessage({
           message: data.message,

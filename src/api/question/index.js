@@ -1,7 +1,5 @@
 import { GET, POST, PUT, DELETE_REQ } from '../../utils/api';
 
-const getHeaders = () => {};
-
 export const createQuestion = (body) => {
   const res = POST('/question/create-question', body);
   return res;
@@ -33,10 +31,15 @@ export const getStatsData = async () => {
   return res;
 };
 
-
-export const saveQuestgion = async (questionId) =>{
-  const url = `/question/api/${questionId}/save`
+export const saveQuestion = async (questionId) => {
+  const url = `/question/api/${questionId}/save`;
   const res = POST(url);
+  return res;
+};
+
+export const getQuestionDetail = async (questionId) => {
+  const url = `/question/api/get-question/${questionId}`;
+  const res = GET(url);
 
   return res;
-}
+};

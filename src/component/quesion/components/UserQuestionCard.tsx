@@ -20,7 +20,7 @@ const UserQuestionCard: React.FC<props> = ({ isAuthenticated, user }) => {
         <Button
           fullWidth
           variant='primary'
-          href={`/profile/${user?._id}?tab=ask`}
+          href={`/profile/${user?.id}?tab=ask`}
         >
           <Plus className='w-5 h-5' />
           Ask Question

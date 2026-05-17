@@ -5,10 +5,14 @@ type PageProps = {
   params: {
     slug: string;
   };
+  searchParams: {
+    tab: string;
+  };
 };
 
-const Page = async ({ params }: PageProps) => {
+const Page = async ({ params, searchParams }: PageProps) => {
   const { slug } = await params;
+  const { tab } = await searchParams;
   return (
     <div>
       <ProfilePage userId={slug} />

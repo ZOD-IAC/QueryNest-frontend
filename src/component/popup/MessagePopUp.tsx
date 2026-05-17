@@ -1,55 +1,72 @@
 'use client';
-import { Bomb, LaptopMinimalCheck, BadgeInfo } from 'lucide-react';
-import { EffectCallback, useEffect } from 'react';
+import { Bomb, LaptopMinimalCheck, BadgeInfo, X } from 'lucide-react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearMessage } from '@/features/messageSlice';
 
 function MessagePopUp() {
   const dispatch = useDispatch();
+
   const message = useSelector(
     (state: {
-      message: {
-        messageType: 'error' | 'info' | 'success';
-        message: string;
-      };
+      message: { messageType: 'error' | 'info' | 'success'; message: string };
     }) => state.message,
   );
 
-  const bg_color = {
-    error: 'bg-rose-500',
-    info: 'bg-blue-500',
-    success: 'bg-green-500',
-  };
-
-  const icon = {
-    error: <Bomb />,
-    info: <BadgeInfo />,
-    success: <LaptopMinimalCheck />,
+  const config = {
+    error: {
+      icon: <Bomb size={14} />,
+      dot: 'bg-rose-400',
+      text: 'text-rose-400',
+      // border: 'border-rose-400/20',
+    },
+    info: {
+      icon: <BadgeInfo size={14} />,
+      dot: 'bg-blue-400',
+      text: 'text-blue-400',
+      // border: 'border-blue-400/20',
+    },
+    success: {
+      icon: <LaptopMinimalCheck size={14} />,
+      dot: 'bg-emerald-400',
+      text: 'text-emerald-400',
+      // border: 'border-emerald-400/20',
+    },
   };
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      dispatch(clearMessage());
-    }, 3000);
-
+    if (!message.message.trim()) return;
+    const timer = setTimeout(() => dispatch(clearMessage()), 3000);
     return () => clearTimeout(timer);
-  }, [message, dispatch]);
+  }, [message.message, dispatch]);
+
+  if (!message.message.trim()) return null;
+
+  const { icon, text } = config[message.messageType];
 
   return (
-    message.message.trim() !== '' && (
-      <div className='fixed bottom-6 right-4 sm:right-6 z-50'>
-        <div
-          className={`flex items-center gap-3 ${
-            bg_color[message.messageType]
-          } text-white px-4 sm:px-6 py-3 rounded-lg shadow-lg max-w-[90vw] sm:max-w-sm md:max-w-md animate-slideUp`}
+    <div className='fixed bottom-6 right-5 z-50 animate-slideUp'>
+      <div
+        className={`relative flex items-center gap-3 bg-[#111110] border text-white px-4 py-3 rounded-xl shadow-2xl max-w-[320px]`}
+      >
+        <div className={`shrink-0 ${text} flex items-center`}>{icon}</div>
+        <p className='text-[13px] text-white/80 leading-snug flex-1'>
+          {message.message}
+        </p>
+        <button
+          onClick={() => dispatch(clearMessage())}
+          className='shrink-0 text-white/30 hover:text-white/70 transition-colors'
         >
-          <div className='shrink-0 text-white animate-pulse'>
-            {icon[message.messageType]}
-          </div>
-          <p className='text-sm sm:text-base leading-snug'>{message.message}</p>
+          <X size={13} />
+        </button>
+        <div className='absolute bottom-0 left-0 right-0 h-[2px] rounded-b-xl overflow-hidden'>
+          <div
+            className={`h-full animate-shrink`}
+            style={{ transformOrigin: 'left' }}
+          />
         </div>
       </div>
-    )
+    </div>
   );
 }
 

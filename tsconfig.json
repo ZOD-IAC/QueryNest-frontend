@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-, "src/icons/Solvly.jsx", "src/component/editor/CustomEditor.jsx"  ],
+, "src/icons/Solvly.jsx", "src/component/editor/CustomEditor.jsx", "src/api/index.js"  ],
   "exclude": ["node_modules"]
 }

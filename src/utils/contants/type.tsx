@@ -2,7 +2,7 @@
 // FILE: types/profile.types.ts
 // ============================================
 export interface UserProfile {
-  _id: string;
+  id: string;
   name: string;
   email: string;
   bio: string;

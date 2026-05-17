@@ -1,4 +1,6 @@
+import Solvly from '@/icons/Solvly';
 import { Code2 } from 'lucide-react';
+import Link from 'next/link';
 import React from 'react';
 
 function Footer() {
@@ -8,7 +10,7 @@ function Footer() {
         <div className='grid md:grid-cols-4 gap-8'>
           <div>
             <div className='flex items-center gap-2 mb-4'>
-              <Code2 className='w-6 h-6 text-blue-500' />
+              <Solvly width={30} height={30} color={'white'} />
               <span className='text-lg font-bold text-white'>Solvly</span>
             </div>
             <p className='text-sm'>
@@ -17,10 +19,10 @@ function Footer() {
           </div>
           <div>
             <h4 className='text-white font-semibold mb-4'>Company</h4>
-            <div className='space-y-2 text-sm'>
-              <div>About</div>
-              <div>Careers</div>
-              <div>Press</div>
+            <div className='space-y-2 text-sm flex flex-col'>
+              <Link href={'/about'}>About</Link>
+              <Link href={'/questions'}>Questions</Link>
+              <Link href={'/trending'}>Trending</Link>
             </div>
           </div>
           <div>

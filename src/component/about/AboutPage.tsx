@@ -18,7 +18,7 @@ const AboutPage: React.FC = () => {
   return (
     <div className='min-h-screen bg-white'>
       <HeroSection />
-      <MissionSection userId={user?._id} />
+      <MissionSection userId={user?.id} />
       <ValuesSection />
       <StorySection />
       <TeamSection />

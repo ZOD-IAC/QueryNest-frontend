@@ -3,26 +3,45 @@
 import { useState } from 'react';
 import { VoteButtons } from './VoteButton';
 import { Bookmark, Edit, Flag, Share2, Star } from 'lucide-react';
+import { useDispatch } from 'react-redux';
+import { showMessage } from '@/features/messageSlice';
+import { saveQuestion } from '@/api/question';
 
 interface Tags {
-  _id : string , 
-  tagName : string
+  _id: string;
+  tagName: string;
 }
 
 interface QuestionContentProps {
   question: any;
-  tags: Tags[],
+  tags: Tags[];
   onVote: (type: 'up' | 'down') => void;
-  onBookmark: (questionId : string) => void;
+  isSaved: boolean;
+  setIsSaved: any;
 }
 
 export const QuestionContent: React.FC<QuestionContentProps> = ({
   question,
   tags,
   onVote,
-  onBookmark,
+  isSaved,
+  setIsSaved,
 }) => {
-  const [showMenu, setShowMenu] = useState(false);
+  const dispatch = useDispatch();
+  const handleBookmark = async (questionId: string) => {
+    try {
+      const res = await saveQuestion(questionId);
+      dispatch(
+        showMessage({
+          messageType: !res?.ok ? 'error' : 'success',
+          message: res.message,
+        }),
+      );
+      setIsSaved(res?.isSaved);
+    } catch (err) {
+      console.warn(err);
+    }
+  };
 
   return (
     <div className='bg-white rounded-lg border border-slate-200 p-4 sm:p-6 max-w-full overflow-hidden'>
@@ -35,16 +54,14 @@ export const QuestionContent: React.FC<QuestionContentProps> = ({
             onVote={onVote}
           />
           <button
-            onClick={()=>onBookmark(question?.id)}
-            className={`w-10 h-10 rounded-lg border-2 flex items-center justify-center md:mt-4 transition-all ${question.isBookmarked
-              ? 'bg-amber-100 border-amber-500 text-amber-600'
-              : 'border-slate-300 text-slate-600 hover:bg-amber-50 hover:border-amber-400'
-              }`}
+            onClick={() => handleBookmark(question?.id)}
+            className={`w-10 h-10 rounded-lg border-2 flex items-center justify-center md:mt-4 transition-all ${
+              isSaved
+                ? 'bg-red-100 border-red-500 text-red-600 hover:bg-zinc-50 hover:border-zinc-400'
+                : 'border-slate-300 text-slate-600 hover:bg-amber-50 hover:border-red-400'
+            }`}
           >
-            <Bookmark
-              className='w-5 h-5'
-              fill={question.isBookmarked ? 'currentColor' : 'none'}
-            />
+            <Bookmark className='w-5 h-5' fill={isSaved ? 'red' : 'none'} />
           </button>
         </div>
 
@@ -92,7 +109,7 @@ export const QuestionContent: React.FC<QuestionContentProps> = ({
                   <div className='w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-sm'>
                     {question.author.name
                       .split(' ')
-                      .map((n:any) => n[0])
+                      .map((n: any) => n[0])
                       .join('')}
                   </div>
                   <div>

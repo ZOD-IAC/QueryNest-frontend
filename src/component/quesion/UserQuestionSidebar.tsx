@@ -16,9 +16,9 @@ const UserQuestionsSidebar: React.FC<{
   const [userQuestions, setUserQuestion] = useState([]);
 
   useEffect(() => {
-    if (!user) return;
+    if (!isAuthenticated && !user) return;
     const fetchUserQuestion = async () => {
-      const res = await getUserRecentQuestion(user?._id);
+      const res = await getUserRecentQuestion(user?.id);
 
       if (!res.ok) {
         dispatch(
@@ -34,7 +34,7 @@ const UserQuestionsSidebar: React.FC<{
     };
 
     fetchUserQuestion();
-  }, []);
+  }, [user, dispatch, isAuthenticated]);
 
   if (!isAuthenticated) {
     return (
@@ -49,8 +49,6 @@ const UserQuestionsSidebar: React.FC<{
       </div>
     );
   }
-
-  if (!userQuestions.length) return;
 
   return (
     <div className='bg-white border border-slate-200 rounded-lg p-4'>

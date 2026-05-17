@@ -21,9 +21,6 @@ interface Id {
   userId: string;
 }
 
-// ============================================
-// FILE: pages/ProfilePage.tsx
-// ============================================
 const ProfilePage: React.FC<Id> = ({ userId }) => {
   const param = useSearchParams();
   const dispatch = useDispatch();
@@ -185,7 +182,7 @@ const ProfilePage: React.FC<Id> = ({ userId }) => {
             {activeTab === 'answers' && <AnswersTab answers={answers} />}
             {activeTab === 'badges' && <BadgesTab badges={badges} />}
             {activeTab === 'activity' && <ActivityTab />}
-            {activeTab === 'saved' && <SavedTab />}
+            {activeTab === 'saved' && <SavedTab userId={userId} />}
             {isAuthenticated && activeTab === 'ask' && <AskQuestionForm />}
           </main>
 

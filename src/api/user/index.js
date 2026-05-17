@@ -14,3 +14,8 @@ export const logoutUser = async () => {
   const res = await POST('/user/api/logout');
   return res;
 };
+
+export const getQuestionSavedByUser = async (userId) => {
+  const res = await GET(`/user/api/getusersaved/${userId}`);
+  return res;
+};

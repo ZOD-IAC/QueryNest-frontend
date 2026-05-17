@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 import { Question } from '../../../utils/contants/type';
 import { Clock } from 'lucide-react';
 import Link from 'next/link';
+import { stripHtml } from '@/utils/helper';
 
 interface QuestionsTabProps {
   question: Question[];
@@ -18,7 +19,7 @@ const QuestionCard: React.FC<{ question: Question }> = ({ question }) => {
         <div className='flex flex-col items-center gap-2 text-sm min-w-[70px]'>
           <div className='flex flex-col items-center'>
             <span className='font-semibold text-slate-700'>
-              {question.upvotes.length}
+              {question.upvotes}
             </span>
             <span className='text-slate-500 text-xs'>votes</span>
           </div>
@@ -48,10 +49,9 @@ const QuestionCard: React.FC<{ question: Question }> = ({ question }) => {
               {question.title}
             </h3>
           </Link>
-          <p
-            className='text-slate-600 text-sm mb-3 line-clamp-2'
-            dangerouslySetInnerHTML={{ __html: question.body }}
-          />
+          <p className='text-slate-600 text-sm mb-3 line-clamp-2'>
+            {stripHtml(question?.body)}
+          </p>
           <div className='flex flex-wrap gap-2 mb-2'>
             {question?.tags.map((tag) => (
               <span

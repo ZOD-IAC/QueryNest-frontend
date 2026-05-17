@@ -8,26 +8,43 @@ import { QuestionContent } from './components/QuestionContent';
 import { AnswerCard } from './components/AnswerCard';
 import { RelatedQuestions } from './components/RelatedQuestion';
 import { Answer } from '@/utils/contants/type';
-import { saveQuestgion } from '@/api/question';
+import { getQuestionDetail } from '@/api/question';
 import { AnswerVoting } from '@/api/answer';
 
-// ============================================
-// FILE: pages/QuestionDetailPage.tsx
-// ============================================
-const QuestionDetailPage: React.FC<any> = ({ data }) => {
+const QuestionDetailPage: React.FC<any> = ({ slug }) => {
   const dispatch = useDispatch();
-  if (!data.ok) {
-    dispatch(
-      showMessage({
-        message: data.message,
-        messageType: 'error',
-      }),
-    );
-    return;
-  }
+  const [isSaved, setIsSaved] = useState(false);
+  const [data, setData] = useState<any>(null);
 
-  const { question, tags } = data?.data;
-  const { answers } = question
+  useEffect(() => {
+    if (!slug) return;
+
+    const fetchQuestionDetails = async () => {
+      const res = await getQuestionDetail(slug);
+
+      if (!res?.ok) {
+        dispatch(
+          showMessage({
+            message: res?.message,
+            messageType: 'error',
+          }),
+        );
+        return;
+      }
+      setData(res?.data);
+      setIsSaved(res?.data?.question?.isSaved);
+    };
+
+    fetchQuestionDetails();
+  }, [slug, dispatch]);
+
+  // loading state
+  if (!data) return <div>Loading...</div>;
+
+  const { question, tags } = data ?? {};
+  if (!question) return null;
+
+  const { answers } = question;
 
   const handleQuestionVote = (type: 'up' | 'down') => {
     // setQuestion((prev) => ({
@@ -41,32 +58,22 @@ const QuestionDetailPage: React.FC<any> = ({ data }) => {
     try {
       const res = await AnswerVoting({ answerId, type });
       if (!res.ok) {
-        throw new Error(res.message)
+        throw new Error(res.message);
       }
-      dispatch(showMessage({
-        message: res.message,
-        messageType: 'info'
-      }))
+      dispatch(
+        showMessage({
+          message: res.message,
+          messageType: 'info',
+        }),
+      );
     } catch (error: any) {
-      const err = error?.message || "something went wrong!";
-      dispatch(showMessage({
-        message: err,
-        messageType: 'error'
-      }))
-
-    }
-  };
-
-  const handleBookmark = async (questionId: string) => {
-    try {
-      const res = await saveQuestgion(questionId)
-      dispatch(showMessage({
-        messageType: !res?.ok ? 'error' : 'success',
-        message: res.message
-      }))
-
-    } catch (err) {
-      console.warn(err)
+      const err = error?.message || 'something went wrong!';
+      dispatch(
+        showMessage({
+          message: err,
+          messageType: 'error',
+        }),
+      );
     }
   };
 
@@ -107,7 +114,8 @@ const QuestionDetailPage: React.FC<any> = ({ data }) => {
               tags={tags}
               question={question}
               onVote={handleQuestionVote}
-              onBookmark={handleBookmark}
+              isSaved={isSaved ?? false}
+              setIsSaved={setIsSaved}
             />
 
             {/* Answers Section */}
@@ -140,6 +148,5 @@ const QuestionDetailPage: React.FC<any> = ({ data }) => {
     </div>
   );
 };
-
 
 export default QuestionDetailPage;

@@ -6,7 +6,7 @@ import { Answer } from '../../../utils/contants/type';
 import React, { useEffect, useState } from 'react';
 import { AnswersTabProps } from '@/utils/contants/type';
 import { getAnswers } from '../../../api/answer/index';
-import { getDataFromlocal } from '@/utils/helper';
+import { stripHtml } from '@/utils/helper';
 import { useSelector } from 'react-redux';
 const AnswerCard: React.FC<{ answer: Answer }> = ({ answer }) => {
   return (
@@ -35,10 +35,9 @@ const AnswerCard: React.FC<{ answer: Answer }> = ({ answer }) => {
               {answer.question[0]?.title}
             </a>
           </h3>
-          <p
-            className='text-slate-600 text-sm mb-3 line-clamp-3'
-            dangerouslySetInnerHTML={{ __html: answer.body }}
-          />
+          <p className='text-slate-600 text-sm mb-3 line-clamp-3 w-full'>
+            {stripHtml(answer?.body)}
+          </p>
           <div className='flex items-center gap-2 text-xs text-slate-500'>
             <Clock className='w-3 h-3' />
             <span>answered {answer.createdAt}</span>
@@ -52,7 +51,7 @@ const AnswerCard: React.FC<{ answer: Answer }> = ({ answer }) => {
 export const AnswersTab: React.FC<AnswersTabProps> = () => {
   const [answers, setAnswers] = useState<Answer[]>([]);
   const [filter, setFilter] = useState<'all' | 'accepted'>('all');
-  const { user } = useSelector((s:any) => s.auth);
+  const { user } = useSelector((s: any) => s.auth);
 
   useEffect(() => {
     const fetchAnswers = async () => {
