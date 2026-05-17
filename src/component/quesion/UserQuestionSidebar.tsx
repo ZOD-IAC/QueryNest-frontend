@@ -94,7 +94,7 @@ const UserQuestionsSidebar: React.FC<{
         variant='ghost'
         size='sm'
         fullWidth
-        href={`/profile/${user}?tab=questions`}
+        href={`/profile/${user?.id}?tab=questions`}
       >
         View All
       </Button>
